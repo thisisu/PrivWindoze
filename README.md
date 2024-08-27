@@ -15,4 +15,4 @@ To install:
 2) Right-mouse click PrivWindoze\PrivWindoze.bat and select 'Run as administrator'
 3) That's all!
 
-This program is free to use but if you wanted to donate something, check out <a href="https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share">this Amazon Wishlist link</a>. Thank you!
+This program is free to use but if you wanted to donate something, check out <a href="https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share">this Amazon Wishlist link</a>. Thank you!f
