@@ -222,13 +222,27 @@ powershell -command "stop-service dmwappushservice" >NUL 2>&1
 powershell -command "stop-service edgeupdate" >NUL 2>&1
 powershell -command "stop-service edgeupdatem" >NUL 2>&1
 powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
+powershell -command "stop-service XboxGipSvc" >NUL 2>&1
+powershell -command "stop-service XblAuthManager" >NUL 2>&1
+powershell -command "stop-service XblGameSave" >NUL 2>&1
+powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
+
 powershell -command "set-service DiagTrack -startuptype disabled"
 powershell -command "set-service dmwappushservice -startuptype disabled"
+powershell -command "set-service XboxGipSvc -startuptype disabled"
+powershell -command "set-service XblAuthManager -startuptype disabled"
+powershell -command "set-service XblGameSave -startuptype disabled"
+powershell -command "set-service XboxNetApiSvc -startuptype disabled"
+
 
 :Services2
 IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
 sc config DiagTrack start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
+sc config XboxGipSvc start= disabled>NUL
+sc config XblAuthManager start= disabled>NUL
+sc config XblGameSave start= disabled>NUL
+sc config XboxNetApiSvc start= disabled>NUL
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :Files
