@@ -1,4 +1,4 @@
-:: PrivacyWindoze
+:: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
 title PrivWindoze - Version 1.1.0
