@@ -48,7 +48,6 @@ if %ARCH%==x64 (
 "HKCR\WOW6432Node\CLSID\{FF419FF9-90BE-4D9F-B410-A789F90E5A7C}"
 "HKCU\Software\Classes\WOW6432Node\CLSID\{2F49C178-F8BF-43FD-B8F2-1A5B9D6BAD8E}"
 "HKCU\Software\Classes\WOW6432Node\CLSID\{E0DCAE7C-1D0A-4AD0-B92C-2FFDAEE1562B}"
-"HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
 "HKLM\Software\Classes\WOW6432Node\CLSID\{02FCF358-FC8A-4CE4-AD4F-E29CD2D17A58}"
 "HKLM\Software\Classes\WOW6432Node\CLSID\{08D832B9-D2FD-481F-98CF-904D00DF63CC}"
 "HKLM\Software\Classes\WOW6432Node\CLSID\{2E1DD7EF-C12D-4F8E-8AD8-CF8CC265BAD0}"
@@ -77,6 +76,8 @@ if %ARCH%==x64 (
 
 
 for %%i in (
+"HKCR\AppID\ie_to_edge_bho.dll"
+"HKCR\AppID\{31575964-95F7-414B-85E4-0E9A93699E13}"
 "HKCR\CLSID\{78DE489B-7931-4f14-83B4-C56D38AC9FFA}"
 "HKCR\CLSID\{86C815AA-4888-4063-B0AB-03C49F788BE4}"
 "HKCR\MSEdgeHTM"
@@ -112,6 +113,9 @@ for %%i in (
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
 "HKCR\microsoft-edge"
 "HKCR\microsoft-edge-holographic"
+"HKCR\microsoftmusic"
+"HKCR\microsoftvideo"
+"HKCR\ms-xbet-survey"
 "HKCR\xbox"
 "HKCR\xbox-arena"
 "HKCR\xbox-captures"
@@ -166,11 +170,15 @@ REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge
 :: Heuristic Registry Key
 IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
 REG QUERY "HKCR"|FINDSTR /i "xboxliveapp-">"%TEMP%\trash3.txt"
-IF %ERRORLEVEL% EQU 1 ( GOTO :HeurValue )
-for /f "usebackq delims=" %%i in ("%TEMP%\trash3.txt") DO (
-    REG DELETE "%%i" /F >NUL 2>&1
-)
+IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
+REG QUERY "HKCR"|FINDSTR /i "ms-xbl-">>"%TEMP%\trash3.txt"
+IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
 
+IF %xboxheur%==true (
+    for /f "usebackq delims=" %%i in ("%TEMP%\trash3.txt") DO (
+         REG DELETE "%%i" /F >NUL 2>&1
+        )
+)
 
 :: Heuristic Registry Value
 :HeurValue
