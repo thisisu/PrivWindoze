@@ -35,6 +35,7 @@ IF %ARCH%==x64 (
 "HKCR\WOW6432Node\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Classes\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\WOW6432Node\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\WOW6432Node\Clients\StartMenuInternet\Microsoft Edge"
 "HKLM\Software\WOW6432Node\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Microsoft\EdgeUpdate"
@@ -47,7 +48,6 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
-"HKLM\Software\\WOW6432Node\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 ) DO (
        REG DELETE %%i /F >NUL 2>&1
       )
@@ -281,6 +281,7 @@ for %%i in (
 
 :: Folders
 for %%i in (
+"%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
@@ -290,6 +291,7 @@ for %%i in (
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
+"%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 ) DO (
       RD /S/Q %%i >NUL 2>&1
