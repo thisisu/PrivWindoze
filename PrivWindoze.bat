@@ -146,7 +146,7 @@ for %%i in (
 
 :: Solo Registry Value
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" "OneDriveSetup" /F >NUL 2>&1
+REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V "OneDriveSetup" /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 
@@ -162,7 +162,6 @@ for /f "usebackq delims=" %%i in ("%TEMP%\trash3.txt") DO (
 
 :: Heuristic Registry Value
 :HeurValue
-IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR /i "MicrosoftEdgeAutoLaunch">"%TEMP%\trash.txt"
 IF %ERRORLEVEL% EQU 1 ( GOTO :Policies )
@@ -179,9 +178,6 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD 
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
-REG ADD "HKLM\SYSTEM\CurrentControlSet\Services\DiagTrack" /T REG_DWORD /V Start /D 4 /F >NUL 2>&1
-REG ADD "HKLM\SYSTEM\CurrentControlSet\Services\dmwappushservice" /T REG_DWORD /V Start /D 4 /F >NUL 2>&1
-
 
 :: Tasks
 :Tasks
@@ -193,6 +189,14 @@ for %%i in (
 "Microsoft\Windows\Maintenance\WinSAT"
 "Microsoft\XblGameSave"
 "Microsoft\XblGameSave\XblGameSaveTask"
+"Microsoft\Windows\Application Experience\MareBackup"
+"Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
+"Microsoft\Windows\Application Experience\PcaPatchDbTask"
+"Microsoft\Windows\Application Experience\PcaWallpaperAppDetect"
+"Microsoft\Windows\Application Experience\SdbinstMergeDbTask"
+"Microsoft\Windows\Application Experience\StartupAppTask"
+"Microsoft\Windows\Feedback\Siuf\DmClient"
+"Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload"
 ) DO (
        SCHTASKS /DELETE /TN %%i /F >NUL 2>&1
       )
@@ -234,6 +238,7 @@ powershell -command "set-service XblAuthManager -startuptype disabled"
 powershell -command "set-service XblGameSave -startuptype disabled"
 powershell -command "set-service XboxNetApiSvc -startuptype disabled"
 
+goto :Files
 
 :Services2
 IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
