@@ -1,7 +1,7 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze - Version 1.1.0
+title PrivWindoze - Version 1.1.1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
@@ -30,45 +30,24 @@ TASKKILL /F /IM "msedge.exe" >NUL 2>&1
 :: Registry
 IF NOT EXIST %SYS32%\reg.exe GOTO :Tasks
 
-if %ARCH%==x64 (
+IF %ARCH%==x64 (
                  for %%i in (
-"HKCR\WOW6432Node\CLSID\{08D832B9-D2FD-481F-98CF-904D00DF63CC}"
-"HKCR\WOW6432Node\CLSID\{2E1DD7EF-C12D-4F8E-8AD8-CF8CC265BAD0}"
-"HKCR\WOW6432Node\CLSID\{2F49C178-F8BF-43FD-B8F2-1A5B9D6BAD8E}"
-"HKCR\WOW6432Node\CLSID\{492E1C30-A1A2-4695-87C8-7A8CAD6F936F}"
-"HKCR\WOW6432Node\CLSID\{5F6A18BB-6231-424B-8242-19E5BB94F8ED}"
-"HKCR\WOW6432Node\CLSID\{78DE489B-7931-4f14-83B4-C56D38AC9FFA}"
-"HKCR\WOW6432Node\CLSID\{8F09CD6C-5964-4573-82E3-EBFF7702865B}"
-"HKCR\WOW6432Node\CLSID\{A6B716CB-028B-404D-B72C-50E153DD68DA}"
-"HKCR\WOW6432Node\CLSID\{B5977F34-9264-4AC3-9B31-1224827FF6E8}"
-"HKCR\WOW6432Node\CLSID\{D1E8B1A6-32CE-443C-8E2E-EBA90C481353}"
-"HKCR\WOW6432Node\CLSID\{E0DCAE7C-1D0A-4AD0-B92C-2FFDAEE1562B}"
-"HKCR\WOW6432Node\CLSID\{E421557C-0628-43FB-BF2B-7C9F8A4D067C}"
-"HKCR\WOW6432Node\CLSID\{EA92A799-267E-4DF5-A6ED-6A7E0684BB8A}"
-"HKCR\WOW6432Node\CLSID\{FF419FF9-90BE-4D9F-B410-A789F90E5A7C}"
-"HKCU\Software\Classes\WOW6432Node\CLSID\{2F49C178-F8BF-43FD-B8F2-1A5B9D6BAD8E}"
-"HKCU\Software\Classes\WOW6432Node\CLSID\{E0DCAE7C-1D0A-4AD0-B92C-2FFDAEE1562B}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{02FCF358-FC8A-4CE4-AD4F-E29CD2D17A58}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{08D832B9-D2FD-481F-98CF-904D00DF63CC}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{2E1DD7EF-C12D-4F8E-8AD8-CF8CC265BAD0}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{492E1C30-A1A2-4695-87C8-7A8CAD6F936F}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{5F6A18BB-6231-424B-8242-19E5BB94F8ED}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{8F09CD6C-5964-4573-82E3-EBFF7702865B}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{A6B716CB-028B-404D-B72C-50E153DD68DA}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{B5977F34-9264-4AC3-9B31-1224827FF6E8}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{D1E8B1A6-32CE-443C-8E2E-EBA90C481353}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{E421557C-0628-43FB-BF2B-7C9F8A4D067C}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{EA92A799-267E-4DF5-A6ED-6A7E0684BB8A}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{FF419FF9-90BE-4D9F-B410-A789F90E5A7C}"
+"HKCR\WOW6432Node\AppID\MicrosoftEdgeUpdate.exe"
+"HKCR\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Classes\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\WOW6432Node\Clients\StartMenuInternet\Microsoft Edge"
 "HKLM\Software\WOW6432Node\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Microsoft\EdgeUpdate"
 "HKLM\Software\WOW6432Node\Microsoft\OneDrive"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
+"HKLM\Software\\WOW6432Node\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 ) DO (
        REG DELETE %%i /F >NUL 2>&1
       )
@@ -76,10 +55,9 @@ if %ARCH%==x64 (
 
 
 for %%i in (
+"HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
-"HKCR\AppID\{31575964-95F7-414B-85E4-0E9A93699E13}"
-"HKCR\CLSID\{78DE489B-7931-4f14-83B4-C56D38AC9FFA}"
-"HKCR\CLSID\{86C815AA-4888-4063-B0AB-03C49F788BE4}"
+"HKCR\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKCR\MSEdgeHTM"
 "HKCR\MSEdgeMHT"
 "HKCR\MSEdgePDF"
@@ -111,6 +89,8 @@ for %%i in (
 "HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
+"HKCR\ie_to_edge_bho.IEToEdgeBHO"
+"HKCR\ie_to_edge_bho.IEToEdgeBHO.1"
 "HKCR\microsoft-edge"
 "HKCR\microsoft-edge-holographic"
 "HKCR\microsoftmusic"
@@ -145,6 +125,7 @@ for %%i in (
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
+"HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Classes\MSEdgeHTM"
 "HKLM\Software\Classes\MSEdgeMHT"
 "HKLM\Software\Classes\MSEdgePDF"
@@ -154,6 +135,8 @@ for %%i in (
 "HKLM\Software\Microsoft\MicrosoftEdge"
 "HKLM\Software\Microsoft\OneDrive"
 "HKLM\Software\Microsoft\PolicyManager\default\TaskScheduler\EnableXboxGameSaveTask"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Xbox"
 ) DO (
        REG DELETE %%i /F >NUL 2>&1
@@ -169,9 +152,9 @@ REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge
 
 :: Heuristic Registry Key
 IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
-REG QUERY "HKCR"|FINDSTR /i "xboxliveapp-">"%TEMP%\trash3.txt"
+REG QUERY "HKCR"|FINDSTR /i /r "^xboxliveapp-">"%TEMP%\trash3.txt"
 IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
-REG QUERY "HKCR"|FINDSTR /i "ms-xbl-">>"%TEMP%\trash3.txt"
+REG QUERY "HKCR"|FINDSTR /i /r "^ms-xbl-">>"%TEMP%\trash3.txt"
 IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
 
 IF %xboxheur%==true (
@@ -212,7 +195,9 @@ for %%i in (
 "Microsoft\Windows\Application Experience\SdbinstMergeDbTask"
 "Microsoft\Windows\Application Experience\StartupAppTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
+"Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
 "Microsoft\Windows\Feedback\Siuf\DmClient"
+"Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector"
 "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload"
 "Microsoft\Windows\Maintenance\WinSAT"
 "Microsoft\XblGameSave"
