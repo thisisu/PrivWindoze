@@ -145,16 +145,17 @@ for %%i in (
 
 :: Solo Registry Value
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V "OneDriveSetup" /F >NUL 2>&1
+REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
+REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 
 
 :: Heuristic Registry Key
 IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
-REG QUERY "HKCR"|FINDSTR /i /r "^xboxliveapp-">"%TEMP%\trash3.txt"
+REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\trash3.txt"
 IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
-REG QUERY "HKCR"|FINDSTR /i /r "^ms-xbl-">>"%TEMP%\trash3.txt"
+REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\ms-xbl-">>"%TEMP%\trash3.txt"
 IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
 
 IF %xboxheur%==true (
@@ -215,7 +216,7 @@ for /f "usebackq delims=" %%i in ("%TEMP%\trash4.txt") DO (
     DEL /F/Q "%SYS32%\Tasks_Migrated\%%i" >NUL 2>&1
 )
 :OneDriveTask
-dir /b "%SYS32%\Tasks"|findstr /i "OneDrive Standalone Update Task">"%TEMP%\trash5.txt"
+dir /b "%SYS32%\Tasks"|findstr -ri "^OneDrive">"%TEMP%\trash5.txt"
 IF %ERRORLEVEL% EQU 1 ( GOTO :Services )
 for /f "usebackq delims=" %%i in ("%TEMP%\trash5.txt") DO (
     SCHTASKS /DELETE /TN "%%i" /F >NUL 2>&1
@@ -273,6 +274,7 @@ for %%i in (
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
+"%PROGRAMS27%\OneDrive.lnk"
 "%TEMP%\trash*.txt"
 ) DO (
        DEL /F/Q %%i >NUL 2>&1
@@ -286,6 +288,7 @@ for %%i in (
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\XboxLive"
+"%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES(x86)%\Microsoft\Edge"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
