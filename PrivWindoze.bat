@@ -1,7 +1,7 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze - Version 1.1.1
+title PrivWindoze - Version 1.1.2
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
@@ -31,7 +31,7 @@ TASKKILL /F /IM "msedge.exe" >NUL 2>&1
 IF NOT EXIST %SYS32%\reg.exe GOTO :Tasks
 
 IF %ARCH%==x64 (
-                 for %%i in (
+                 for %%g in (
 "HKCR\WOW6432Node\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Classes\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
@@ -49,12 +49,12 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
 ) DO (
-       REG DELETE %%i /F >NUL 2>&1
+       REG DELETE %%g /F >NUL 2>&1
       )
 )
 
 
-for %%i in (
+for %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
 "HKCR\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
@@ -139,7 +139,7 @@ for %%i in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Xbox"
 ) DO (
-       REG DELETE %%i /F >NUL 2>&1
+       REG DELETE %%g /F >NUL 2>&1
       )
 )
 
@@ -154,24 +154,24 @@ REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >
 :: Heuristic Registry Key
 IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
 REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\trash3.txt"
-IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
+IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
 REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\ms-xbl-">>"%TEMP%\trash3.txt"
-IF %ERRORLEVEL% EQU 0 ( set xboxheur=true ) else ( set xboxheur=false )
+IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
 
 IF %xboxheur%==true (
-    for /f "usebackq delims=" %%i in ("%TEMP%\trash3.txt") DO (
-         REG DELETE "%%i" /F >NUL 2>&1
+    for /f %%g in (%TEMP%\trash3.txt) DO (
+         REG DELETE "%%g" /F >NUL 2>&1
         )
 )
 
 :: Heuristic Registry Value
 :HeurValue
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR /i "MicrosoftEdgeAutoLaunch">"%TEMP%\trash.txt"
-IF %ERRORLEVEL% EQU 1 ( GOTO :Policies )
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR -i "MicrosoftEdgeAutoLaunch">"%TEMP%\trash.txt"
+IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\trash.txt" >"%TEMP%\trash2.txt"
-for /f "usebackq delims=" %%i in ("%TEMP%\trash2.txt") DO (
-    REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%i" /F >NUL 2>&1
+for /f %%g in (%TEMP%\trash2.txt) DO (
+    REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
 
 :: Policies
@@ -186,7 +186,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 :: Tasks
 :Tasks
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
-for %%i in (
+for %%g in (
 "MicrosoftEdgeUpdateTaskMachineCore"
 "MicrosoftEdgeUpdateTaskMachineUA"
 "Microsoft\Windows\Application Experience\MareBackup"
@@ -204,24 +204,24 @@ for %%i in (
 "Microsoft\XblGameSave"
 "Microsoft\XblGameSave\XblGameSaveTask"
 ) DO (
-       SCHTASKS /DELETE /TN %%i /F >NUL 2>&1
+       SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
       )
 )
 
-dir /b "%SYS32%\Tasks"|findstr /i "microsoftedgeupdate">"%TEMP%\trash4.txt"
+dir /b "%SYS32%\Tasks"|FINDSTR -i "microsoftedgeupdate">"%TEMP%\trash4.txt"
 IF %ERRORLEVEL% EQU 1 ( GOTO :OneDriveTask )
-for /f "usebackq delims=" %%i in ("%TEMP%\trash4.txt") DO (
-    SCHTASKS /DELETE /TN "%%i" /F >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks\%%i" >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks_Migrated\%%i" >NUL 2>&1
+for /f %%g in (%TEMP%\trash4.txt) DO (
+    SCHTASKS /DELETE /TN "%%g" /F >NUL 2>&1
+    DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
+    DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
 )
 :OneDriveTask
-dir /b "%SYS32%\Tasks"|findstr -ri "^OneDrive">"%TEMP%\trash5.txt"
+dir /b "%SYS32%\Tasks"|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
 IF %ERRORLEVEL% EQU 1 ( GOTO :Services )
-for /f "usebackq delims=" %%i in ("%TEMP%\trash5.txt") DO (
-    SCHTASKS /DELETE /TN "%%i" /F >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks\%%i" >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks_Migrated\%%i" >NUL 2>&1
+for /f %%g in (%TEMP%\trash5.txt) DO (
+    SCHTASKS /DELETE /TN "%%g" /F >NUL 2>&1
+    DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
+    DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
 )
 
 :: Services
@@ -257,32 +257,32 @@ sc config XboxNetApiSvc start= disabled>NUL
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :Files
-for %%i in (
+for %%g in (
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdatem"
 "HKLM\SYSTEM\CurrentControlSet\services\MicrosoftEdgeElevationService"
 ) DO (
-       REG DELETE %%i /F >NUL 2>&1
+       REG DELETE %%g /F >NUL 2>&1
       )
 )
 
 :: Files
 :Files
-for %%i in (
-"%USERPROFILE%\Desktop\Microsoft Edge.lnk"
+for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
-"%PUBDESKTOP%\Microsoft Edge.lnk"
-"%USERPROFILE%\Favorites\Bing.url"
 "%PROGRAMS27%\OneDrive.lnk"
+"%PUBDESKTOP%\Microsoft Edge.lnk"
 "%TEMP%\trash*.txt"
+"%USERPROFILE%\Desktop\Microsoft Edge.lnk"
+"%USERPROFILE%\Favorites\Bing.url"
 ) DO (
-       DEL /F/Q %%i >NUL 2>&1
+       DEL /F/Q %%g >NUL 2>&1
       )
 )
 
 :: Folders
-for %%i in (
+for %%g in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\Microsoft\Edge"
@@ -297,7 +297,7 @@ for %%i in (
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 ) DO (
-      RD /S/Q %%i >NUL 2>&1
+      RD /S/Q %%g >NUL 2>&1
       )
 )
 
