@@ -209,7 +209,7 @@ for %%g in (
 )
 
 dir /b "%SYS32%\Tasks"|FINDSTR -i "microsoftedgeupdate">"%TEMP%\trash4.txt"
-IF %ERRORLEVEL% EQU 1 ( GOTO :OneDriveTask )
+IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
 for /f %%g in (%TEMP%\trash4.txt) DO (
     SCHTASKS /DELETE /TN "%%g" /F >NUL 2>&1
     DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
@@ -217,7 +217,7 @@ for /f %%g in (%TEMP%\trash4.txt) DO (
 )
 :OneDriveTask
 dir /b "%SYS32%\Tasks"|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
-IF %ERRORLEVEL% EQU 1 ( GOTO :Services )
+IF ERRORLEVEL 1 ( GOTO :Services )
 for /f %%g in (%TEMP%\trash5.txt) DO (
     SCHTASKS /DELETE /TN "%%g" /F >NUL 2>&1
     DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
