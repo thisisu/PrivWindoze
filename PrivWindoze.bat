@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.1.3
-ECHO(PrivWindoze by Furtivex - Version 1.1.3
+title PrivWindoze by Furtivex - Version 1.1.4
+ECHO(PrivWindoze by Furtivex - Version 1.1.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -248,12 +248,12 @@ powershell -command "stop-service XblAuthManager" >NUL 2>&1
 powershell -command "stop-service XblGameSave" >NUL 2>&1
 powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
 
-powershell -command "set-service DiagTrack -startuptype disabled"
-powershell -command "set-service dmwappushservice -startuptype disabled"
-powershell -command "set-service XboxGipSvc -startuptype disabled"
-powershell -command "set-service XblAuthManager -startuptype disabled"
-powershell -command "set-service XblGameSave -startuptype disabled"
-powershell -command "set-service XboxNetApiSvc -startuptype disabled"
+powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
+powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
 
 
 :Services2
