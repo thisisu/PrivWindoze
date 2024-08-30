@@ -143,6 +143,7 @@ for %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Xbox"
+"HKLM\Software\Policies\Microsoft\Windows\OneDrive"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
       )
@@ -191,14 +192,13 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD 
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 
 :: Tasks
 :Tasks
 Echo([^|^|^|^|^|^|^|    ] Scanning Tasks
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 for %%g in (
-"MicrosoftEdgeUpdateTaskMachineCore"
-"MicrosoftEdgeUpdateTaskMachineUA"
 "Microsoft\Windows\Application Experience\MareBackup"
 "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
 "Microsoft\Windows\Application Experience\PcaPatchDbTask"
@@ -220,8 +220,8 @@ for %%g in (
 
 dir /b "%SYS32%\Tasks"|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\trash4.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
-for /f "usebackq delims=" %%i in ("%TEMP%\trash4.txt") DO (
-    set "taskname=%%i"
+for /f "usebackq delims=" %%g in ("%TEMP%\trash4.txt") DO (
+    set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -231,8 +231,8 @@ for /f "usebackq delims=" %%i in ("%TEMP%\trash4.txt") DO (
 :OneDriveTask
 dir /b "%SYS32%\Tasks"|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
 IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
-for /f "usebackq delims=" %%i in ("%TEMP%\trash5.txt") DO (
-    set "taskname=%%i"
+for /f "usebackq delims=" %%g in ("%TEMP%\trash5.txt") DO (
+    set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
@@ -242,8 +242,8 @@ for /f "usebackq delims=" %%i in ("%TEMP%\trash5.txt") DO (
 :TelemetryTask
 dir /b "%SYS32%\Tasks"|FINDSTR -i "Telemetry">"%TEMP%\trash6.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
-for /f "usebackq delims=" %%i in ("%TEMP%\trash6.txt") DO (
-    set "taskname=%%i"
+for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
+    set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
