@@ -1,7 +1,10 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze - Version 1.1.3
+title PrivWindoze by Furtivex - Version 1.1.3
+ECHO(PrivWindoze by Furtivex - Version 1.1.3
+ECHO.
+ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
