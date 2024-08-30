@@ -25,9 +25,11 @@ SET "STARTMENU27=%appdata%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%appdata%\Microsoft\Windows\Start Menu\Programs\Startup"
 
 :: Processes
+Echo(Scanning Processes...
 TASKKILL /F /IM "msedge.exe" >NUL 2>&1
 
 :: Registry
+Echo(Scanning Registry...
 IF NOT EXIST %SYS32%\reg.exe GOTO :Tasks
 
 IF %ARCH%==x64 (
@@ -144,6 +146,7 @@ for %%g in (
 )
 
 :: Solo Registry Value
+Echo(Scanning Solo Registry Values...
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
@@ -152,6 +155,7 @@ REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >
 
 
 :: Heuristic Registry Key
+Echo(Scanning Heur Registry Keys...
 IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
 REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\trash3.txt"
 IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
@@ -166,6 +170,7 @@ IF %xboxheur%==true (
 
 :: Heuristic Registry Value
 :HeurValue
+Echo(Scanning Heur Registry Values...
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\trash.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
@@ -176,6 +181,7 @@ for /f %%g in (%TEMP%\trash2.txt) DO (
 
 :: Policies
 :Policies
+Echo(Scanning Policies...
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry" /T REG_DWORD /V value /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot" /T REG_DWORD /V value /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
@@ -185,6 +191,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 
 :: Tasks
 :Tasks
+Echo(Scanning Tasks...
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 for %%g in (
 "MicrosoftEdgeUpdateTaskMachineCore"
@@ -197,8 +204,8 @@ for %%g in (
 "Microsoft\Windows\Application Experience\StartupAppTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
-"Microsoft\Windows\Feedback\Siuf\DmClient"
 "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector"
+"Microsoft\Windows\Feedback\Siuf\DmClient"
 "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload"
 "Microsoft\Windows\Maintenance\WinSAT"
 "Microsoft\XblGameSave"
@@ -226,6 +233,7 @@ for /f %%g in (%TEMP%\trash5.txt) DO (
 
 :: Services
 :Services
+Echo(Scanning Services...
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Services2
 powershell -command "stop-service DiagTrack" >NUL 2>&1
 powershell -command "stop-service dmwappushservice" >NUL 2>&1
@@ -244,9 +252,9 @@ powershell -command "set-service XblAuthManager -startuptype disabled"
 powershell -command "set-service XblGameSave -startuptype disabled"
 powershell -command "set-service XboxNetApiSvc -startuptype disabled"
 
-goto :Files
 
 :Services2
+Echo(Scanning Services2...
 IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
 sc config DiagTrack start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
@@ -256,6 +264,7 @@ sc config XblGameSave start= disabled>NUL
 sc config XboxNetApiSvc start= disabled>NUL
 
 :Services3
+Echo(Scanning Services3...
 IF NOT EXIST %SYS32%\reg.exe GOTO :Files
 for %%g in (
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
@@ -268,6 +277,7 @@ for %%g in (
 
 :: Files
 :Files
+Echo(Scanning Files...
 for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
@@ -282,6 +292,7 @@ for %%g in (
 )
 
 :: Folders
+Echo(Scanning Folders...
 for %%g in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%LOCALA%\MicrosoftEdge"
@@ -302,3 +313,6 @@ for %%g in (
 )
 
 :eof
+ECHO(Script completed! Exiting in 3 seconds...
+timeout /t 03>NUL
+EXIT
