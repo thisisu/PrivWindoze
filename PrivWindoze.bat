@@ -167,7 +167,7 @@ IF %xboxheur%==true (
 :: Heuristic Registry Value
 :HeurValue
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR -i "MicrosoftEdgeAutoLaunch">"%TEMP%\trash.txt"
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\trash.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\trash.txt" >"%TEMP%\trash2.txt"
 for /f %%g in (%TEMP%\trash2.txt) DO (
