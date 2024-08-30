@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.1.4
-ECHO(PrivWindoze by Furtivex - Version 1.1.4
+title PrivWindoze by Furtivex - Version 1.1.5
+ECHO(PrivWindoze by Furtivex - Version 1.1.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -218,20 +218,37 @@ for %%g in (
       )
 )
 
-dir /b "%SYS32%\Tasks"|FINDSTR -i "microsoftedgeupdate">"%TEMP%\trash4.txt"
+dir /b "%SYS32%\Tasks"|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\trash4.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
-for /f %%g in (%TEMP%\trash4.txt) DO (
-    SCHTASKS /DELETE /TN "%%g" /F >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
+for /f "usebackq delims=" %%i in ("%TEMP%\trash4.txt") DO (
+    set "taskname=%%i"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
 )
 :OneDriveTask
 dir /b "%SYS32%\Tasks"|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
+IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
+for /f "usebackq delims=" %%i in ("%TEMP%\trash5.txt") DO (
+    set "taskname=%%i"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:TelemetryTask
+dir /b "%SYS32%\Tasks"|FINDSTR -i "Telemetry">"%TEMP%\trash6.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
-for /f %%g in (%TEMP%\trash5.txt) DO (
-    SCHTASKS /DELETE /TN "%%g" /F >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
-    DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
+for /f "usebackq delims=" %%i in ("%TEMP%\trash6.txt") DO (
+    set "taskname=%%i"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
 )
 
 :: Services
