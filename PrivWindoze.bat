@@ -309,7 +309,26 @@ for %%g in (
       )
 )
 
+dir /b "%APPDATA%\discord\Code Cache\js"|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\trash7.txt"
+IF ERRORLEVEL 1 ( GOTO :Discord2 )
+for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
+    set "discord=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!APPDATA!\discord\Code Cache\js\!discord!" >NUL 2>&1
+    ENDLOCAL
+)
+
+dir /b "%APPDATA%\discord\Cache\Cache_Data">"%TEMP%\trash8.txt"
+IF ERRORLEVEL 1 ( GOTO :Folders )
+for /f "usebackq delims=" %%g in ("%TEMP%\trash8.txt") DO (
+    set "discord=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
+    ENDLOCAL
+)
+
 :: Folders
+:Folders
 Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Folders
 for %%g in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
