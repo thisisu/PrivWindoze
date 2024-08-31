@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.1.7
-ECHO(PrivWindoze by Furtivex - Version 1.1.7
+title PrivWindoze by Furtivex - Version 1.1.8
+ECHO(PrivWindoze by Furtivex - Version 1.1.8
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -309,6 +309,7 @@ for %%g in (
       )
 )
 
+:: Discord Files
 dir /b "%APPDATA%\discord\Code Cache\js"|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\trash7.txt"
 IF ERRORLEVEL 1 ( GOTO :Discord2 )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
