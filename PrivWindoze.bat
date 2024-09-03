@@ -260,19 +260,21 @@ powershell -command "stop-service dmwappushservice" >NUL 2>&1
 powershell -command "stop-service edgeupdate" >NUL 2>&1
 powershell -command "stop-service edgeupdatem" >NUL 2>&1
 powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
+powershell -command "stop-service WpnService" >NUL 2>&1
 powershell -command "stop-service XboxGipSvc" >NUL 2>&1
 powershell -command "stop-service XblAuthManager" >NUL 2>&1
 powershell -command "stop-service XblGameSave" >NUL 2>&1
 powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
-powershell -command "stop-service WpnService" >NUL 2>&1
+
 
 powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
 powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
+powershell -command "set-service WpnService -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
-powershell -command "set-service WpnService -startuptype disabled" >NUL 2>&1
+
 
 :Services2
 IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
@@ -356,4 +358,3 @@ for %%g in (
 :eof
 Echo([^|^|^|^|^|^|^|^|^|^|^|] Script completed! Exiting in 3 seconds...
 timeout /t 03>NUL
-EXIT
