@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.1.9
-ECHO(PrivWindoze by Furtivex - Version 1.1.9
+title PrivWindoze by Furtivex - Version 1.2.0
+ECHO(PrivWindoze by Furtivex - Version 1.2.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -126,6 +126,7 @@ for %%g in (
 "HKCU\Software\Microsoft\GameBarApi"
 "HKCU\Software\Microsoft\MicrosoftEdge"
 "HKCU\Software\Microsoft\OneDrive"
+"HKLM\Software\Microsoft\TelemetryClient"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
@@ -297,6 +298,8 @@ for %%g in (
       )
 )
 
+REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RESET /Q reset permissions?
+REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RO:F /RA:F /Q revoke registry rights owner??
 :: Files
 :Files
 Echo([^|^|^|^|^|^|^|^|^|  ] Scanning Files
