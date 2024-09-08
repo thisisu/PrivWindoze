@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.0
-ECHO(PrivWindoze by Furtivex - Version 1.2.0
+title PrivWindoze by Furtivex - Version 1.2.1
+ECHO(PrivWindoze by Furtivex - Version 1.2.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -206,13 +206,15 @@ for %%g in (
 "Microsoft\Windows\Application Experience\PcaWallpaperAppDetect"
 "Microsoft\Windows\Application Experience\SdbinstMergeDbTask"
 "Microsoft\Windows\Application Experience\StartupAppTask"
+"Microsoft\Windows\CloudExperienceHost\CreateObjectTask"
+"Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
 "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector"
 "Microsoft\Windows\Feedback\Siuf\DmClient"
 "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload"
+"Microsoft\Windows\Flighting\FeatureConfig\BootstrapUsageDataReporting"
 "Microsoft\Windows\Maintenance\WinSAT"
-"Microsoft\XblGameSave"
 "Microsoft\XblGameSave\XblGameSaveTask"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
@@ -242,8 +244,20 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash5.txt") DO (
 )
 :TelemetryTask
 dir /b "%SYS32%\Tasks"|FINDSTR -i "Telemetry">"%TEMP%\trash6.txt"
-IF ERRORLEVEL 1 ( GOTO :Services )
+IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
+    set "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+
+:NvidiaTask
+dir /b "%SYS32%\Tasks"|FINDSTR -i "NvTmRep_">"%TEMP%\trash7.txt"
+IF ERRORLEVEL 1 ( GOTO :Services )
+for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
