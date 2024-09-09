@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.1
-ECHO(PrivWindoze by Furtivex - Version 1.2.1
+title PrivWindoze by Furtivex - Version 1.2.2
+ECHO(PrivWindoze by Furtivex - Version 1.2.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -253,11 +253,10 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
     DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
-
 :NvidiaTask
-dir /b "%SYS32%\Tasks"|FINDSTR -i "NvTmRep_">"%TEMP%\trash7.txt"
+dir /b "%SYS32%\Tasks"|FINDSTR -i "NvTmRep_">"%TEMP%\trash9.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
+for /f "usebackq delims=" %%g in ("%TEMP%\trash9.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -290,6 +289,7 @@ powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
 
+GOTO :Services3
 
 :Services2
 IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
@@ -355,6 +355,8 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash8.txt") DO (
 Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Folders
 for %%g in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
+"%ALLUSERSPROFILE%\Microsoft\DiagnosticLogCSP"
+"%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
