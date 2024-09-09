@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.4
-ECHO(PrivWindoze by Furtivex - Version 1.2.4
+title PrivWindoze by Furtivex - Version 1.2.5
+ECHO(PrivWindoze by Furtivex - Version 1.2.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -177,7 +177,7 @@ IF %xboxheur%==true (
 :HeurValue
 Echo([^|^|^|^|^|      ] Scanning Heur Registry Values
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\trash.txt"
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\trash.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\trash.txt" >"%TEMP%\trash2.txt"
 for /f %%g in (%TEMP%\trash2.txt) DO (
@@ -216,6 +216,7 @@ for %%g in (
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
+"Microsoft\Windows\Defrag\ScheduledDefrag"
 "Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner"
 "Microsoft\Windows\Diagnosis\Scheduled"
 "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector"
@@ -228,6 +229,7 @@ for %%g in (
 "Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures"
 "Microsoft\Windows\Flighting\FeatureConfig\UsageDataFlushing"
 "Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting"
+"Microsoft\Windows\Flighting\OneSettings\RefreshCache"
 "Microsoft\Windows\InstallService\RestoreDevice"
 "Microsoft\Windows\InstallService\ScanForUpdates"
 "Microsoft\Windows\InstallService\ScanForUpdatesAsUser"
@@ -253,7 +255,7 @@ for %%g in (
       )
 )
 
-dir /b "%SYS32%\Tasks"|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\trash4.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\trash4.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash4.txt") DO (
     set "taskname=%%g"
@@ -264,7 +266,7 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash4.txt") DO (
     ENDLOCAL
 )
 :OneDriveTask
-dir /b "%SYS32%\Tasks"|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
 IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash5.txt") DO (
     set "taskname=%%g"
@@ -275,7 +277,7 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash5.txt") DO (
     ENDLOCAL
 )
 :TelemetryTask
-dir /b "%SYS32%\Tasks"|FINDSTR -i "Telemetry">"%TEMP%\trash6.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\trash6.txt"
 IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
     set "taskname=%%g"
@@ -286,8 +288,8 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
     ENDLOCAL
 )
 :NvidiaTask
-dir /b "%SYS32%\Tasks"|FINDSTR -i "NvTmRep_">"%TEMP%\trash9.txt"
-IF ERRORLEVEL 1 ( GOTO :Services )
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\trash9.txt"
+IF ERRORLEVEL 1 ( GOTO :WindowsDefenderTask )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash9.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
@@ -296,45 +298,58 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash9.txt") DO (
     DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
-
+:WindowsDefenderTask
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\trash10.txt"
+IF ERRORLEVEL 1 ( GOTO :Services )
+for /f "usebackq delims=" %%g in ("%TEMP%\trash10.txt") DO (
+    set "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
 :: Services
 :Services
 Echo([^|^|^|^|^|^|^|^|   ] Scanning Services
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Services2
 powershell -command "stop-service DiagTrack" >NUL 2>&1
+powershell -command "stop-service DoSvc" >NUL 2>&1
+powershell -command "stop-service InstallService" >NUL 2>&1
+powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
+powershell -command "stop-service WpnService" >NUL 2>&1
+powershell -command "stop-service XblAuthManager" >NUL 2>&1
+powershell -command "stop-service XblGameSave" >NUL 2>&1
+powershell -command "stop-service XboxGipSvc" >NUL 2>&1
+powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
 powershell -command "stop-service dmwappushservice" >NUL 2>&1
 powershell -command "stop-service edgeupdate" >NUL 2>&1
 powershell -command "stop-service edgeupdatem" >NUL 2>&1
-powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
-powershell -command "stop-service WpnService" >NUL 2>&1
-powershell -command "stop-service XboxGipSvc" >NUL 2>&1
-powershell -command "stop-service XblAuthManager" >NUL 2>&1
-powershell -command "stop-service XblGameSave" >NUL 2>&1
-powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
-powershell -command "stop-service InstallService" >NUL 2>&1
 
 
 powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
-powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
+powershell -command "set-service DoSvc -startuptype disabled" >NUL 2>&1
+powershell -command "set-service InstallService -startuptype disabled" >NUL 2>&1
 powershell -command "set-service WpnService -startuptype disabled" >NUL 2>&1
-powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
-powershell -command "set-service InstallService -startuptype disabled" >NUL 2>&1
+powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
 
 GOTO :Services3
 
 :Services2
 IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
 sc config DiagTrack start= disabled>NUL
-sc config dmwappushservice start= disabled>NUL
-sc config XboxGipSvc start= disabled>NUL
+sc config DoSvc start= disabled>NUL
+sc config InstallService start= disabled>NUL
+sc config WpnService start= disabled>NUL
 sc config XblAuthManager start= disabled>NUL
 sc config XblGameSave start= disabled>NUL
+sc config XboxGipSvc start= disabled>NUL
 sc config XboxNetApiSvc start= disabled>NUL
-sc config WpnService start= disabled>NUL
-sc config InstallService start= disabled>NUL
+sc config dmwappushservice start= disabled>NUL
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :Files
@@ -366,7 +381,7 @@ for %%g in (
 )
 
 :: Discord Files
-dir /b "%APPDATA%\discord\Code Cache\js"|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\trash7.txt"
+dir /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\trash7.txt"
 IF ERRORLEVEL 1 ( GOTO :Discord2 )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
     set "discord=%%g"
@@ -376,7 +391,7 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
 )
 
 :Discord2
-dir /b "%APPDATA%\discord\Cache\Cache_Data">"%TEMP%\trash8.txt"
+dir /b "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\trash8.txt"
 IF ERRORLEVEL 1 ( GOTO :Folders )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash8.txt") DO (
     set "discord=%%g"
