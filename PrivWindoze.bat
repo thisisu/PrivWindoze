@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.2
-ECHO(PrivWindoze by Furtivex - Version 1.2.2
+title PrivWindoze by Furtivex - Version 1.2.3
+ECHO(PrivWindoze by Furtivex - Version 1.2.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -198,6 +198,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 :: Tasks
 :Tasks
 Echo([^|^|^|^|^|^|^|    ] Scanning Tasks
+REM Tasks creating new variants of themselves upon deletion? Little hard to prove at this point but will monitor (haha)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 for %%g in (
 "Microsoft\Windows\Application Experience\MareBackup"
@@ -206,15 +207,43 @@ for %%g in (
 "Microsoft\Windows\Application Experience\PcaWallpaperAppDetect"
 "Microsoft\Windows\Application Experience\SdbinstMergeDbTask"
 "Microsoft\Windows\Application Experience\StartupAppTask"
+"Microsoft\Windows\ApplicationData\DsSvcCleanup"
+"Microsoft\Windows\ApplicationData\appuriverifierdaily"
+"Microsoft\Windows\ApplicationData\appuriverifierinstall"
+"Microsoft\Windows\Chkdsk\ProactiveScan"
 "Microsoft\Windows\CloudExperienceHost\CreateObjectTask"
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
+"Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner"
+"Microsoft\Windows\Diagnosis\Scheduled"
 "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector"
+"Microsoft\Windows\DiskFootprint\Diagnostics"
+"Microsoft\Windows\DiskFootprint\StorageSense"
+"Microsoft\Windows\EnterpriseMgmt\MDMMaintenenceTask"
 "Microsoft\Windows\Feedback\Siuf\DmClient"
 "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload"
 "Microsoft\Windows\Flighting\FeatureConfig\BootstrapUsageDataReporting"
+"Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures"
+"Microsoft\Windows\Flighting\FeatureConfig\UsageDataFlushing"
+"Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting"
+"Microsoft\Windows\InstallService\RestoreDevice"
+"Microsoft\Windows\InstallService\ScanForUpdates"
+"Microsoft\Windows\InstallService\ScanForUpdatesAsUser"
+"Microsoft\Windows\InstallService\SmartRetry"
 "Microsoft\Windows\Maintenance\WinSAT"
+"Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents"
+"Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic"
+"Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem"
+"Microsoft\Windows\PushToInstall\LoginCheck"
+"Microsoft\Windows\PushToInstall\Registration"
+"Microsoft\Windows\RemoteAssistance\RemoteAssistanceTask"
+"Microsoft\Windows\Shell\CreateObjectTask"
+"Microsoft\Windows\Shell\FamilySafetyMonitor"
+"Microsoft\Windows\Shell\FamilySafetyRefreshTask"
+"Microsoft\Windows\Shell\IndexerAutomaticMaintenance"
+"Microsoft\Windows\Shell\ThemesSyncedImageDownload"
+"Microsoft\Windows\User Profile Service\HiveUploadTask"
 "Microsoft\XblGameSave\XblGameSaveTask"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
@@ -279,6 +308,7 @@ powershell -command "stop-service XboxGipSvc" >NUL 2>&1
 powershell -command "stop-service XblAuthManager" >NUL 2>&1
 powershell -command "stop-service XblGameSave" >NUL 2>&1
 powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
+powershell -command "stop-service InstallService" >NUL 2>&1
 
 
 powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
@@ -288,6 +318,7 @@ powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
+powershell -command "set-service InstallService -startuptype disabled" >NUL 2>&1
 
 GOTO :Services3
 
@@ -300,6 +331,7 @@ sc config XblAuthManager start= disabled>NUL
 sc config XblGameSave start= disabled>NUL
 sc config XboxNetApiSvc start= disabled>NUL
 sc config WpnService start= disabled>NUL
+sc config InstallService start= disabled>NUL
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :Files
