@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.3
-ECHO(PrivWindoze by Furtivex - Version 1.2.3
+title PrivWindoze by Furtivex - Version 1.2.4
+ECHO(PrivWindoze by Furtivex - Version 1.2.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -199,6 +199,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 :Tasks
 Echo([^|^|^|^|^|^|^|    ] Scanning Tasks
 REM Tasks creating new variants of themselves upon deletion? Little hard to prove at this point but will monitor (haha)
+REM Yes, new tasks are formed, but I think this is due to the service being disabled as well. Upon disabling InstallService SVC, WakeUpAndContinueUpdates, and WakeUpAndScanForUpdates are created (but disabled)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 for %%g in (
 "Microsoft\Windows\Application Experience\MareBackup"
@@ -231,6 +232,8 @@ for %%g in (
 "Microsoft\Windows\InstallService\ScanForUpdates"
 "Microsoft\Windows\InstallService\ScanForUpdatesAsUser"
 "Microsoft\Windows\InstallService\SmartRetry"
+"Microsoft\Windows\InstallService\WakeUpAndContinueUpdates"
+"Microsoft\Windows\InstallService\WakeUpAndScanForUpdates"
 "Microsoft\Windows\Maintenance\WinSAT"
 "Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents"
 "Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic"
