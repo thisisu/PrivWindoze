@@ -299,14 +299,14 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash9.txt") DO (
     ENDLOCAL
 )
 :WindowsDefenderTask
-dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\trash10.txt"
+dir /b "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\trash10.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
 for /f "usebackq delims=" %%g in ("%TEMP%\trash10.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
 :: Services
