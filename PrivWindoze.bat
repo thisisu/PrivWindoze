@@ -1,10 +1,13 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.5
-ECHO(PrivWindoze by Furtivex - Version 1.2.5
+title PrivWindoze by Furtivex - Version 1.2.6
+ECHO(PrivWindoze by Furtivex - Version 1.2.6
 ECHO.
 ECHO.
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+cd /d %~dp0
+COPY /y "%CD%\dependencies\sed.exe" %windir%\sed.exe >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
@@ -26,6 +29,7 @@ SET "QUICKLAUNCH27=%appdata%\Microsoft\Internet Explorer\Quick Launch\User Pinne
 SET "STARTMENU17=%allusersprofile%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%appdata%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%appdata%\Microsoft\Windows\Start Menu\Programs\Startup"
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :: Processes
 Echo([^|          ] Scanning Processes
@@ -54,10 +58,9 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
 ) DO (
-       REG DELETE %%g /F >NUL 2>&1
+      REG DELETE %%g /F >NUL 2>&1
       )
 )
-
 
 for %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
@@ -126,7 +129,6 @@ for %%g in (
 "HKCU\Software\Microsoft\GameBarApi"
 "HKCU\Software\Microsoft\MicrosoftEdge"
 "HKCU\Software\Microsoft\OneDrive"
-"HKLM\Software\Microsoft\TelemetryClient"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
@@ -141,6 +143,7 @@ for %%g in (
 "HKLM\Software\Microsoft\MicrosoftEdge"
 "HKLM\Software\Microsoft\OneDrive"
 "HKLM\Software\Microsoft\PolicyManager\default\TaskScheduler\EnableXboxGameSaveTask"
+"HKLM\Software\Microsoft\TelemetryClient"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Xbox"
@@ -162,13 +165,13 @@ REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >
 :: Heuristic Registry Key
 Echo([^|^|^|^|       ] Scanning Heur Registry Keys
 IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
-REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\trash3.txt"
+REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\privwindozelog.txt"
 IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
-REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\ms-xbl-">>"%TEMP%\trash3.txt"
+REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\ms-xbl-">>"%TEMP%\privwindozelog.txt"
 IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
 
 IF %xboxheur%==true (
-    for /f %%g in (%TEMP%\trash3.txt) DO (
+    for /f %%g in (%TEMP%\privwindozelog.txt) DO (
          REG DELETE "%%g" /F >NUL 2>&1
         )
 )
@@ -177,10 +180,10 @@ IF %xboxheur%==true (
 :HeurValue
 Echo([^|^|^|^|^|      ] Scanning Heur Registry Values
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\trash.txt"
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
-SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\trash.txt" >"%TEMP%\trash2.txt"
-for /f %%g in (%TEMP%\trash2.txt) DO (
+SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
+for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
 
@@ -255,9 +258,9 @@ for %%g in (
       )
 )
 
-dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\trash4.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash4.txt") DO (
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -266,9 +269,9 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash4.txt") DO (
     ENDLOCAL
 )
 :OneDriveTask
-dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\trash5.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash5.txt") DO (
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -277,9 +280,9 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash5.txt") DO (
     ENDLOCAL
 )
 :TelemetryTask
-dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\trash6.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -288,9 +291,9 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash6.txt") DO (
     ENDLOCAL
 )
 :NvidiaTask
-dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\trash9.txt"
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :WindowsDefenderTask )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash9.txt") DO (
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -299,9 +302,9 @@ for /f "usebackq delims=" %%g in ("%TEMP%\trash9.txt") DO (
     ENDLOCAL
 )
 :WindowsDefenderTask
-dir /b "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\trash10.txt"
+dir /b "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash10.txt") DO (
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
@@ -352,7 +355,7 @@ sc config XboxNetApiSvc start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
 
 :Services3
-IF NOT EXIST %SYS32%\reg.exe GOTO :Files
+IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
 for %%g in (
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdatem"
@@ -364,6 +367,26 @@ for %%g in (
 
 REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RESET /Q reset permissions?
 REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RO:F /RA:F /Q revoke registry rights owner??
+:: Discord Files
+:DiscordFiles
+dir /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Discord2 )
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    set "discord=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!APPDATA!\discord\Code Cache\js\!discord!" >NUL 2>&1
+    ENDLOCAL
+)
+
+:Discord2
+dir /b "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Files )
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    set "discord=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
+    ENDLOCAL
+)
 :: Files
 :Files
 Echo([^|^|^|^|^|^|^|^|^|  ] Scanning Files
@@ -372,32 +395,12 @@ for %%g in (
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
-"%TEMP%\trash*.txt"
+"%TEMP%\privwindozelog*.txt"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
 ) DO (
        DEL /F/Q %%g >NUL 2>&1
       )
-)
-
-:: Discord Files
-dir /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\trash7.txt"
-IF ERRORLEVEL 1 ( GOTO :Discord2 )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash7.txt") DO (
-    set "discord=%%g"
-    SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!APPDATA!\discord\Code Cache\js\!discord!" >NUL 2>&1
-    ENDLOCAL
-)
-
-:Discord2
-dir /b "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\trash8.txt"
-IF ERRORLEVEL 1 ( GOTO :Folders )
-for /f "usebackq delims=" %%g in ("%TEMP%\trash8.txt") DO (
-    set "discord=%%g"
-    SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
-    ENDLOCAL
 )
 
 :: Folders
