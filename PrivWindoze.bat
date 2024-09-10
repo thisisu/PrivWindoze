@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.6
-ECHO(PrivWindoze by Furtivex - Version 1.2.6
+title PrivWindoze by Furtivex - Version 1.2.7
+ECHO(PrivWindoze by Furtivex - Version 1.2.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -148,6 +148,14 @@ for %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Xbox"
 "HKLM\Software\Policies\Microsoft\Windows\OneDrive"
+"HKU\Software\Classes\feedback-hub"
+"HKU\Software\Classes\insiderhub"
+"HKU\Software\Classes\msnweather"
+"HKU\Software\Microsoft\Edge"
+"HKU\Software\Microsoft\GameBar"
+"HKU\Software\Microsoft\GameBarApi"
+"HKU\Software\Microsoft\OneDrive"
+"HKU\Software\Microsoft\Xbox"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
       )
@@ -365,7 +373,7 @@ for %%g in (
       )
 )
 
-REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RESET /Q reset permissions?
+REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RESET /Q re-set permissions quiet
 REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RO:F /RA:F /Q revoke registry rights owner??
 :: Discord Files
 :DiscordFiles
