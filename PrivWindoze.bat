@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.7
-ECHO(PrivWindoze by Furtivex - Version 1.2.7
+title PrivWindoze by Furtivex - Version 1.2.8
+ECHO(PrivWindoze by Furtivex - Version 1.2.8
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -148,6 +148,11 @@ for %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Xbox"
 "HKLM\Software\Policies\Microsoft\Windows\OneDrive"
+"HKU\.DEFAULT\Software\Microsoft\Edge"
+"HKU\.DEFAULT\Software\Microsoft\OneDrive"
+"HKU\.DEFAULT\Software\Microsoft\TelemetryClient"
+"HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry"
+"HKU\.DEFAULT\Software\Microsoft\Xbox"
 "HKU\Software\Classes\feedback-hub"
 "HKU\Software\Classes\insiderhub"
 "HKU\Software\Classes\msnweather"
