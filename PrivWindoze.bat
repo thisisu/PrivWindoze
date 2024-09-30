@@ -1,13 +1,14 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.2.8
-ECHO(PrivWindoze by Furtivex - Version 1.2.8
+title PrivWindoze by Furtivex - Version 1.2.9
+ECHO(PrivWindoze by Furtivex - Version 1.2.9
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 cd /d %~dp0
 COPY /y "%CD%\dependencies\sed.exe" %windir%\sed.exe >NUL 2>&1
+COPY /y "%CD%\dependencies\grep.exe" %windir%\grep.exe >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
@@ -33,7 +34,9 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :: Processes
 Echo([^|          ] Scanning Processes
+TASKKILL /F /IM "elevation_service.exe" >NUL 2>&1
 TASKKILL /F /IM "msedge.exe" >NUL 2>&1
+TASKKILL /F /IM "MicrosoftEdgeUpdate.exe" >NUL 2>&1
 
 :: Registry
 Echo([^|^|         ] Scanning Registry
@@ -265,6 +268,8 @@ for %%g in (
 "Microsoft\Windows\Shell\IndexerAutomaticMaintenance"
 "Microsoft\Windows\Shell\ThemesSyncedImageDownload"
 "Microsoft\Windows\User Profile Service\HiveUploadTask"
+"Microsoft\Windows\WOF\WIM-Hash-Management"
+"Microsoft\Windows\WOF\WIM-Hash-Validation"
 "Microsoft\XblGameSave\XblGameSaveTask"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
@@ -367,8 +372,10 @@ sc config XboxGipSvc start= disabled>NUL
 sc config XboxNetApiSvc start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
 
+
+
 :Services3
-IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
+IF NOT EXIST %SYS32%\reg.exe GOTO :ServicesHuer
 for %%g in (
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdatem"
@@ -376,6 +383,16 @@ for %%g in (
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
       )
+)
+
+:ServicesHuer
+IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
+REM S2 edgeupdate1db0cab9f75c19; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /svc [X] very cute MS
+REM S3 edgeupdatem1db0cab9f91f3b; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /medsvc [X] How you like this?
+REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Ei "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
+for /f %%g in (%TEMP%\privwindozelog.txt) DO (
+    REG DELETE "%%g" /F >NUL 2>&1
 )
 
 REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RESET /Q re-set permissions quiet
