@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.2
-ECHO(PrivWindoze by Furtivex - Version 1.3.2
+title PrivWindoze by Furtivex - Version 1.3.3
+ECHO(PrivWindoze by Furtivex - Version 1.3.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -33,7 +33,9 @@ SET "STARTUP=%appdata%\Microsoft\Windows\Start Menu\Programs\Startup"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :: Processes
+:Processes
 Echo([^|          ] Scanning Processes
+IF NOT EXIST %SYS32%\taskkill.exe GOTO :Registry
 for %%g in (
 "elevation_service.exe"
 "msedge.exe"
@@ -44,6 +46,7 @@ for %%g in (
 )
 
 :: Registry
+:Registry
 Echo([^|^|         ] Scanning Registry
 IF NOT EXIST %SYS32%\reg.exe GOTO :Tasks
 
@@ -187,9 +190,8 @@ REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 
-:: Clear MRU Cache
+:: Clear MUI Cache
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
-
 
 :: Heuristic Registry Key
 Echo([^|^|^|^|       ] Scanning Heur Registry Keys
