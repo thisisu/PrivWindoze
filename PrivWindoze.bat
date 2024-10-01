@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.1
-ECHO(PrivWindoze by Furtivex - Version 1.3.1
+title PrivWindoze by Furtivex - Version 1.3.2
+ECHO(PrivWindoze by Furtivex - Version 1.3.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -34,9 +34,14 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :: Processes
 Echo([^|          ] Scanning Processes
-TASKKILL /F /IM "elevation_service.exe" >NUL 2>&1
-TASKKILL /F /IM "msedge.exe" >NUL 2>&1
-TASKKILL /F /IM "MicrosoftEdgeUpdate.exe" >NUL 2>&1
+for %%g in (
+"elevation_service.exe"
+"msedge.exe"
+"MicrosoftEdgeUpdate.exe"
+) DO (
+       TASKKILL /F /IM %%g >NUL 2>&1
+      )
+)
 
 :: Registry
 Echo([^|^|         ] Scanning Registry
