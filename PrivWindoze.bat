@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.0
-ECHO(PrivWindoze by Furtivex - Version 1.3.0
+title PrivWindoze by Furtivex - Version 1.3.1
+ECHO(PrivWindoze by Furtivex - Version 1.3.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -394,17 +394,16 @@ for %%g in (
 )
 
 :ServicesHuer
+IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
 IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
-REM S2 edgeupdate1db0cab9f75c19; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /svc [X] very cute MS
-REM S3 edgeupdatem1db0cab9f91f3b; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /medsvc [X] How you like this?
+REM S2 edgeupdate1db0cab9f75c19; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /svc [X]
+REM S3 edgeupdatem1db0cab9f91f3b; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /medsvc [X]
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Ei "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 for /f %%g in (%TEMP%\privwindozelog.txt) DO (
     REG DELETE "%%g" /F >NUL 2>&1
 )
 
-REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RESET /Q re-set permissions quiet
-REM SWREG ACL "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows" /RO:F /RA:F /Q revoke registry rights owner??
 :: Discord Files
 :DiscordFiles
 dir /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
