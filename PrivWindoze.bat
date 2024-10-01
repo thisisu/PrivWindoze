@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.4
-ECHO(PrivWindoze by Furtivex - Version 1.3.4
+title PrivWindoze by Furtivex - Version 1.3.5
+ECHO(PrivWindoze by Furtivex - Version 1.3.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -141,6 +141,7 @@ for %%g in (
 "HKCU\Software\Microsoft\MicrosoftEdge"
 "HKCU\Software\Microsoft\OneDrive"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
+"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive"
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
@@ -157,6 +158,8 @@ for %%g in (
 "HKLM\Software\Microsoft\TelemetryClient"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
 "HKLM\Software\Microsoft\Xbox"
 "HKLM\Software\Policies\Microsoft\Windows\OneDrive"
 "HKU\.DEFAULT\Software\Microsoft\Edge"
@@ -193,7 +196,12 @@ REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>
 REG DELETE "HKLM\Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
 REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-19\Environment" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-20\Environment" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
+REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 
 :: Clear MUI Cache
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
@@ -223,6 +231,7 @@ for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
 
+REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :: Policies
 :Policies
 Echo([^|^|^|^|^|^|     ] Scanning Policies
@@ -410,7 +419,7 @@ IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
 IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
 REM S2 edgeupdate1db0cab9f75c19; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /svc [X]
 REM S3 edgeupdatem1db0cab9f91f3b; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /medsvc [X]
-REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Ei "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
+REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Eis "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 for /f %%g in (%TEMP%\privwindozelog.txt) DO (
     REG DELETE "%%g" /F >NUL 2>&1
