@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.3
-ECHO(PrivWindoze by Furtivex - Version 1.3.3
+title PrivWindoze by Furtivex - Version 1.3.4
+ECHO(PrivWindoze by Furtivex - Version 1.3.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -164,6 +164,8 @@ for %%g in (
 "HKU\.DEFAULT\Software\Microsoft\TelemetryClient"
 "HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry"
 "HKU\.DEFAULT\Software\Microsoft\Xbox"
+"HKU\S-1-5-19\Software\Microsoft\OneDrive"
+"HKU\S-1-5-20\Software\Microsoft\OneDrive"
 "HKU\Software\Classes\feedback-hub"
 "HKU\Software\Classes\insiderhub"
 "HKU\Software\Classes\msnweather"
@@ -188,7 +190,10 @@ REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
+REG DELETE "HKLM\Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
 REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-19\Environment" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-20\Environment" /V "OneDrive" /F >NUL 2>&1
 
 :: Clear MUI Cache
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
