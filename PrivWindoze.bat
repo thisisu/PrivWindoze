@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.5
-ECHO(PrivWindoze by Furtivex - Version 1.3.5
+title PrivWindoze by Furtivex - Version 1.3.6
+ECHO(PrivWindoze by Furtivex - Version 1.3.6
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -37,9 +37,10 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 Echo([^|          ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :Registry
 for %%g in (
+"Microsoft.SharePoint.exe"
+"MicrosoftEdgeUpdate.exe"
 "elevation_service.exe"
 "msedge.exe"
-"MicrosoftEdgeUpdate.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
@@ -61,6 +62,13 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Microsoft\EdgeUpdate"
 "HKLM\Software\WOW6432Node\Microsoft\OneDrive"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive1"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive2"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive3"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive4"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive5"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive6"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive7"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
@@ -142,6 +150,7 @@ for %%g in (
 "HKCU\Software\Microsoft\OneDrive"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive"
+"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams"
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
@@ -157,9 +166,18 @@ for %%g in (
 "HKLM\Software\Microsoft\PolicyManager\default\TaskScheduler\EnableXboxGameSaveTask"
 "HKLM\Software\Microsoft\TelemetryClient"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive1"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive2"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive3"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive4"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive5"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive6"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\OneDrive7"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}"
 "HKLM\Software\Microsoft\Xbox"
 "HKLM\Software\Policies\Microsoft\Windows\OneDrive"
 "HKU\.DEFAULT\Software\Microsoft\Edge"
@@ -182,6 +200,7 @@ for %%g in (
       )
 )
 
+REM https://www.bleepingcomputer.com/forums/t/802105/3138awezipawezip-14360-x64-ffd303wmbhcj/
 :: Solo Registry Value
 Echo([^|^|^|        ] Scanning Solo Registry Values
 REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
@@ -201,7 +220,9 @@ REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "
 REG DELETE "HKU\S-1-5-20\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
+REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lists" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 
 :: Clear MUI Cache
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
@@ -366,6 +387,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Services2
 powershell -command "stop-service DiagTrack" >NUL 2>&1
 powershell -command "stop-service DoSvc" >NUL 2>&1
 powershell -command "stop-service InstallService" >NUL 2>&1
+powershell -command "stop-service OneDrive Updater Service" >NUL 2>&1
 powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
 powershell -command "stop-service WpnService" >NUL 2>&1
 powershell -command "stop-service XblAuthManager" >NUL 2>&1
@@ -380,12 +402,14 @@ powershell -command "stop-service edgeupdatem" >NUL 2>&1
 powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
 powershell -command "set-service DoSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service InstallService -startuptype disabled" >NUL 2>&1
+powershell -command "set-service OneDrive Updater Service -startuptype disabled" >NUL 2>&1
 powershell -command "set-service WpnService -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
 powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
+
 
 GOTO :Services3
 
@@ -394,14 +418,13 @@ IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
 sc config DiagTrack start= disabled>NUL
 sc config DoSvc start= disabled>NUL
 sc config InstallService start= disabled>NUL
+sc config OneDrive Updater Service start= disabled>NUL
 sc config WpnService start= disabled>NUL
 sc config XblAuthManager start= disabled>NUL
 sc config XblGameSave start= disabled>NUL
 sc config XboxGipSvc start= disabled>NUL
 sc config XboxNetApiSvc start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
-
-
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :ServicesHuer
@@ -450,6 +473,7 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 Echo([^|^|^|^|^|^|^|^|^|  ] Scanning Files
 for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
+"%PROGRAMS17%\OneDrive.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
@@ -473,6 +497,7 @@ for %%g in (
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\OneDrive"
+"%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES(x86)%\Microsoft\Edge"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
