@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.6
-ECHO(PrivWindoze by Furtivex - Version 1.3.6
+title PrivWindoze by Furtivex - Version 1.3.7
+ECHO(PrivWindoze by Furtivex - Version 1.3.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -256,6 +256,7 @@ REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :: Policies
 :Policies
 Echo([^|^|^|^|^|^|     ] Scanning Policies
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry" /T REG_DWORD /V value /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot" /T REG_DWORD /V value /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
@@ -263,6 +264,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+
 
 :: Tasks
 :Tasks
@@ -432,6 +434,7 @@ for %%g in (
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
 "HKLM\SYSTEM\CurrentControlSet\services\edgeupdatem"
 "HKLM\SYSTEM\CurrentControlSet\services\MicrosoftEdgeElevationService"
+"HKLM\SYSTEM\CurrentControlSet\services\OneDrive Updater Service"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
       )
