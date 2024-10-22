@@ -389,59 +389,59 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :Services
 Echo([^|^|^|^|^|^|^|^|   ] Scanning Services
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Services2
-for %%g in (
-diagtrack
-dmwappushservice
-dosvc
-edgeupdate
-edgeupdatem
-installservice
-microsoftedgeelevationservice
-onedrive updater service
-wpnservice
-xblauthmanager
-xblgamesave
-xboxgipsvc
-xboxnetapisvc
-) DO (
-      powershell -command "set-service %%g -startuptype disabled" >NUL 2>&1
-      powershell -command "stop-service %%g" >NUL 2>&1
-      )
-)
+powershell -command "stop-service DiagTrack" >NUL 2>&1
+powershell -command "stop-service DoSvc" >NUL 2>&1
+powershell -command "stop-service InstallService" >NUL 2>&1
+powershell -command "stop-service OneDrive Updater Service" >NUL 2>&1
+powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
+powershell -command "stop-service WpnService" >NUL 2>&1
+powershell -command "stop-service XblAuthManager" >NUL 2>&1
+powershell -command "stop-service XblGameSave" >NUL 2>&1
+powershell -command "stop-service XboxGipSvc" >NUL 2>&1
+powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
+powershell -command "stop-service dmwappushservice" >NUL 2>&1
+powershell -command "stop-service edgeupdate" >NUL 2>&1
+powershell -command "stop-service edgeupdatem" >NUL 2>&1
+
+
+powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
+powershell -command "set-service DoSvc -startuptype disabled" >NUL 2>&1
+powershell -command "set-service InstallService -startuptype disabled" >NUL 2>&1
+powershell -command "set-service OneDrive Updater Service -startuptype disabled" >NUL 2>&1
+powershell -command "set-service WpnService -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
+powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
+powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
+powershell -command "set-service edgeupdate -startuptype disabled" >NUL 2>&1
+powershell -command "set-service edgeupdatem -startuptype disabled" >NUL 2>&1
 
 GOTO :Services3
 
 :Services2
-IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
-for %%g in (
-diagtrack
-dmwappushservice
-dosvc
-edgeupdate
-edgeupdatem
-installservice
-microsoftedgeelevationservice
-onedrive updater service
-wpnservice
-xblauthmanager
-xblgamesave
-xboxgipsvc
-xboxnetapisvc
-) DO (
-      sc config %%g start= disabled>NUL
-      )
-)
 
+IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
+sc config DiagTrack start= disabled>NUL
+sc config DoSvc start= disabled>NUL
+sc config InstallService start= disabled>NUL
+sc config OneDrive Updater Service start= disabled>NUL
+sc config WpnService start= disabled>NUL
+sc config XblAuthManager start= disabled>NUL
+sc config XblGameSave start= disabled>NUL
+sc config XboxGipSvc start= disabled>NUL
+sc config XboxNetApiSvc start= disabled>NUL
+sc config dmwappushservice start= disabled>NUL
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :ServicesHuer
 for %%g in (
-edgeupdate
-edgeupdatem
-MicrosoftEdgeElevationService
-OneDrive Updater Service
+"HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
+"HKLM\SYSTEM\CurrentControlSet\services\edgeupdatem"
+"HKLM\SYSTEM\CurrentControlSet\services\MicrosoftEdgeElevationService"
+"HKLM\SYSTEM\CurrentControlSet\services\OneDrive Updater Service"
 ) DO (
-       REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%g" /F >NUL 2>&1
+       REG DELETE %%g /F >NUL 2>&1
       )
 )
 
