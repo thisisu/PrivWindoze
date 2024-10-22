@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.8
-ECHO(PrivWindoze by Furtivex - Version 1.3.8
+title PrivWindoze by Furtivex - Version 1.3.9
+ECHO(PrivWindoze by Furtivex - Version 1.3.9
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -432,6 +432,8 @@ sc config XblGameSave start= disabled>NUL
 sc config XboxGipSvc start= disabled>NUL
 sc config XboxNetApiSvc start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
+sc config edgeupdate start= disabled>NUL
+sc config edgeupdatem start= disabled>NUL
 
 :Services3
 IF NOT EXIST %SYS32%\reg.exe GOTO :ServicesHuer
