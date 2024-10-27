@@ -1,14 +1,20 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.3.9
-ECHO(PrivWindoze by Furtivex - Version 1.3.9
+title PrivWindoze by Furtivex - Version 1.4.0
+ECHO(PrivWindoze by Furtivex - Version 1.4.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 cd /d %~dp0
 COPY /y "%CD%\dependencies\sed.exe" %windir%\sed.exe >NUL 2>&1
 COPY /y "%CD%\dependencies\grep.exe" %windir%\grep.exe >NUL 2>&1
+COPY /y "%CD%\dependencies\sort_.exe" %windir%\sort_.exe >NUL 2>&1
+COPY /y "%CD%\dependencies\libiconv2.dll" %windir%\libiconv2.dll >NUL 2>&1
+COPY /y "%CD%\dependencies\libintl3.dll" %windir%\libintl3.dll >NUL 2>&1
+COPY /y "%CD%\dependencies\nircmd.exe" %windir%\nircmd.exe >NUL 2>&1
+COPY /y "%CD%\dependencies\pcre3.dll" %windir%\pcre3.dll >NUL 2>&1
+COPY /y "%CD%\dependencies\regex2.dll" %windir%\regex2.dll >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
