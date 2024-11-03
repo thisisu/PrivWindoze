@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.0
-ECHO(PrivWindoze by Furtivex - Version 1.4.0
+title PrivWindoze by Furtivex - Version 1.4.1
+ECHO(PrivWindoze by Furtivex - Version 1.4.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -40,18 +40,35 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :: Processes
 :Processes
-Echo([^|          ] Scanning Processes
-IF NOT EXIST %SYS32%\taskkill.exe GOTO :Registry
+IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 for %%g in (
 "Microsoft.SharePoint.exe"
 "MicrosoftEdgeUpdate.exe"
 "elevation_service.exe"
 "msedge.exe"
+"ms-teams.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
 )
 
+:: Windows Apps
+:WindowsApps
+Echo([^|          ] Scanning Windows Apps
+IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
+IF NOT EXIST %windir%\grep.exe GOTO :Registry
+IF NOT EXIST %windir%\sed.exe GOTO :Registry
+powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName" >"%temp%\privwindozelog.txt"
+GREP -Eis " : (Microsoft\.(Advertising|BingNews|BingWeather|GamingApp|MicrosoftEdge|People|WindowsFeedbackHub|Xbox|YourPhone|Zune)|MicrosoftTeams)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
+IF %dumbapps%==true (
+sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
+)
+IF %dumbapps%==true (
+    for /f %%g in (%TEMP%\privwindozelog3.txt) DO (
+         powershell -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
+        )
+)
 :: Registry
 :Registry
 Echo([^|^|         ] Scanning Registry
@@ -161,6 +178,33 @@ for %%g in (
 "HKCU\Software\Microsoft\XboxLive"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
 "HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\feedback-hub"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\insiderhub"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebar"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebarservices"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamingoverlay"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-teams"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamepass"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamingapp"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msnweather"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\mswindowsmusic"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\windows-feedback"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-captures"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-friendfinder"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-gamehub"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-lfg"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-network"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-profile"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-settings"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-store"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-tcui"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxgames"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxidp"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune"
 "HKLM\Software\Classes\MSEdgeHTM"
 "HKLM\Software\Classes\MSEdgeMHT"
 "HKLM\Software\Classes\MSEdgePDF"
@@ -235,7 +279,7 @@ REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCac
 
 :: Heuristic Registry Key
 Echo([^|^|^|^|       ] Scanning Heur Registry Keys
-IF NOT EXIST %SYS32%\findstr.exe GOTO :Policies
+IF NOT EXIST %SYS32%\findstr.exe GOTO :PackagesHeur
 REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\privwindozelog.txt"
 IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
 REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\ms-xbl-">>"%TEMP%\privwindozelog.txt"
@@ -246,7 +290,23 @@ IF %xboxheur%==true (
          REG DELETE "%%g" /F >NUL 2>&1
         )
 )
+:PackagesHeur
+IF NOT EXIST %WINDIR%\grep.exe GOTO :HeurValue
+REG QUERY "HKCR\ActivatableClasses\Package"|GREP -Eis "^HKEY_CLASSES_ROOT\\ActivatableClasses\\Package\\Microsoft\.(People|WindowsFeedbackHub|Xbox|YourPhone|Zune)">"%TEMP%\privwindozelog.txt"
+IF NOT ERRORLEVEL 1 ( set packagesheur=true ) else ( set packagesheur=false )
+IF %packagesheur%==true (
+    for /f %%g in (%TEMP%\privwindozelog.txt) DO (
+         REG DELETE "%%g" /F >NUL 2>&1
+        )
+)
 
+REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId"|GREP -Eis "^HKEY_CLASSES_ROOT\\Extensions\\ContractId\\Windows\.AppService\\PackageId\\Microsoft\.(People|WindowsFeedbackHub|Xbox|YourPhone|Zune)">"%TEMP%\privwindozelog.txt"
+IF NOT ERRORLEVEL 1 ( set packagesheur=true ) else ( set packagesheur=false )
+IF %packagesheur%==true (
+    for /f %%g in (%TEMP%\privwindozelog.txt) DO (
+         REG DELETE "%%g" /F >NUL 2>&1
+        )
+)
 :: Heuristic Registry Value
 :HeurValue
 Echo([^|^|^|^|^|      ] Scanning Heur Registry Values
@@ -496,6 +556,14 @@ for %%g in (
 "%TEMP%\privwindozelog*.txt"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
+"%WINDIR%\grep.exe"
+"%WINDIR%\libiconv2.dll"
+"%WINDIR%\libintl3.dll"
+"%WINDIR%\nircmd.exe"
+"%WINDIR%\pcre3.dll"
+"%WINDIR%\regex2.dll"
+"%WINDIR%\sed.exe"
+"%WINDIR%\sort_.exe"
 ) DO (
        DEL /F/Q %%g >NUL 2>&1
       )
