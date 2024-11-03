@@ -60,7 +60,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
 powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|GamingApp|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|Clipchamp|DellInc\.|MicrosoftTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|GamingApp|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|Clipchamp|DellInc\.|MicrosoftTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
 IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
 IF %dumbapps%==true (
 sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
