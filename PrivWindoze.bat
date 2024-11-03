@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.2
-ECHO(PrivWindoze by Furtivex - Version 1.4.2
+title PrivWindoze by Furtivex - Version 1.4.3
+ECHO(PrivWindoze by Furtivex - Version 1.4.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -348,6 +348,7 @@ for %%g in (
 "Microsoft\Windows\ApplicationData\DsSvcCleanup"
 "Microsoft\Windows\ApplicationData\appuriverifierdaily"
 "Microsoft\Windows\ApplicationData\appuriverifierinstall"
+"Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\Windows\Chkdsk\ProactiveScan"
 "Microsoft\Windows\CloudExperienceHost\CreateObjectTask"
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
