@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.3
-ECHO(PrivWindoze by Furtivex - Version 1.4.3
+title PrivWindoze by Furtivex - Version 1.4.4
+ECHO(PrivWindoze by Furtivex - Version 1.4.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -40,6 +40,7 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :: Processes
 :Processes
+Echo([^|          ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 for %%g in (
 "Microsoft.SharePoint.exe"
@@ -54,7 +55,7 @@ for %%g in (
 
 :: Windows Apps
 :WindowsApps
-Echo([^|          ] Scanning Windows Apps
+Echo([^|^|         ] Scanning Windows Apps
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
@@ -71,7 +72,7 @@ IF %dumbapps%==true (
 )
 :: Registry
 :Registry
-Echo([^|^|         ] Scanning Registry
+Echo([^|^|^|        ] Scanning Registry
 IF NOT EXIST %SYS32%\reg.exe GOTO :Tasks
 
 IF %ARCH%==x64 (
@@ -252,7 +253,7 @@ for %%g in (
 
 REM https://www.bleepingcomputer.com/forums/t/802105/3138awezipawezip-14360-x64-ffd303wmbhcj/
 :: Solo Registry Value
-Echo([^|^|^|        ] Scanning Solo Registry Values
+Echo([^|^|^|^|       ] Scanning Solo Registry Values
 REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.html\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.mht\OpenWithProgids" /V MSEdgeMHT /F >NUL 2>&1
@@ -278,7 +279,7 @@ REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive"
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
 
 :: Heuristic Registry Key
-Echo([^|^|^|^|       ] Scanning Heur Registry Keys
+Echo([^|^|^|^|^|      ] Scanning Heur Registry Keys
 IF NOT EXIST %SYS32%\findstr.exe GOTO :PackagesHeur
 REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\privwindozelog.txt"
 IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
@@ -309,7 +310,7 @@ IF %packagesheur%==true (
 )
 :: Heuristic Registry Value
 :HeurValue
-Echo([^|^|^|^|^|      ] Scanning Heur Registry Values
+Echo([^|^|^|^|^|^|     ] Scanning Heur Registry Values
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
@@ -321,7 +322,7 @@ for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
 REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :: Policies
 :Policies
-Echo([^|^|^|^|^|^|     ] Scanning Policies
+Echo([^|^|^|^|^|^|^|    ] Scanning Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry" /T REG_DWORD /V value /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot" /T REG_DWORD /V value /D 1 /F >NUL 2>&1
@@ -334,7 +335,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 
 :: Tasks
 :Tasks
-Echo([^|^|^|^|^|^|^|    ] Scanning Tasks
+Echo([^|^|^|^|^|^|^|^|   ] Scanning Tasks
 REM Tasks creating new variants of themselves upon deletion? Little hard to prove at this point but will monitor (haha)
 REM Yes, new tasks are formed, but I think this is due to the service being disabled as well. Upon disabling InstallService SVC, WakeUpAndContinueUpdates, and WakeUpAndScanForUpdates are created (but disabled)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
@@ -454,7 +455,7 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :: Services
 :Services
-Echo([^|^|^|^|^|^|^|^|   ] Scanning Services
+Echo([^|^|^|^|^|^|^|^|^|  ] Scanning Services
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Services2
 powershell -command "stop-service DiagTrack" >NUL 2>&1
 powershell -command "stop-service DoSvc" >NUL 2>&1
@@ -547,7 +548,7 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :: Files
 :Files
-Echo([^|^|^|^|^|^|^|^|^|  ] Scanning Files
+Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
 for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
@@ -572,7 +573,7 @@ for %%g in (
 
 :: Folders
 :Folders
-Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Folders
+Echo([^|^|^|^|^|^|^|^|^|^|^|] Scanning Folders
 for %%g in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\DiagnosticLogCSP"
@@ -596,5 +597,7 @@ for %%g in (
 )
 
 :eof
-Echo([^|^|^|^|^|^|^|^|^|^|^|] Script completed! Exiting in 3 seconds...
+Echo.
+Echo.
+Echo(Script completed! Exiting in 3 seconds...
 timeout /t 03>NUL
