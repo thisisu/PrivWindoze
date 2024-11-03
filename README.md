@@ -1,5 +1,7 @@
-PrivWindoze is a small batch script designed to quickly remove telemetry and uninstall the following applications:
+PrivWindoze is a small batch script designed to quickly disable telemetry and remove a considerable amount of bloatware, including but not limited to:
 
+-  Microsoft Bing
+-  Microsoft CoPilot
 -  Microsoft Edge
 -  Microsoft OneDrive
 -  Microsoft Teams
