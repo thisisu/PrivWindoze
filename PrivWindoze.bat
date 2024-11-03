@@ -211,6 +211,8 @@ for %%g in (
 "HKLM\Software\Classes\MSEdgePDF"
 "HKLM\Software\Clients\StartMenuInternet\Microsoft Edge"
 "HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}"
+"HKLM\Software\Microsoft\Edge"
+"HKLM\Software\Microsoft\KGL"
 "HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite"
 "HKLM\Software\Microsoft\MicrosoftEdge"
 "HKLM\Software\Microsoft\OneDrive"
@@ -324,14 +326,15 @@ REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :Policies
 Echo([^|^|^|^|^|^|^|    ] Scanning Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry" /T REG_DWORD /V value /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot" /T REG_DWORD /V value /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
-
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 
 :: Tasks
 :Tasks
@@ -591,6 +594,7 @@ for %%g in (
 "%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
+"%WINDIR%\GameBarPresenceWriter"
 ) DO (
       RD /S/Q %%g >NUL 2>&1
       )
