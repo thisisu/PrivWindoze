@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.4
-ECHO(PrivWindoze by Furtivex - Version 1.4.4
+title PrivWindoze by Furtivex - Version 1.4.5
+ECHO(PrivWindoze by Furtivex - Version 1.4.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -164,7 +164,11 @@ for %%g in (
 "HKCU\Software\Classes\bingmaps"
 "HKCU\Software\Classes\bingnews"
 "HKCU\Software\Classes\bingweather"
+"HKCU\Software\Classes\feedback-hub"
 "HKCU\Software\Classes\grvopen"
+"HKCU\Software\Classes\insiderhub"
+"HKCU\Software\Classes\windows-feedback"
+"HKCU\Software\Classes\zune"
 "HKCU\Software\Microsoft\Edge"
 "HKCU\Software\Microsoft\EdgeUpdate"
 "HKCU\Software\Microsoft\EdgeWebView"
@@ -209,6 +213,7 @@ for %%g in (
 "HKLM\Software\Classes\MSEdgeHTM"
 "HKLM\Software\Classes\MSEdgeMHT"
 "HKLM\Software\Classes\MSEdgePDF"
+"HKLM\Software\Classes\NetworkExplorerPlugins\Microsoft Corporation/Xbox 360"
 "HKLM\Software\Clients\StartMenuInternet\Microsoft Edge"
 "HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}"
 "HKLM\Software\Microsoft\Edge"
@@ -333,8 +338,11 @@ REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsC
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
 
 :: Tasks
 :Tasks
