@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.5
-ECHO(PrivWindoze by Furtivex - Version 1.4.5
+title PrivWindoze by Furtivex - Version 1.4.6
+ECHO(PrivWindoze by Furtivex - Version 1.4.6
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -45,9 +45,11 @@ IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 for %%g in (
 "Microsoft.SharePoint.exe"
 "MicrosoftEdgeUpdate.exe"
+"Teams.exe"
+"Widgets.exe"
 "elevation_service.exe"
-"msedge.exe"
 "ms-teams.exe"
+"msedge.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
@@ -60,7 +62,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
 powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|GamingApp|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|Clipchamp|DellInc\.|MicrosoftTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|GamingApp|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|Clipchamp|DellInc\.|MicrosoftTeams|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
 IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
 IF %dumbapps%==true (
 sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
@@ -98,6 +100,9 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
 ) DO (
@@ -235,6 +240,9 @@ for %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}"
 "HKLM\Software\Microsoft\Xbox"
 "HKLM\Software\Policies\Microsoft\Windows\OneDrive"
@@ -455,13 +463,24 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :WindowsDefenderTask
 dir /b "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Services )
+IF ERRORLEVEL 1 ( GOTO :Optimize )
 for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks_Migrated\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:Optimize
+dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Services )
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    set "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
 :: Services
@@ -563,11 +582,13 @@ Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
 for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
+"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk”
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
 "%TEMP%\privwindozelog*.txt"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
+"%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
 "%WINDIR%\grep.exe"
 "%WINDIR%\libiconv2.dll"
@@ -589,9 +610,12 @@ for %%g in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\DiagnosticLogCSP"
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
+"%APPDATA%\Microsoft\Teams"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
+"%LOCALA%\Microsoft\Teams"
+"%LOCALA%\Microsoft\TeamsMeetingAddin"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Microsoft OneDrive"
