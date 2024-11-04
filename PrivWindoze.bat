@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.7
-ECHO(PrivWindoze by Furtivex - Version 1.4.7
+title PrivWindoze by Furtivex - Version 1.4.8
+ECHO(PrivWindoze by Furtivex - Version 1.4.8
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -50,6 +50,7 @@ for %%g in (
 "elevation_service.exe"
 "ms-teams.exe"
 "msedge.exe"
+"msedgewebview2.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
@@ -62,7 +63,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
 powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|GamingApp|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|Clipchamp|DellInc\.|MicrosoftTeams|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|Edge|Gaming|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
 IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
 IF %dumbapps%==true (
 sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
@@ -72,6 +73,11 @@ IF %dumbapps%==true (
          powershell -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
         )
 )
+
+REM B9ECED6F = Asus bundles
+REM AD2F1837 = HP Bundles
+REM 549981C3F5F10 = MS Cortana
+
 :: Registry
 :Registry
 Echo([^|^|^|        ] Scanning Registry
@@ -100,6 +106,7 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
+"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
@@ -240,6 +247,7 @@ for %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
