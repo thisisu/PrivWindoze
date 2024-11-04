@@ -9,4 +9,4 @@ PrivWindoze is a small batch script designed to quickly disable telemetry and re
 
 There are currently no prompts or logs, but this may change in the future if there is enough interest.
 
-This program is free to use but if you wanted to donate something, check out <a href="https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share">this Amazon Wishlist link</a>. Thank you!
+This program is free to use but if you wanted to donate something, check out this [link](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share). Thank you!
