@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.6
-ECHO(PrivWindoze by Furtivex - Version 1.4.6
+title PrivWindoze by Furtivex - Version 1.4.7
+ECHO(PrivWindoze by Furtivex - Version 1.4.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -576,13 +576,14 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
     ENDLOCAL
 )
+
 :: Files
 :Files
 Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
 for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
-"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk”
+"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
