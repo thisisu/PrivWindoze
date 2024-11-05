@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.8
-ECHO(PrivWindoze by Furtivex - Version 1.4.8
+title PrivWindoze by Furtivex - Version 1.4.9
+ECHO(PrivWindoze by Furtivex - Version 1.4.9
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -43,8 +43,13 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 Echo([^|          ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 for %%g in (
+"FileCoAuth.exe"
+"FileSyncHelper.exe"
+"Microsoft.Media.Player.exe"
 "Microsoft.SharePoint.exe"
 "MicrosoftEdgeUpdate.exe"
+"OneDrive.exe"
+"OneDriveUpdaterService.exe"
 "Teams.exe"
 "Widgets.exe"
 "elevation_service.exe"
@@ -284,6 +289,7 @@ REG DELETE "HKCR\.pdf\OpenWithProgids" /V MSEdgePDF /F >NUL 2>&1
 REG DELETE "HKCR\.shtml\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
+REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE "HKLM\Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
@@ -297,6 +303,7 @@ REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lists" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
+
 
 :: Clear MUI Cache
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
@@ -633,6 +640,7 @@ for %%g in (
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
+"%PROGRAMFILES(x86)%\Teams Installer"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
