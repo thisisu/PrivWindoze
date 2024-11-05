@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.5.0
-ECHO(PrivWindoze by Furtivex - Version 1.5.0
+title PrivWindoze by Furtivex - Version 1.5.1
+ECHO(PrivWindoze by Furtivex - Version 1.5.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -387,7 +387,6 @@ for %%g in (
 "Microsoft\Windows\ApplicationData\DsSvcCleanup"
 "Microsoft\Windows\ApplicationData\appuriverifierdaily"
 "Microsoft\Windows\ApplicationData\appuriverifierinstall"
-"Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\Windows\Chkdsk\ProactiveScan"
 "Microsoft\Windows\CloudExperienceHost\CreateObjectTask"
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
@@ -420,17 +419,20 @@ for %%g in (
 "Microsoft\Windows\PushToInstall\LoginCheck"
 "Microsoft\Windows\PushToInstall\Registration"
 "Microsoft\Windows\RemoteAssistance\RemoteAssistanceTask"
+"Microsoft\Windows\Servicing\OOBEFodSetup"
 "Microsoft\Windows\Shell\CreateObjectTask"
 "Microsoft\Windows\Shell\FamilySafetyMonitor"
 "Microsoft\Windows\Shell\FamilySafetyRefreshTask"
 "Microsoft\Windows\Shell\IndexerAutomaticMaintenance"
 "Microsoft\Windows\Shell\ThemesSyncedImageDownload"
+"Microsoft\Windows\Sustainability\SustainabilityTelemetry"
 "Microsoft\Windows\User Profile Service\HiveUploadTask"
-"Microsoft\Windows\WlanSvc\CDSSync"
 "Microsoft\Windows\WOF\WIM-Hash-Management"
 "Microsoft\Windows\WOF\WIM-Hash-Validation"
+"Microsoft\Windows\WlanSvc\CDSSync"
 "Microsoft\Windows\WwanSvc\NotificationTask"
 "Microsoft\Windows\WwanSvc\OobeDiscovery"
+"Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\XblGameSave\XblGameSaveTask"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
