@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.4.9
-ECHO(PrivWindoze by Furtivex - Version 1.4.9
+title PrivWindoze by Furtivex - Version 1.5.0
+ECHO(PrivWindoze by Furtivex - Version 1.5.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -270,6 +270,8 @@ for %%g in (
 "HKU\Software\Classes\insiderhub"
 "HKU\Software\Classes\msnweather"
 "HKU\Software\Microsoft\Edge"
+"HKU\Software\Microsoft\Windows\CurrentVersion\Cortana"
+"HKU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot"
 "HKU\Software\Microsoft\GameBar"
 "HKU\Software\Microsoft\GameBarApi"
 "HKU\Software\Microsoft\OneDrive"
@@ -364,6 +366,8 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
+REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
 
