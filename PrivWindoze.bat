@@ -37,7 +37,6 @@ SET "STARTMENU17=%allusersprofile%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%appdata%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%appdata%\Microsoft\Windows\Start Menu\Programs\Startup"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-
 :: Processes
 :Processes
 Echo([^|          ] Scanning Processes
@@ -68,7 +67,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
 powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
 IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
 IF %dumbapps%==true (
 sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
@@ -78,14 +77,10 @@ IF %dumbapps%==true (
          powershell -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
         )
 )
-
 REM B9ECED6F = Asus bundles
 REM AD2F1837 = HP Bundles
 REM 549981C3F5F10 = MS Cortana
-REM 9426MICRO = MSI
-REM MSI Center -> C:\Program Files\WindowsApps\9426MICRO-STARINTERNATION.MSICenter_2.0.42.0_x64__kzh8wxbdkxb8p [2024-10-21] (MICRO-STAR INTERNATIONAL CO., LTD) [Startup Task]
-REM MSI Game Bar -> C:\Program Files\WindowsApps\9426MICRO-STARINTERNATION.MSIGameBar_2.0.23.0_x64__kzh8wxbdkxb8p [2024-10-21] (MICRO-STAR INTERNATIONAL CO., LTD)
-
+REM 9426MICRO = MSI // Micro Star International
 :: Registry
 :Registry
 Echo([^|^|^|        ] Scanning Registry
@@ -595,14 +590,24 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 
 :Discord2
 dir /b "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Files )
+IF ERRORLEVEL 1 ( GOTO :locallow64hex )
 for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     set "discord=%%g"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
     ENDLOCAL
 )
-
+:: locallow64hex
+:locallow64hex
+DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Es "^[a-f0-9]{64}$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Files )
+for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    set "locallow64hex=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
+    ENDLOCAL
+)
+REM https://www.bleepingcomputer.com/forums/t/803153/windows-defender-freezing-not-completing/?hl=%2Bonedrive1
 :: Files
 :Files
 Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
@@ -629,7 +634,6 @@ for %%g in (
        DEL /F/Q %%g >NUL 2>&1
       )
 )
-
 :: Folders
 :Folders
 Echo([^|^|^|^|^|^|^|^|^|^|^|] Scanning Folders
