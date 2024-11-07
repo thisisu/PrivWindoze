@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.5.4
-ECHO(PrivWindoze by Furtivex - Version 1.5.4
+title PrivWindoze by Furtivex - Version 1.5.5
+ECHO(PrivWindoze by Furtivex - Version 1.5.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -67,7 +67,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
 powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)| : (acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames))" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
 IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
 IF %dumbapps%==true (
 sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
@@ -579,6 +579,7 @@ for /f %%g in (%TEMP%\privwindozelog.txt) DO (
 
 :: Discord Files
 :DiscordFiles
+Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
 dir /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Discord2 )
 for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
@@ -610,7 +611,6 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 REM https://www.bleepingcomputer.com/forums/t/803153/windows-defender-freezing-not-completing/?hl=%2Bonedrive1
 :: Files
 :Files
-Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
 for %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
