@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.5.3
-ECHO(PrivWindoze by Furtivex - Version 1.5.3
+title PrivWindoze by Furtivex - Version 1.5.4
+ECHO(PrivWindoze by Furtivex - Version 1.5.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>

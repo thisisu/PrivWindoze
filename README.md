@@ -1,7 +1,7 @@
 PrivWindoze is a small batch script designed to quickly disable telemetry and remove a considerable amount of bloatware, including, but not limited to:
 
 -  Microsoft Bing
--  Microsoft CoPilot
+-  Microsoft Copilot
 -  Microsoft Cortana
 -  Microsoft Edge
 -  Microsoft OneDrive
