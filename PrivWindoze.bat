@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.5.1
-ECHO(PrivWindoze by Furtivex - Version 1.5.1
+title PrivWindoze by Furtivex - Version 1.5.2
+ECHO(PrivWindoze by Furtivex - Version 1.5.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -68,7 +68,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
 powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|BingNews|BingWeather|Copilot|Edge|Gaming|Getstarted|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MicrosoftSolitaire|MixedReality|OneConnect|People|ScreenSketch|SecHealthUI|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|WindowsMaps|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
 IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
 IF %dumbapps%==true (
 sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
@@ -82,6 +82,9 @@ IF %dumbapps%==true (
 REM B9ECED6F = Asus bundles
 REM AD2F1837 = HP Bundles
 REM 549981C3F5F10 = MS Cortana
+REM 9426MICRO = MSI
+REM MSI Center -> C:\Program Files\WindowsApps\9426MICRO-STARINTERNATION.MSICenter_2.0.42.0_x64__kzh8wxbdkxb8p [2024-10-21] (MICRO-STAR INTERNATIONAL CO., LTD) [Startup Task]
+REM MSI Game Bar -> C:\Program Files\WindowsApps\9426MICRO-STARINTERNATION.MSIGameBar_2.0.23.0_x64__kzh8wxbdkxb8p [2024-10-21] (MICRO-STAR INTERNATIONAL CO., LTD)
 
 :: Registry
 :Registry
@@ -378,6 +381,8 @@ REM Tasks creating new variants of themselves upon deletion? Little hard to prov
 REM Yes, new tasks are formed, but I think this is due to the service being disabled as well. Upon disabling InstallService SVC, WakeUpAndContinueUpdates, and WakeUpAndScanForUpdates are created (but disabled)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 for %%g in (
+"Microsoft\Office\OfficeTelemetryAgentFallBack"
+"Microsoft\Office\OfficeTelemetryAgentLogOn"
 "Microsoft\Windows\Application Experience\MareBackup"
 "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
 "Microsoft\Windows\Application Experience\PcaPatchDbTask"
@@ -629,6 +634,7 @@ for %%g in (
 :Folders
 Echo([^|^|^|^|^|^|^|^|^|^|^|] Scanning Folders
 for %%g in (
+"%ALLUSERSPROFILE%\Intel Telemetry"
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\DiagnosticLogCSP"
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
