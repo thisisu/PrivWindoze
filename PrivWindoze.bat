@@ -158,7 +158,7 @@ for %%g in (
 "HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
-"HKCR\\msnnews"
+"HKCR\msnnews"
 "HKCR\ie_to_edge_bho.IEToEdgeBHO"
 "HKCR\ie_to_edge_bho.IEToEdgeBHO.1"
 "HKCR\microsoft-edge"
