@@ -1,20 +1,24 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 1.5.5
-ECHO(PrivWindoze by Furtivex - Version 1.5.5
+title PrivWindoze by Furtivex - Version 2.0.0
+ECHO(PrivWindoze by Furtivex - Version 2.0.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 cd /d %~dp0
-COPY /y "%CD%\dependencies\sed.exe" %windir%\sed.exe >NUL 2>&1
-COPY /y "%CD%\dependencies\grep.exe" %windir%\grep.exe >NUL 2>&1
-COPY /y "%CD%\dependencies\sort_.exe" %windir%\sort_.exe >NUL 2>&1
-COPY /y "%CD%\dependencies\libiconv2.dll" %windir%\libiconv2.dll >NUL 2>&1
-COPY /y "%CD%\dependencies\libintl3.dll" %windir%\libintl3.dll >NUL 2>&1
-COPY /y "%CD%\dependencies\nircmd.exe" %windir%\nircmd.exe >NUL 2>&1
-COPY /y "%CD%\dependencies\pcre3.dll" %windir%\pcre3.dll >NUL 2>&1
-COPY /y "%CD%\dependencies\regex2.dll" %windir%\regex2.dll >NUL 2>&1
+for %%g in (
+grep.exe
+libiconv2.dll
+libintl3.dll
+nircmd.exe
+pcre3.dll
+regex2.dll
+sed.exe
+sort_.exe
+) DO (
+COPY /Y "%CD%\dependencies\%%g" "%WINDIR%" >NUL 2>&1
+)
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%appdata%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%allusersprofile%\Start Menu\Programs"
@@ -39,7 +43,7 @@ SET "STARTUP=%appdata%\Microsoft\Windows\Start Menu\Programs\Startup"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 :: Processes
 :Processes
-Echo([^|          ] Scanning Processes
+Echo([^|     ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 for %%g in (
 "FileCoAuth.exe"
@@ -59,10 +63,9 @@ for %%g in (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
 )
-
 :: Windows Apps
 :WindowsApps
-Echo([^|^|         ] Scanning Windows Apps
+Echo([^|^|    ] Scanning Windows Apps
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
@@ -80,10 +83,10 @@ IF %dumbapps%==true (
 REM B9ECED6F = Asus bundles
 REM AD2F1837 = HP Bundles
 REM 549981C3F5F10 = MS Cortana
-REM 9426MICRO = MSI // Micro Star International
+REM 9426MICRO = MSI // Micro Star International Bundles
 :: Registry
 :Registry
-Echo([^|^|^|        ] Scanning Registry
+Echo([^|^|^|   ] Scanning Registry
 IF NOT EXIST %SYS32%\reg.exe GOTO :Tasks
 
 IF %ARCH%==x64 (
@@ -161,6 +164,7 @@ for %%g in (
 "HKCR\microsoft-edge-holographic"
 "HKCR\microsoftmusic"
 "HKCR\microsoftvideo"
+"HKCR\msnews"
 "HKCR\ms-xbet-survey"
 "HKCR\xbox"
 "HKCR\xbox-arena"
@@ -182,6 +186,11 @@ for %%g in (
 "HKCU\Software\Classes\feedback-hub"
 "HKCU\Software\Classes\grvopen"
 "HKCU\Software\Classes\insiderhub"
+"HKCU\Software\Classes\ms-cortana2"
+"HKCU\Software\Classes\ms-gamebar"
+"HKCU\Software\Classes\ms-gamebarservices"
+"HKCU\Software\Classes\msgamepass"
+"HKCU\Software\Classes\msgamingapp"
 "HKCU\Software\Classes\windows-feedback"
 "HKCU\Software\Classes\zune"
 "HKCU\Software\Microsoft\Edge"
@@ -268,11 +277,11 @@ for %%g in (
 "HKU\Software\Classes\insiderhub"
 "HKU\Software\Classes\msnweather"
 "HKU\Software\Microsoft\Edge"
-"HKU\Software\Microsoft\Windows\CurrentVersion\Cortana"
-"HKU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot"
 "HKU\Software\Microsoft\GameBar"
 "HKU\Software\Microsoft\GameBarApi"
 "HKU\Software\Microsoft\OneDrive"
+"HKU\Software\Microsoft\Windows\CurrentVersion\Cortana"
+"HKU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot"
 "HKU\Software\Microsoft\Xbox"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
@@ -281,7 +290,6 @@ for %%g in (
 
 REM https://www.bleepingcomputer.com/forums/t/802105/3138awezipawezip-14360-x64-ffd303wmbhcj/
 :: Solo Registry Value
-Echo([^|^|^|^|       ] Scanning Solo Registry Values
 REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.html\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.mht\OpenWithProgids" /V MSEdgeMHT /F >NUL 2>&1
@@ -304,45 +312,22 @@ REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lis
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 
-
 :: Clear MUI Cache
 REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
 
 :: Heuristic Registry Key
-Echo([^|^|^|^|^|      ] Scanning Heur Registry Keys
-IF NOT EXIST %SYS32%\findstr.exe GOTO :PackagesHeur
-REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\xboxliveapp-">"%TEMP%\privwindozelog.txt"
-IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
-REG QUERY "HKCR"|FINDSTR -ri "^HKEY_CLASSES_ROOT\\ms-xbl-">>"%TEMP%\privwindozelog.txt"
-IF NOT ERRORLEVEL 1 ( set xboxheur=true ) else ( set xboxheur=false )
-
-IF %xboxheur%==true (
-    for /f %%g in (%TEMP%\privwindozelog.txt) DO (
-         REG DELETE "%%g" /F >NUL 2>&1
-        )
-)
-:PackagesHeur
-IF NOT EXIST %WINDIR%\grep.exe GOTO :HeurValue
-REG QUERY "HKCR\ActivatableClasses\Package"|GREP -Eis "^HKEY_CLASSES_ROOT\\ActivatableClasses\\Package\\Microsoft\.(People|WindowsFeedbackHub|Xbox|YourPhone|Zune)">"%TEMP%\privwindozelog.txt"
-IF NOT ERRORLEVEL 1 ( set packagesheur=true ) else ( set packagesheur=false )
-IF %packagesheur%==true (
-    for /f %%g in (%TEMP%\privwindozelog.txt) DO (
-         REG DELETE "%%g" /F >NUL 2>&1
-        )
-)
-
-REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId"|GREP -Eis "^HKEY_CLASSES_ROOT\\Extensions\\ContractId\\Windows\.AppService\\PackageId\\Microsoft\.(People|WindowsFeedbackHub|Xbox|YourPhone|Zune)">"%TEMP%\privwindozelog.txt"
-IF NOT ERRORLEVEL 1 ( set packagesheur=true ) else ( set packagesheur=false )
-IF %packagesheur%==true (
-    for /f %%g in (%TEMP%\privwindozelog.txt) DO (
-         REG DELETE "%%g" /F >NUL 2>&1
-        )
+IF NOT EXIST %WINDIR%\grep.exe GOTO :PackagesHeur
+REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\ActivatableClasses\\Package\\Microsoft\.(WindowsFeedbackHub|Xbox|YourPhone|Zune)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\Extensions\\ContractId\\Windows\.AppService\\PackageId\\Microsoft\.(WindowsFeedbackHub|Xbox|YourPhone|Zune)">>"%TEMP%\privwindozelogh.txt"
+for /f %%g in (%TEMP%\privwindozelogh.txt) DO (
+    REG DELETE "%%g" /F >NUL 2>&1
 )
 :: Heuristic Registry Value
 :HeurValue
-Echo([^|^|^|^|^|^|     ] Scanning Heur Registry Values
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|FINDSTR -i "MicrosoftEdgeAutoLaunch_">"%TEMP%\privwindozelog.txt"
+IF NOT EXIST %WINDIR%\grep.exe GOTO :Policies
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
 for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
@@ -352,7 +337,6 @@ for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
 REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :: Policies
 :Policies
-Echo([^|^|^|^|^|^|^|    ] Scanning Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
@@ -371,7 +355,7 @@ REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V
 
 :: Tasks
 :Tasks
-Echo([^|^|^|^|^|^|^|^|   ] Scanning Tasks
+Echo([^|^|^|^|  ] Scanning Tasks
 REM Tasks creating new variants of themselves upon deletion? Little hard to prove at this point but will monitor (haha)
 REM Yes, new tasks are formed, but I think this is due to the service being disabled as well. Upon disabling InstallService SVC, WakeUpAndContinueUpdates, and WakeUpAndScanForUpdates are created (but disabled)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
@@ -438,7 +422,6 @@ for %%g in (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
       )
 )
-
 dir /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
 for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
@@ -506,41 +489,8 @@ for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :: Services
 :Services
-Echo([^|^|^|^|^|^|^|^|^|  ] Scanning Services
-IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Services2
-powershell -command "stop-service DiagTrack" >NUL 2>&1
-powershell -command "stop-service DoSvc" >NUL 2>&1
-powershell -command "stop-service InstallService" >NUL 2>&1
-powershell -command "stop-service OneDrive Updater Service" >NUL 2>&1
-powershell -command "stop-service MicrosoftEdgeElevationService" >NUL 2>&1
-powershell -command "stop-service WpnService" >NUL 2>&1
-powershell -command "stop-service XblAuthManager" >NUL 2>&1
-powershell -command "stop-service XblGameSave" >NUL 2>&1
-powershell -command "stop-service XboxGipSvc" >NUL 2>&1
-powershell -command "stop-service XboxNetApiSvc" >NUL 2>&1
-powershell -command "stop-service dmwappushservice" >NUL 2>&1
-powershell -command "stop-service edgeupdate" >NUL 2>&1
-powershell -command "stop-service edgeupdatem" >NUL 2>&1
-
-
-powershell -command "set-service DiagTrack -startuptype disabled" >NUL 2>&1
-powershell -command "set-service DoSvc -startuptype disabled" >NUL 2>&1
-powershell -command "set-service InstallService -startuptype disabled" >NUL 2>&1
-powershell -command "set-service OneDrive Updater Service -startuptype disabled" >NUL 2>&1
-powershell -command "set-service WpnService -startuptype disabled" >NUL 2>&1
-powershell -command "set-service XblAuthManager -startuptype disabled" >NUL 2>&1
-powershell -command "set-service XblGameSave -startuptype disabled" >NUL 2>&1
-powershell -command "set-service XboxGipSvc -startuptype disabled" >NUL 2>&1
-powershell -command "set-service XboxNetApiSvc -startuptype disabled" >NUL 2>&1
-powershell -command "set-service dmwappushservice -startuptype disabled" >NUL 2>&1
-powershell -command "set-service edgeupdate -startuptype disabled" >NUL 2>&1
-powershell -command "set-service edgeupdatem -startuptype disabled" >NUL 2>&1
-
-GOTO :Services3
-
-:Services2
-
-IF NOT EXIST %SYS32%\sc.exe GOTO :Services3
+Echo([^|^|^|^|^| ] Scanning Services
+IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
 sc config DiagTrack start= disabled>NUL
 sc config DoSvc start= disabled>NUL
 sc config InstallService start= disabled>NUL
@@ -553,18 +503,24 @@ sc config XboxNetApiSvc start= disabled>NUL
 sc config dmwappushservice start= disabled>NUL
 sc config edgeupdate start= disabled>NUL
 sc config edgeupdatem start= disabled>NUL
-
-:Services3
-IF NOT EXIST %SYS32%\reg.exe GOTO :ServicesHuer
-for %%g in (
-"HKLM\SYSTEM\CurrentControlSet\services\edgeupdate"
-"HKLM\SYSTEM\CurrentControlSet\services\edgeupdatem"
-"HKLM\SYSTEM\CurrentControlSet\services\MicrosoftEdgeElevationService"
-"HKLM\SYSTEM\CurrentControlSet\services\OneDrive Updater Service"
-) DO (
-       REG DELETE %%g /F >NUL 2>&1
-      )
-)
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+sc stop DiagTrack>NUL
+sc stop DoSvc>NUL
+sc stop InstallService>NUL
+sc stop OneDrive Updater Service>NUL
+sc stop WpnService>NUL
+sc stop XblAuthManager>NUL
+sc stop XblGameSave>NUL
+sc stop XboxGipSvc>NUL
+sc stop XboxNetApiSvc>NUL
+sc stop dmwappushservice>NUL
+sc stop edgeupdate>NUL
+sc stop edgeupdatem>NUL
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+sc delete edgeupdate>NUL
+sc delete edgeupdatem>NUL
+sc delete MicrosoftEdgeElevationService>NUL
+sc delete "OneDrive Updater Service">NUL
 
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
@@ -579,7 +535,7 @@ for /f %%g in (%TEMP%\privwindozelog.txt) DO (
 
 :: Discord Files
 :DiscordFiles
-Echo([^|^|^|^|^|^|^|^|^|^| ] Scanning Files
+Echo([^|^|^|^|^|^|] Scanning File System
 dir /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Discord2 )
 for /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
@@ -636,7 +592,6 @@ for %%g in (
 )
 :: Folders
 :Folders
-Echo([^|^|^|^|^|^|^|^|^|^|^|] Scanning Folders
 for %%g in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
