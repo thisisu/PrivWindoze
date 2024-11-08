@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.0.0
-ECHO(PrivWindoze by Furtivex - Version 2.0.0
+title PrivWindoze by Furtivex - Version 2.0.1
+ECHO(PrivWindoze by Furtivex - Version 2.0.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -165,7 +165,11 @@ for %%g in (
 "HKCR\microsoft-edge-holographic"
 "HKCR\microsoftmusic"
 "HKCR\microsoftvideo"
+"HKCR\ms-clipchamp"
 "HKCR\ms-cortana"
+"HKCR\ms-gamingoverlay"
+"HKCR\ms-insights"
+"HKCR\ms-meetnowflyout"
 "HKCR\ms-teams"
 "HKCR\ms-xbet-survey"
 "HKCR\msnews"
@@ -499,7 +503,7 @@ IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
 sc config DiagTrack start= disabled>NUL
 sc config DoSvc start= disabled>NUL
 sc config InstallService start= disabled>NUL
-sc config OneDrive Updater Service start= disabled>NUL
+sc config "OneDrive Updater Service" start= disabled>NUL
 sc config WpnService start= disabled>NUL
 sc config XblAuthManager start= disabled>NUL
 sc config XblGameSave start= disabled>NUL
@@ -512,7 +516,7 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 sc stop DiagTrack>NUL
 sc stop DoSvc>NUL
 sc stop InstallService>NUL
-sc stop OneDrive Updater Service>NUL
+sc stop "OneDrive Updater Service">NUL
 sc stop WpnService>NUL
 sc stop XblAuthManager>NUL
 sc stop XblGameSave>NUL
