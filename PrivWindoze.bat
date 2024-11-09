@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.0.3
-ECHO(PrivWindoze by Furtivex - Version 2.0.3
+title PrivWindoze by Furtivex - Version 2.0.4
+ECHO(PrivWindoze by Furtivex - Version 2.0.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -337,10 +337,10 @@ REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :HeurValue
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
 IF NOT EXIST %WINDIR%\grep.exe GOTO :Policies
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_">"%TEMP%\privwindozelog.txt"
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
-SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
-for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
+SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
+for /f %%g in (%TEMP%\privwindozelogr2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
 :: Policies
@@ -631,5 +631,5 @@ for %%g in (
 :eof
 Echo.
 Echo.
-Echo(Scan complete! Privacy has been restored!
+Echo(Scan complete! Enjoy a more private Windows!
 timeout /t 03>NUL
