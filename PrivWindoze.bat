@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.0.1
-ECHO(PrivWindoze by Furtivex - Version 2.0.1
+title PrivWindoze by Furtivex - Version 2.0.2
+ECHO(PrivWindoze by Furtivex - Version 2.0.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -69,16 +69,12 @@ Echo([^|^|    ] Scanning Windows Apps
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
 IF NOT EXIST %windir%\grep.exe GOTO :Registry
 IF NOT EXIST %windir%\sed.exe GOTO :Registry
-powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozelog.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)| : (acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames))" <"%temp%\privwindozelog.txt" >"%temp%\privwindozelog2.txt"
-IF NOT ERRORLEVEL 1 ( set dumbapps=true ) else ( set dumbapps=false )
-IF %dumbapps%==true (
-sed -r "s/^PackageFullName : //" <"%temp%\privwindozelog2.txt" >"%temp%\privwindozelog3.txt"
-)
-IF %dumbapps%==true (
-    for /f %%g in (%TEMP%\privwindozelog3.txt) DO (
-         powershell -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
-        )
+powershell -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%temp%\privwindozeloga.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)| : (acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames))" <"%temp%\privwindozeloga.txt" >"%temp%\privwindozeloga2.txt"
+sed -r "s/^PackageFullName : //" <"%temp%\privwindozeloga2.txt" >"%temp%\privwindozeloga3.txt"
+SORT_ -f -u <"%temp%\privwindozeloga3.txt" >"%temp%\privwindozeloga4.txt"
+for /f %%g in (%TEMP%\privwindozeloga4.txt) DO (
+    powershell -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
 REM B9ECED6F = Asus bundles
 REM AD2F1837 = HP Bundles
@@ -158,7 +154,6 @@ for %%g in (
 "HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
-"HKCR\msnnews"
 "HKCR\ie_to_edge_bho.IEToEdgeBHO"
 "HKCR\ie_to_edge_bho.IEToEdgeBHO.1"
 "HKCR\microsoft-edge"
@@ -175,6 +170,7 @@ for %%g in (
 "HKCR\ms-teams"
 "HKCR\ms-xbet-survey"
 "HKCR\msnews"
+"HKCR\msnnews"
 "HKCR\msnweather"
 "HKCR\msxbox"
 "HKCR\xbox"
@@ -226,7 +222,10 @@ for %%g in (
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebar"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebarservices"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamingoverlay"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-insights"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-meetnowflyout"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-teams"
+"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-xbet-survey"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamepass"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamingapp"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msnweather"
@@ -323,17 +322,17 @@ REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lis
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 
-:: Clear MUI Cache
-REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
-
 :: Heuristic Registry Key
 IF NOT EXIST %WINDIR%\grep.exe GOTO :PackagesHeur
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\ActivatableClasses\\Package\\Microsoft\.(WindowsFeedbackHub|Xbox|YourPhone|Zune)">>"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\Extensions\\ContractId\\Windows\.AppService\\PackageId\\Microsoft\.(WindowsFeedbackHub|Xbox|YourPhone|Zune)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "\\Package\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Package\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "\\PackageId\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\PackageId\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 for /f %%g in (%TEMP%\privwindozelogh.txt) DO (
     REG DELETE "%%g" /F >NUL 2>&1
 )
+REM HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache
+REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :: Heuristic Registry Value
 :HeurValue
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
@@ -344,8 +343,6 @@ SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelog.txt" >"%TEMP%\pr
 for /f %%g in (%TEMP%\privwindozelog2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
-
-REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
 :: Policies
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
