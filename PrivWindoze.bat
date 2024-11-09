@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.0.2
-ECHO(PrivWindoze by Furtivex - Version 2.0.2
+title PrivWindoze by Furtivex - Version 2.0.3
+ECHO(PrivWindoze by Furtivex - Version 2.0.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -631,5 +631,5 @@ for %%g in (
 :eof
 Echo.
 Echo.
-Echo(Script completed! Exiting in 3 seconds...
+Echo(Scan complete! Privacy has been restored!
 timeout /t 03>NUL
