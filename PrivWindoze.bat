@@ -368,6 +368,7 @@ REM Tasks creating new variants of themselves upon deletion? Little hard to prov
 REM Yes, new tasks are formed, but I think this is due to the service being disabled as well. Upon disabling InstallService SVC, WakeUpAndContinueUpdates, and WakeUpAndScanForUpdates are created (but disabled)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 for %%g in (
+"Lenovo\Vantage\Schedule\DailyTelemetryTransmission"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
 "Microsoft\Office\OfficeTelemetryAgentLogOn"
 "Microsoft\Windows\Application Experience\MareBackup"
