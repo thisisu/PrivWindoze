@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.0.7
-ECHO(PrivWindoze by Furtivex - Version 2.0.7
+title PrivWindoze by Furtivex - Version 2.0.8
+ECHO(PrivWindoze by Furtivex - Version 2.0.8
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -53,9 +53,11 @@ for %%g in (
 "MicrosoftEdgeUpdate.exe"
 "OneDrive.exe"
 "OneDriveUpdaterService.exe"
-"Update.exe"
 "Teams.exe"
+"Update.exe"
 "Widgets.exe"
+"XboxPcApp.exe"
+"XboxPcAppFT.exe"
 "elevation_service.exe"
 "ms-teams.exe"
 "msedge.exe"
@@ -588,6 +590,10 @@ for %%g in (
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*.*"
+"%WINDIR%\SystemTemp\*.*"
+"%WINDIR%\Temp\*.*"
 "%WINDIR%\grep.exe"
 "%WINDIR%\libiconv2.dll"
 "%WINDIR%\libintl3.dll"
@@ -596,8 +602,6 @@ for %%g in (
 "%WINDIR%\regex2.dll"
 "%WINDIR%\sed.exe"
 "%WINDIR%\sort_.exe"
-"%WINDIR%\SystemTemp\*.*"
-"%WINDIR%\Temp\*.*"
 ) DO (
        DEL /F/Q %%g >NUL 2>&1
       )
@@ -624,6 +628,7 @@ for %%g in (
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
+"%PROGRAMFILES(x86)%\Microsoft\Temp"
 "%PROGRAMFILES(x86)%\Teams Installer"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
@@ -632,7 +637,7 @@ for %%g in (
       RD /S/Q %%g >NUL 2>&1
       )
 )
-
+IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
 :eof
 Echo.
 Echo.
