@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.0
-ECHO(PrivWindoze by Furtivex - Version 2.1.0
+title PrivWindoze by Furtivex - Version 2.1.1
+ECHO(PrivWindoze by Furtivex - Version 2.1.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -16,19 +16,15 @@ pcre3.dll
 regex2.dll
 sed.exe
 sort_.exe
-) DO (
-COPY /Y "%CD%\dependencies\%%g" "%WINDIR%" >NUL 2>&1
-)
+) DO ( COPY /Y "%CD%\dependencies\%%g" "%WINDIR%" >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%ALLUSERSPROFILE%\Start Menu\Programs"
 SET "PROGRAMS2ALL=%USERPROFILE%\Start Menu\Programs"
 IF EXIST "%WINDIR%\Sysnative\cmd.exe" ( SET "SYS32=%WINDIR%\Sysnative" ) else ( SET "SYS32=%WINDIR%\System32" )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-IF EXIST %WINDIR%\syswow64 ( set ARCH=x64 ) else ( set ARCH=x86 )
-IF %ARCH%==x64 (
- SET "SYSWOW64=%WINDIR%\SysWOW64"
-)
+IF EXIST %WINDIR%\syswow64 ( SET ARCH=x64 ) else ( SET ARCH=x86 )
+IF %ARCH%==x64 ( SET "SYSWOW64=%WINDIR%\SysWOW64" )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "LOCALA=%LOCALAPPDATA%"
 SET "LOCALLOW=%USERPROFILE%\Appdata\LocalLow"
