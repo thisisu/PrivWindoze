@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.0.6
-ECHO(PrivWindoze by Furtivex - Version 2.0.6
+title PrivWindoze by Furtivex - Version 2.0.7
+ECHO(PrivWindoze by Furtivex - Version 2.0.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -53,6 +53,7 @@ for %%g in (
 "MicrosoftEdgeUpdate.exe"
 "OneDrive.exe"
 "OneDriveUpdaterService.exe"
+"Update.exe"
 "Teams.exe"
 "Widgets.exe"
 "elevation_service.exe"
@@ -307,6 +308,7 @@ REG DELETE "HKCR\.shtml\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
+REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
@@ -582,7 +584,7 @@ for %%g in (
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
-"%TEMP%\privwindozelog*.txt"
+"%TEMP%\*.*"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
@@ -594,6 +596,8 @@ for %%g in (
 "%WINDIR%\regex2.dll"
 "%WINDIR%\sed.exe"
 "%WINDIR%\sort_.exe"
+"%WINDIR%\SystemTemp\*.*"
+"%WINDIR%\Temp\*.*"
 ) DO (
        DEL /F/Q %%g >NUL 2>&1
       )
@@ -610,6 +614,7 @@ for %%g in (
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
+"%LOCALA%\Microsoft\TeamsMeetingAdd-in"
 "%LOCALA%\Microsoft\TeamsMeetingAddin"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\OneDrive"
