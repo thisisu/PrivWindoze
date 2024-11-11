@@ -36,19 +36,25 @@ SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinne
 SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
+SET longexit=false
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 :Processes
 Echo([^|     ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 FOR %%g in (
+"apphelpercap.exe"
 "appmonitorplugin.exe"
+"bingpopup.exe"
 "camusage.exe"
 "dcv2.exe"
+"diagscap.exe"
 "elevation_service.exe"
 "filecoauth.exe"
 "filesynchelper.exe"
 "gamebar_widget.exe"
+"hpcommrecovery.exe"
 "installedpackagesagent.exe"
+"intelanalyticsservice.exe"
 "microsoft.media.player.exe"
 "microsoft.sharepoint.exe"
 "microsoftedgeupdate.exe"
@@ -56,9 +62,13 @@ FOR %%g in (
 "ms-teams.exe"
 "msedge.exe"
 "msedgewebview2.exe"
+"networkcap.exe"
 "onedrive.exe"
 "onedriveupdaterservice.exe"
+"operfmon.exe"
+"sysinfocap.exe"
 "teams.exe"
+"touchpointanalyticsclientservice.exe"
 "ubtservice.exe"
 "update.exe"
 "widgets.exe"
@@ -322,6 +332,8 @@ REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lists" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
+
 
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "\\Package\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Package\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
@@ -385,7 +397,11 @@ REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V
 Echo([^|^|^|^|  ] Scanning Tasks
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 FOR %%g in (
+"HP\Consent Manager Launcher"
+"HPOneAgentRepairTask"
+"Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
 "Lenovo\Vantage\Schedule\DailyTelemetryTransmission"
+"Microsoft\Office\Office Performance Monitor"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
 "Microsoft\Office\OfficeTelemetryAgentLogOn"
 "Microsoft\Windows\Application Experience\MareBackup"
@@ -424,6 +440,8 @@ FOR %%g in (
 "Microsoft\Windows\InstallService\WakeUpAndScanForUpdates"
 "Microsoft\Windows\Location\Notifications"
 "Microsoft\Windows\Maintenance\WinSAT"
+"Microsoft\Windows\Maps\MapsToastTask"
+"Microsoft\Windows\Maps\MapsUpdateTask"
 "Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents"
 "Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic"
 "Microsoft\Windows\PLA\New Data Collector Set"
@@ -524,42 +542,67 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
 IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
-SC CONFIG "OneDrive Updater Service" start= disabled>NUL
-SC CONFIG DiagTrack start= disabled>NUL
-SC CONFIG DoSvc start= disabled>NUL
-SC CONFIG FileSyncHelper start= disabled>NUL
-SC CONFIG InstallService start= disabled>NUL
-SC CONFIG UEIPSvc start= disabled>NUL
-SC CONFIG WpnService start= disabled>NUL
-SC CONFIG XblAuthManager start= disabled>NUL
-SC CONFIG XblGameSave start= disabled>NUL
-SC CONFIG XboxGipSvc start= disabled>NUL
-SC CONFIG XboxNetApiSvc start= disabled>NUL
-SC CONFIG dmwappushservice start= disabled>NUL
-SC CONFIG edgeupdate start= disabled>NUL
-SC CONFIG edgeupdatem start= disabled>NUL
+sc config "hp comm recover" start= disabled>nul
+sc config "onedrive updater service" start= disabled>nul
+sc config diagtrack start= disabled>nul
+sc config dmwappushservice start= disabled>nul
+sc config dosvc start= disabled>nul
+sc config edgeupdate start= disabled>nul
+sc config edgeupdatem start= disabled>nul
+sc config filesynchelper start= disabled>nul
+sc config hp comm recover start= disabled>nul
+sc config hp-one-agent-service start= disabled>nul
+sc config hpapphelpercap start= disabled>nul
+sc config hpdiagscap start= disabled>nul
+sc config hpnetworkcap start= disabled>nul
+sc config hpsysinfocap start= disabled>nul
+sc config hptouchpointanalyticsservice start= disabled>nul
+sc config installservice start= disabled>nul
+sc config ueipsvc start= disabled>nul
+sc config wpnservice start= disabled>nul
+sc config xblauthmanager start= disabled>nul
+sc config xblgamesave start= disabled>nul
+sc config xboxgipsvc start= disabled>nul
+sc config xboxnetapisvc start= disabled>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-SC STOP "OneDrive Updater Service">NUL
-SC STOP DiagTrack>NUL
-SC STOP DoSvc>NUL
-SC STOP FileSyncHelper>NUL
-SC STOP InstallService>NUL
-SC STOP UEIPSvc>NUL
-SC STOP WpnService>NUL
-SC STOP XblAuthManager>NUL
-SC STOP XblGameSave>NUL
-SC STOP XboxGipSvc>NUL
-SC STOP XboxNetApiSvc>NUL
-SC STOP dmwappushservice>NUL
-SC STOP edgeupdate>NUL
-SC STOP edgeupdatem>NUL
+sc stop "hp comm recover">nul
+sc stop "onedrive updater service">nul
+sc stop diagtrack>nul
+sc stop dmwappushservice>nul
+sc stop dosvc>nul
+sc stop edgeupdate>nul
+sc stop edgeupdatem>nul
+sc stop filesynchelper>nul
+sc stop hp-one-agent-service>nul
+sc stop hpapphelpercap>nul
+sc stop hpdiagscap>nul
+sc stop hpnetworkcap>nul
+sc stop hpsysinfocap>nul
+sc stop hptouchpointanalyticsservice>nul
+sc stop installservice>nul
+sc stop ueipsvc>nul
+sc stop wpnservice>nul
+sc stop xblauthmanager>nul
+sc stop xblgamesave>nul
+sc stop xboxgipsvc>nul
+sc stop xboxnetapisvc>nul
+
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-SC DELETE "OneDrive Updater Service">NUL
-SC DELETE FileSyncHelper>NUL
-SC DELETE MicrosoftEdgeElevationService>NUL
-SC DELETE UEIPSvc>NUL
-SC DELETE edgeupdate>NUL
-SC DELETE edgeupdatem>NUL
+sc delete "hp comm recover">nul
+sc delete "onedrive updater service">nul
+sc delete edgeupdate>nul
+sc delete edgeupdatem>nul
+sc delete filesynchelper>nul
+sc delete hp-one-agent-service>nul
+sc delete hpapphelpercap>nul
+sc delete hpdiagscap>nul
+sc delete hpnetworkcap>nul
+sc delete hpsysinfocap>nul
+sc delete hptouchpointanalyticsservice>nul
+sc delete microsoftedgeelevationservice>nul
+sc delete ueipsvc>nul
+
+REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
 
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
@@ -630,13 +673,36 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Files )
+IF ERRORLEVEL 1 ( GOTO :HPTelem )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "packages=%%g"
     SETLOCAL EnableDelayedExpansion
     RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
     ENDLOCAL
 )
+:HPTelem
+DIR /B/S "%SYSDIR%\DriverStore\FileRepository" 2>NUL|GREP -Es "\\FileRepository\\hp(customcap|analytics)comp\.inf_amd64_[a-f0-9]{16}\\x64\\([A-Za-z]{5,}Cap\.exe|TouchpointAnalyticsClientService\.exe|hpcustomcapdriver\.sys)$">"%TEMP%\privwindozelogHP.txt"
+IF ERRORLEVEL 1 ( GOTO :Files )
+ECHO(~~~~~~~~~~~~~~~~~~~~~~~~ PRIVWINDOZE ~~~~~~~~~~~~~~~~~~~~~~~~>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(.>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(I found the following files:>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(=======>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+TYPE "%TEMP%\privwindozelogHP.txt">>"%USERPROFILE%\Desktop\PrivWindoze.txt" >NUL 2>&1
+ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(I did not feel comfortable trying to remove them myself as there is a risk for BSOD>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(However, I did attempt to stop and delete the services they are connected to>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(Please use caution if you should try to remove any remnants yourself>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(More information: https://www.pcmag.com/news/hp-accused-of-quietly-installing-spyware-on-windows-pcs>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(Thanks for using PrivWindoze. A future update may have this covered.>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+NIRCMD BEEP 1400 50 && SET longexit=true
+
+REM ATTRIB -R -A -S -H "%SYSDIR%\DriverStore\FileRepository\%%g" >NUL 2>&1
+REM DEL /F/Q "%SYSDIR%\DriverStore\FileRepository\%%g" >NUL 2>&1
+REM SED trim just the .inf
+REM PNPUTIL /delete-driver <oem#.inf> [/uninstall] [/force] [/reboot]
+
 :Files
 FOR %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
@@ -686,6 +752,9 @@ FOR %%g in (
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
+"%PROGRAMFILES%\HPCommRecovery"
+"%PROGRAMFILES%\HP\HP One Agent"
+"%TEMP%\dependencies"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES(x86)%\Microsoft\Edge"
@@ -695,7 +764,6 @@ FOR %%g in (
 "%PROGRAMFILES(x86)%\Microsoft\Temp"
 "%PROGRAMFILES(x86)%\Teams Installer"
 "%SYS32%\Microsoft-Edge-WebView"
-"%TEMP%\dependencies"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\GameDVR"
@@ -709,8 +777,19 @@ FOR %%g in (
       )
 )
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
+IF %longexit%==true (
+  ECHO.
+  ECHO.
+  ECHO(Scan complete! Enjoy a more private Windows!
+  ECHO.
+  ECHO(Side note: I left a log on your Desktop named PrivWindoze.txt
+  ECHO(Please read it when you get a chance. It is about some of the HP software I found
+  TIMEOUT /t 20>NUL
+)
+IF %longexit%==false (
+  ECHO.
+  ECHO.
+  ECHO(Scan complete! Enjoy a more private Windows!
+  TIMEOUT /t 03>NUL
+)
 :eof
-ECHO.
-ECHO.
-ECHO(Scan complete! Enjoy a more private Windows!
-TIMEOUT /t 03>NUL
