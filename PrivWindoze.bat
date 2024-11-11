@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.3
-ECHO(PrivWindoze by Furtivex - Version 2.1.3
+title PrivWindoze by Furtivex - Version 2.1.4
+ECHO(PrivWindoze by Furtivex - Version 2.1.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -622,13 +622,22 @@ FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     RD /S/Q "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache\%%g" >NUL 2>&1
 )
 :ClearTemp
-IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
+IF NOT EXIST %WINDIR%\grep.exe GOTO :Localpackages
 DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "deltemp=%%g"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!TEMP!\!deltemp!" >NUL 2>&1
+    ENDLOCAL
+)
+:Localpackages
+DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Files )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "packages=%%g"
+    SETLOCAL EnableDelayedExpansion
+    RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
     ENDLOCAL
 )
 :Files
