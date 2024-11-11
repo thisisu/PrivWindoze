@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.4
-ECHO(PrivWindoze by Furtivex - Version 2.1.4
+title PrivWindoze by Furtivex - Version 2.1.5
+ECHO(PrivWindoze by Furtivex - Version 2.1.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -37,7 +37,6 @@ SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-:: Processes
 :Processes
 Echo([^|     ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
@@ -69,7 +68,6 @@ FOR %%g in (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
 )
-:: Windows Apps
 :WindowsApps
 Echo([^|^|    ] Scanning Windows Apps
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
@@ -87,7 +85,6 @@ REM B9ECED6F = Asus bundles
 REM AD2F1837 = HP Bundles
 REM 549981C3F5F10 = MS Cortana
 REM 9426MICRO = MSI // Micro Star International Bundles
-:: Registry
 :Registry
 Echo([^|^|^|   ] Scanning Registry
 IF %ARCH%==x64 (
@@ -326,7 +323,6 @@ REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lis
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 
-:: Heuristic Registry Key
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "\\Package\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Package\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "\\PackageId\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\PackageId\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
@@ -336,25 +332,33 @@ REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\Curre
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
-
+REM s/\x22//g
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Autolaunch )
-:: GREP -s "App=[A-Z]{1}:" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
-:: IF ERRORLEVEL 1 ( GOTO :Policies )
-
+IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
-IF ERRORLEVEL 1 ( GOTO :Autolaunch )
-:: orphans???
-:: SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v[0-9]{1,2}\.[0-9]{1,2}.Action=Allow.Active=(TRUE|FALSE).Dir=(In|Out).(Profile|Protocol)=(Public|Private|Domain|[0-9]{1,2}).*App=([A-Za-z]{1}:\\(.*\.exe))\|/\1  \6/ ; s/\|Name=.*//" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
-:: SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3guids.txt"
-:: SED -r "s/\s{2,}([A-Za-z]{1}:\\(.*\.exe$)//" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3paths.txt"
-
+IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelogMS.txt" >"%TEMP%\privwindozeMS2.txt"
 FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
     REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V "%%g" /F >NUL 2>&1
 )
-
+:FirewallOrphans
+GREP -Es "\|App=[A-Za-z]:.*\.exe" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
+IF ERRORLEVEL 1 ( GOTO :Autolaunch )
+SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v.*\|App=([A-Za-z]:.*\.exe).*\|$/\1     \2/" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
+SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3clsids.txt"
+SED -r "s/^.*\s{5}([A-Za-z]:.*\.exe)$/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3paths.txt"
+FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
+    FOR /F "usebackq delims=" %%i in ("%TEMP%\privwindozelog3paths.txt") DO (
+    SET "firewallpath=%%i"
+    SETLOCAL EnableDelayedExpansion
+    DIR /B "!firewallpath!" >NUL 2>&1
+    IF ERRORLEVEL 1 ( 
+                       REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g>>"%USERPROFILE%\desktop\ERROR.txt"
+                      )
+    ENDLOCAL
+    )
+)
 :Autolaunch
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
@@ -362,7 +366,7 @@ SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\p
 FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
-:: Policies
+
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
@@ -380,11 +384,9 @@ REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
 
-:: Tasks
+
 :Tasks
 Echo([^|^|^|^|  ] Scanning Tasks
-REM Tasks creating new variants of themselves upon deletion? Little hard to prove at this point but will monitor (haha)
-REM Yes, new tasks are formed, but I think this is due to the service being disabled as well. Upon disabling InstallService SVC, WakeUpAndContinueUpdates, and WakeUpAndScanForUpdates are created (but disabled)
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 FOR %%g in (
 "Lenovo\Vantage\Schedule\DailyTelemetryTransmission"
@@ -522,7 +524,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
-:: Services
+
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
 IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
@@ -563,14 +565,11 @@ SC DELETE UEIPSvc>NUL
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
 IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
-REM S2 edgeupdate1db0cab9f75c19; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /svc [X]
-REM S3 edgeupdatem1db0cab9f91f3b; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /medsvc [X]
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Eis "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     REG DELETE "%%g" /F >NUL 2>&1
 )
-:: Discord Files
 :DiscordFiles
 Echo([^|^|^|^|^|^|] Scanning File System
 DIR /B "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
@@ -590,7 +589,6 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
     ENDLOCAL
 )
-:: locallow64hex
 :locallow64hex
 DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Es "^[a-f0-9]{64}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :InboxApps )
@@ -673,7 +671,6 @@ FOR %%g in (
        DEL /F/Q %%g >NUL 2>&1
       )
 )
-:: Folders
 :Folders
 FOR %%g in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
