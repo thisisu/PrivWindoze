@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.6
-ECHO(PrivWindoze by Furtivex - Version 2.1.6
+title PrivWindoze by Furtivex - Version 2.1.7
+ECHO(PrivWindoze by Furtivex - Version 2.1.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -524,10 +524,12 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
 IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
+SC CONFIG "OneDrive Updater Service" start= disabled>NUL
 SC CONFIG DiagTrack start= disabled>NUL
 SC CONFIG DoSvc start= disabled>NUL
+SC CONFIG FileSyncHelper start= disabled>NUL
 SC CONFIG InstallService start= disabled>NUL
-SC CONFIG "OneDrive Updater Service" start= disabled>NUL
+SC CONFIG UEIPSvc start= disabled>NUL
 SC CONFIG WpnService start= disabled>NUL
 SC CONFIG XblAuthManager start= disabled>NUL
 SC CONFIG XblGameSave start= disabled>NUL
@@ -536,12 +538,13 @@ SC CONFIG XboxNetApiSvc start= disabled>NUL
 SC CONFIG dmwappushservice start= disabled>NUL
 SC CONFIG edgeupdate start= disabled>NUL
 SC CONFIG edgeupdatem start= disabled>NUL
-SC CONFIG UEIPSvc start= disabled>NUL
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+SC STOP "OneDrive Updater Service">NUL
 SC STOP DiagTrack>NUL
 SC STOP DoSvc>NUL
+SC STOP FileSyncHelper>NUL
 SC STOP InstallService>NUL
-SC STOP "OneDrive Updater Service">NUL
+SC STOP UEIPSvc>NUL
 SC STOP WpnService>NUL
 SC STOP XblAuthManager>NUL
 SC STOP XblGameSave>NUL
@@ -550,13 +553,13 @@ SC STOP XboxNetApiSvc>NUL
 SC STOP dmwappushservice>NUL
 SC STOP edgeupdate>NUL
 SC STOP edgeupdatem>NUL
-SC STOP UEIPSvc>NUL
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+SC DELETE "OneDrive Updater Service">NUL
+SC DELETE FileSyncHelper>NUL
+SC DELETE MicrosoftEdgeElevationService>NUL
+SC DELETE UEIPSvc>NUL
 SC DELETE edgeupdate>NUL
 SC DELETE edgeupdatem>NUL
-SC DELETE MicrosoftEdgeElevationService>NUL
-SC DELETE "OneDrive Updater Service">NUL
-SC DELETE UEIPSvc>NUL
 
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
