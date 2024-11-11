@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.2
-ECHO(PrivWindoze by Furtivex - Version 2.1.2
+title PrivWindoze by Furtivex - Version 2.1.3
+ECHO(PrivWindoze by Furtivex - Version 2.1.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -339,15 +339,23 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
 
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Policies )
-GREP -s "App=C:" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
-IF ERRORLEVEL 1 ( GOTO :Policies )
-GREP -s "Name=Microsoft Edge" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
-IF ERRORLEVEL 1 ( GOTO :Policies )
-SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog4.txt"
-FOR /F %%g in (%TEMP%\privwindozelog4.txt) DO (
+IF ERRORLEVEL 1 ( GOTO :Autolaunch )
+:: GREP -s "App=[A-Z]{1}:" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
+:: IF ERRORLEVEL 1 ( GOTO :Policies )
+
+GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
+IF ERRORLEVEL 1 ( GOTO :Autolaunch )
+:: orphans???
+:: SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v[0-9]{1,2}\.[0-9]{1,2}.Action=Allow.Active=(TRUE|FALSE).Dir=(In|Out).(Profile|Protocol)=(Public|Private|Domain|[0-9]{1,2}).*App=([A-Za-z]{1}:\\(.*\.exe))\|/\1  \6/ ; s/\|Name=.*//" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
+:: SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3guids.txt"
+:: SED -r "s/\s{2,}([A-Za-z]{1}:\\(.*\.exe$)//" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3paths.txt"
+
+SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelogMS.txt" >"%TEMP%\privwindozeMS2.txt"
+FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
     REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V "%%g" /F >NUL 2>&1
 )
+
+:Autolaunch
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
