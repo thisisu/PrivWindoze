@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.8
-ECHO(PrivWindoze by Furtivex - Version 2.1.8
+title PrivWindoze by Furtivex - Version 2.1.9
+ECHO(PrivWindoze by Furtivex - Version 2.1.9
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -49,12 +49,14 @@ FOR %%g in (
 "dcv2.exe"
 "diagscap.exe"
 "elevation_service.exe"
+"UDClientService.exe"
 "filecoauth.exe"
 "filesynchelper.exe"
 "gamebar_widget.exe"
 "hpcommrecovery.exe"
 "installedpackagesagent.exe"
 "intelanalyticsservice.exe"
+"lenovonow.task.exe"
 "microsoft.media.player.exe"
 "microsoft.sharepoint.exe"
 "microsoftedgeupdate.exe"
@@ -66,10 +68,14 @@ FOR %%g in (
 "onedrive.exe"
 "onedriveupdaterservice.exe"
 "operfmon.exe"
+"sc.exe"
+"scheduleeventaction.exe"
 "sysinfocap.exe"
 "teams.exe"
+"tobii.service.exe"
 "touchpointanalyticsclientservice.exe"
 "ubtservice.exe"
+"uninstall.exe"
 "update.exe"
 "widgets.exe"
 "xboxpcapp.exe"
@@ -85,16 +91,18 @@ IF NOT EXIST %WINDIR%\grep.exe GOTO :Registry
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Registry
 IF NOT EXIST %WINDIR%\sort_.exe GOTO :Registry
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
-GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)| : (acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames))" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
+GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)| : (acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames))" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga3.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga3.txt" >"%TEMP%\privwindozeloga4.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga4.txt) DO (
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
-REM B9ECED6F = Asus bundles
-REM AD2F1837 = HP Bundles
 REM 549981C3F5F10 = MS Cortana
 REM 9426MICRO = MSI // Micro Star International Bundles
+REM AD2F1837 = HP Bundles
+REM B9ECED6F = Asus bundles
+REM E046963F = Lenovo Bundles
+
 :Registry
 Echo([^|^|^|   ] Scanning Registry
 IF %ARCH%==x64 (
@@ -318,6 +326,8 @@ REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
+REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V LenovoVantageToolbar /F >NUL 2>&1
+REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
@@ -331,16 +341,15 @@ REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "
 REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lists" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.slatedigital.analytics" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
-
 
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "\\Package\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Package\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "\\PackageId\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\PackageId\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "\\Package\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Package\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "\\PackageId\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\PackageId\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL|GREP -Eis "\\Packages\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Packages\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL|GREP -Eis "\\Packages\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Packages\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
@@ -397,10 +406,39 @@ REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V
 Echo([^|^|^|^|  ] Scanning Tasks
 IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 FOR %%g in (
-"HP\Consent Manager Launcher"
 "HPOneAgentRepairTask"
+"HP\Consent Manager Launcher"
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
+"Lenovo\ImController\Lenovo iM Controller Monitor"
+"Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
+"Lenovo\LenovoNowQuarterlyLaunch"
+"Lenovo\LenovoNowTask"
+"Lenovo\UDC\Lenovo UDC Diagnostic Scan"
+"Lenovo\UDC\Lenovo UDC Monitor"
+"Lenovo\Vantage\Lenovo.Vantage.ServiceMaintainance"
+"Lenovo\Vantage\Schedule\BatteryGaugeAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\DailyTelemetryTransmission"
+"Lenovo\Vantage\Schedule\GenericMessagingAddin"
+"Lenovo\Vantage\Schedule\HeartbeatAddinDailyScheduleTask"
+"Lenovo\Vantage\Schedule\IdeaNotebookAddinDailyEvent"
+"Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.DelayedMonthlyReport"
+"Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.MonthlyReport"
+"Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.SScan"
+"Lenovo\Vantage\Schedule\LenovoCompanionAppAddinDailyScheduleTask"
+"Lenovo\Vantage\Schedule\LenovoSystemUpdateAddin_WeeklyTask"
+"Lenovo\Vantage\Schedule\SettingsWidgetAddinDailyScheduleTask"
+"Lenovo\Vantage\Schedule\SmartPerformance.ExpireReminder"
+"Lenovo\Vantage\Schedule\VantageCoreAddinIdleScheduleTask"
+"Lenovo\Vantage\Schedule\VantageCoreAddinWeekScheduleTask"
+"Lenovo\Vantage\StartupFixPlan"
+"McAfee\WPS\McAfee Anti-Tracker Scanner"
+"McAfee\WPS\McAfee Anti-tracker notification"
+"McAfee\WPS\McAfee Cloud Configuration Check"
+"McAfee\WPS\McAfee Health Check"
+"McAfee\WPS\McAfee Hotfix"
+"McAfee\WPS\McAfee Message Check"
+"McAfee\WPS\McAfee PC Optimizer Task"
+"McAfee\WPS\McAfee Scheduled Tracker Remover"
 "Microsoft\Office\Office Performance Monitor"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
 "Microsoft\Office\OfficeTelemetryAgentLogOn"
@@ -465,6 +503,9 @@ FOR %%g in (
 "Microsoft\Windows\WwanSvc\OobeDiscovery"
 "Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\XblGameSave\XblGameSaveTask"
+"Samsung_PSSD_Registration_Plus"
+"TVT\TVSUUpdateTask"
+"TVT\TVSUUpdateTask_UserLogOn"
 "UEIPInvitation"
 "UbtFrameworkService"
 ) DO (
@@ -529,7 +570,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Optimize
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Services )
+IF ERRORLEVEL 1 ( GOTO :TimeBasedEvents )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
@@ -538,7 +579,40 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
+:TimeBasedEvents
+DIR /B "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :UDCLen )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\Lenovo\ImController\TimeBasedEvents\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\ImController\TimeBasedEvents\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:UDCLen
+DIR /B "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :UDCLen2 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\MessagingPlugin\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\UDC\MessagingPlugin\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
 
+:UDCLen2
+DIR /B "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Services )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
 IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
@@ -552,18 +626,20 @@ sc config edgeupdatem start= disabled>nul
 sc config filesynchelper start= disabled>nul
 sc config hp-one-agent-service start= disabled>nul
 sc config hpapphelpercap start= disabled>nul
+sc config hpcustomcapdriver start= disabled>nul
 sc config hpdiagscap start= disabled>nul
 sc config hpnetworkcap start= disabled>nul
 sc config hpsysinfocap start= disabled>nul
 sc config hptouchpointanalyticsservice start= disabled>nul
 sc config installservice start= disabled>nul
+sc config tobiialenovoyx80 start= disabled>nul
+sc config tobiirgb start= disabled>nul
+sc config udcservice start= disabled>nul
 sc config ueipsvc start= disabled>nul
 sc config wpnservice start= disabled>nul
 sc config xblauthmanager start= disabled>nul
 sc config xblgamesave start= disabled>nul
 sc config xboxgipsvc start= disabled>nul
-sc config xboxnetapisvc start= disabled>nul
-sc config HPCustomCapDriver start= disabled>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 sc stop "hp comm recover">nul
 sc stop "onedrive updater service">nul
@@ -575,18 +651,21 @@ sc stop edgeupdatem>nul
 sc stop filesynchelper>nul
 sc stop hp-one-agent-service>nul
 sc stop hpapphelpercap>nul
+sc stop hpcustomcapdriver>nul
 sc stop hpdiagscap>nul
 sc stop hpnetworkcap>nul
 sc stop hpsysinfocap>nul
 sc stop hptouchpointanalyticsservice>nul
 sc stop installservice>nul
+sc stop tobiialenovoyx80>nul
+sc stop tobiirgb>nul
+sc stop udcservice>nul
 sc stop ueipsvc>nul
 sc stop wpnservice>nul
 sc stop xblauthmanager>nul
 sc stop xblgamesave>nul
 sc stop xboxgipsvc>nul
 sc stop xboxnetapisvc>nul
-sc stop HPCustomCapDriver>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 sc delete "hp comm recover">nul
 sc delete "onedrive updater service">nul
@@ -595,16 +674,19 @@ sc delete edgeupdatem>nul
 sc delete filesynchelper>nul
 sc delete hp-one-agent-service>nul
 sc delete hpapphelpercap>nul
+sc delete hpcustomcapdriver>nul
 sc delete hpdiagscap>nul
 sc delete hpnetworkcap>nul
 sc delete hpsysinfocap>nul
 sc delete hptouchpointanalyticsservice>nul
 sc delete microsoftedgeelevationservice>nul
+sc delete tobiialenovoyx80>nul
+sc delete tobiirgb>nul
+sc delete udcservice>nul
 sc delete ueipsvc>nul
-sc delete HPCustomCapDriver>nul
-
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
-
+REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
 IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
@@ -673,7 +755,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :Localpackages
-DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">"%TEMP%\privwindozelog.txt"
+DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :HPTelem )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "packages=%%g"
@@ -682,20 +764,19 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :HPTelem
-DIR /B/S "%SYSDIR%\DriverStore\FileRepository" 2>NUL|GREP -Es "\\FileRepository\\hp(customcap|analytics)comp\.inf_amd64_[a-f0-9]{16}\\x64\\([A-Za-z]{5,}Cap\.exe|TouchpointAnalyticsClientService\.exe|hpcustomcapdriver\.sys)$">"%TEMP%\privwindozelogHP.txt"
+DIR /B/S "%SYSDIR%\DriverStore\FileRepository" 2>NUL|GREP -Es "\\FileRepository\\hp(customcap|analytics)comp\.inf_amd64_[a-f0-9]{16}\\x64\\([A-Za-z]{5,}Cap\.exe|TouchpointAnalyticsClientService\.exe|hpcustomcapdriver\.sys)$|\\FileRepository\\lenovoyxx0\.inf.*_runtime_(ALENOVOYX80|RGB)_service\.exe$">"%TEMP%\privwindozelogRK.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 ECHO(~~~~~~~~~~~~~~~~~~~~~~~~ PRIVWINDOZE ~~~~~~~~~~~~~~~~~~~~~~~~>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(.>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
+ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(I found the following files:>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(=======>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-TYPE "%TEMP%\privwindozelogHP.txt">>"%USERPROFILE%\Desktop\PrivWindoze.txt" >NUL 2>&1
+TYPE "%TEMP%\privwindozelogRK.txt">>"%USERPROFILE%\Desktop\PrivWindoze.txt" >NUL 2>&1
 ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(I did not feel comfortable trying to remove them myself as there is a risk for BSOD>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(However, I did attempt to stop and delete the services they are connected to>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(Please use caution if you should try to remove any remnants yourself>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(More information: https://www.pcmag.com/news/hp-accused-of-quietly-installing-spyware-on-windows-pcs>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 ECHO(Thanks for using PrivWindoze. A future update may have this covered.>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
 NIRCMD BEEP 1400 50 && SET longexit=true
 
@@ -703,20 +784,23 @@ REM ATTRIB -R -A -S -H "%SYSDIR%\DriverStore\FileRepository\%%g" >NUL 2>&1
 REM DEL /F/Q "%SYSDIR%\DriverStore\FileRepository\%%g" >NUL 2>&1
 REM SED trim just the .inf
 REM PNPUTIL /delete-driver <oem#.inf> [/uninstall] [/force] [/reboot]
+REM https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/   LENOVO RK
 
 :Files
 FOR %%g in (
+"%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
 "%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
+"%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
+"%TEMP%\README.md"
+"%TEMP%\privwindozelog*"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
-"%TEMP%\privwindozelog*"
-"%TEMP%\README.md"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\AMD\DxCache\*"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\FontCache\*"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Temp\*"
@@ -755,9 +839,11 @@ FOR %%g in (
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
-"%TEMP%\dependencies"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
+"%PROGRAMFILES%\Tobii\Tobii EyeX"
+"%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
+"%PROGRAMFILES(x86)%\Lenovo\VantageService"
 "%PROGRAMFILES(x86)%\Microsoft\Edge"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
@@ -765,6 +851,7 @@ FOR %%g in (
 "%PROGRAMFILES(x86)%\Microsoft\Temp"
 "%PROGRAMFILES(x86)%\Teams Installer"
 "%SYS32%\Microsoft-Edge-WebView"
+"%TEMP%\dependencies"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\GameDVR"
