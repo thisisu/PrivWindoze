@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.7
-ECHO(PrivWindoze by Furtivex - Version 2.1.7
+title PrivWindoze by Furtivex - Version 2.1.8
+ECHO(PrivWindoze by Furtivex - Version 2.1.8
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -550,7 +550,6 @@ sc config dosvc start= disabled>nul
 sc config edgeupdate start= disabled>nul
 sc config edgeupdatem start= disabled>nul
 sc config filesynchelper start= disabled>nul
-sc config hp comm recover start= disabled>nul
 sc config hp-one-agent-service start= disabled>nul
 sc config hpapphelpercap start= disabled>nul
 sc config hpdiagscap start= disabled>nul
