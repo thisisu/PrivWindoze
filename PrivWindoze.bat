@@ -615,7 +615,7 @@ FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
 )
 :ClearTemp
 IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
-DIR /B/A:-D "%TEMP%\*"|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
+DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "deltemp=%%g"
