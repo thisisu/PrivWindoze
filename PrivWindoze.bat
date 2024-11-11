@@ -352,10 +352,7 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
     FOR /F "usebackq delims=" %%i in ("%TEMP%\privwindozelog3paths.txt") DO (
     SET "firewallpath=%%i"
     SETLOCAL EnableDelayedExpansion
-    DIR /B "!firewallpath!" >NUL 2>&1
-    IF ERRORLEVEL 1 ( 
-                       REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g>>"%USERPROFILE%\desktop\ERROR.txt"
-                      )
+    IF NOT EXIST "!firewallpath!" REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g /F >NUL 2>&1
     ENDLOCAL
     )
 )
