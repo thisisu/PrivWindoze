@@ -564,6 +564,7 @@ sc config xblauthmanager start= disabled>nul
 sc config xblgamesave start= disabled>nul
 sc config xboxgipsvc start= disabled>nul
 sc config xboxnetapisvc start= disabled>nul
+sc config HPCustomCapDriver start= disabled>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 sc stop "hp comm recover">nul
 sc stop "onedrive updater service">nul
@@ -586,7 +587,7 @@ sc stop xblauthmanager>nul
 sc stop xblgamesave>nul
 sc stop xboxgipsvc>nul
 sc stop xboxnetapisvc>nul
-
+sc stop HPCustomCapDriver>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 sc delete "hp comm recover">nul
 sc delete "onedrive updater service">nul
@@ -601,6 +602,7 @@ sc delete hpsysinfocap>nul
 sc delete hptouchpointanalyticsservice>nul
 sc delete microsoftedgeelevationservice>nul
 sc delete ueipsvc>nul
+sc delete HPCustomCapDriver>nul
 
 REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
 
