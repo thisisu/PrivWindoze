@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.1
-ECHO(PrivWindoze by Furtivex - Version 2.1.1
+title PrivWindoze by Furtivex - Version 2.1.2
+ECHO(PrivWindoze by Furtivex - Version 2.1.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -42,20 +42,25 @@ REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 Echo([^|     ] Scanning Processes
 IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
 FOR %%g in (
+"appmonitorplugin.exe"
+"camusage.exe"
 "dcv2.exe"
 "elevation_service.exe"
 "filecoauth.exe"
 "filesynchelper.exe"
 "gamebar_widget.exe"
+"installedpackagesagent.exe"
 "microsoft.media.player.exe"
 "microsoft.sharepoint.exe"
 "microsoftedgeupdate.exe"
+"micusage.exe"
 "ms-teams.exe"
 "msedge.exe"
 "msedgewebview2.exe"
 "onedrive.exe"
 "onedriveupdaterservice.exe"
 "teams.exe"
+"ubtservice.exe"
 "update.exe"
 "widgets.exe"
 "xboxpcapp.exe"
@@ -75,7 +80,7 @@ POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFu
 GREP -Eis " : (Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)| : (acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames))" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga3.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga3.txt" >"%TEMP%\privwindozeloga4.txt"
-FOR /f %%g in (%TEMP%\privwindozeloga4.txt) DO (
+FOR /F %%g in (%TEMP%\privwindozeloga4.txt) DO (
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
 REM B9ECED6F = Asus bundles
@@ -118,7 +123,6 @@ IF %ARCH%==x64 (
       REG DELETE %%g /F >NUL 2>&1
       )
 )
-
 FOR %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
@@ -298,8 +302,6 @@ FOR %%g in (
       )
 )
 
-REM https://www.bleepingcomputer.com/forums/t/802105/3138awezipawezip-14360-x64-ffd303wmbhcj/
-:: Solo Registry Value
 REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.html\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.mht\OpenWithProgids" /V MSEdgeMHT /F >NUL 2>&1
@@ -331,17 +333,25 @@ REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL|GREP -Eis "\\Packages\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Packages\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
-REM HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
-:: Heuristic Registry Value
-:HeurValue
+
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
+REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Policies )
+GREP -s "App=C:" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
+IF ERRORLEVEL 1 ( GOTO :Policies )
+GREP -s "Name=Microsoft Edge" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
+IF ERRORLEVEL 1 ( GOTO :Policies )
+SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog4.txt"
+FOR /F %%g in (%TEMP%\privwindozelog4.txt) DO (
+    REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V "%%g" /F >NUL 2>&1
+)
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
-FOR /f %%g in (%TEMP%\privwindozelogr2.txt) DO (
+FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
 :: Policies
@@ -406,9 +416,11 @@ FOR %%g in (
 "Microsoft\Windows\InstallService\SmartRetry"
 "Microsoft\Windows\InstallService\WakeUpAndContinueUpdates"
 "Microsoft\Windows\InstallService\WakeUpAndScanForUpdates"
+"Microsoft\Windows\Location\Notifications"
 "Microsoft\Windows\Maintenance\WinSAT"
 "Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents"
 "Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic"
+"Microsoft\Windows\PLA\New Data Collector Set"
 "Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem"
 "Microsoft\Windows\PushToInstall\LoginCheck"
 "Microsoft\Windows\PushToInstall\Registration"
@@ -420,6 +432,7 @@ FOR %%g in (
 "Microsoft\Windows\Shell\IndexerAutomaticMaintenance"
 "Microsoft\Windows\Shell\ThemesSyncedImageDownload"
 "Microsoft\Windows\Sustainability\SustainabilityTelemetry"
+"Microsoft\Windows\UpdateOrchestrator\USO_UxBroker"
 "Microsoft\Windows\User Profile Service\HiveUploadTask"
 "Microsoft\Windows\WOF\WIM-Hash-Management"
 "Microsoft\Windows\WOF\WIM-Hash-Validation"
@@ -428,13 +441,17 @@ FOR %%g in (
 "Microsoft\Windows\WwanSvc\OobeDiscovery"
 "Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\XblGameSave\XblGameSaveTask"
+"UEIPInvitation"
+"UbtFrameworkService"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
+       DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
+       DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
       )
 )
-DIR /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
+DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -443,9 +460,9 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :OneDriveTask
-DIR /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\privwindozelog.txt"
+DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -454,9 +471,9 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :TelemetryTask
-DIR /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
+DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -465,9 +482,9 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :NvidiaTask
-DIR /b "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\privwindozelog.txt"
+DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :WindowsDefenderTask )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -476,9 +493,9 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :WindowsDefenderTask
-DIR /b "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
+DIR /B "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Optimize )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
@@ -487,9 +504,9 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :Optimize
-DIR /b "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
+DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
@@ -513,6 +530,7 @@ SC CONFIG XboxNetApiSvc start= disabled>NUL
 SC CONFIG dmwappushservice start= disabled>NUL
 SC CONFIG edgeupdate start= disabled>NUL
 SC CONFIG edgeupdatem start= disabled>NUL
+SC CONFIG UEIPSvc start= disabled>NUL
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SC STOP DiagTrack>NUL
 SC STOP DoSvc>NUL
@@ -526,11 +544,13 @@ SC STOP XboxNetApiSvc>NUL
 SC STOP dmwappushservice>NUL
 SC STOP edgeupdate>NUL
 SC STOP edgeupdatem>NUL
+SC STOP UEIPSvc>NUL
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SC DELETE edgeupdate>NUL
 SC DELETE edgeupdatem>NUL
 SC DELETE MicrosoftEdgeElevationService>NUL
 SC DELETE "OneDrive Updater Service">NUL
+SC DELETE UEIPSvc>NUL
 
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
@@ -539,24 +559,24 @@ REM S2 edgeupdate1db0cab9f75c19; "C:\Program Files (x86)\Microsoft\EdgeUpdate\Mi
 REM S3 edgeupdatem1db0cab9f91f3b; "C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" /medsvc [X]
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Eis "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
-FOR /f %%g in (%TEMP%\privwindozelog.txt) DO (
+FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     REG DELETE "%%g" /F >NUL 2>&1
 )
 :: Discord Files
 :DiscordFiles
 Echo([^|^|^|^|^|^|] Scanning File System
-DIR /b "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
+DIR /B "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Discord2 )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "discord=%%g"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Code Cache\js\!discord!" >NUL 2>&1
     ENDLOCAL
 )
 :Discord2
-DIR /b "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
+DIR /B "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :locallow64hex )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "discord=%%g"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
@@ -566,7 +586,7 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :locallow64hex
 DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Es "^[a-f0-9]{64}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :InboxApps )
-FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "locallow64hex=%%g"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
@@ -575,16 +595,34 @@ FOR /f "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 :InboxApps
 DIR /B/A:-D "%WINDIR%\InboxApps" 2>NUL|GREP -Eis "^Microsoft\.(Bing|Copilot|StartExperiencesApp)">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :D3DSCache )
-FOR /f %%g in (%TEMP%\privwindozelog.txt) DO (
+FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     DEL /F/Q "%WINDIR%\InboxApps\%%g" >NUL 2>&1
 )
 :D3DSCache
+DIR /B/A:D "%LOCALA%\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :D3DSCache2 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "cache=%%g"
+    SETLOCAL EnableDelayedExpansion
+    RD /S/Q "!LOCALA!\D3DSCache\!cache!" >NUL 2>&1
+    ENDLOCAL
+)
+:D3DSCache2
 DIR /B/A:D "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Files )
-FOR /f %%g in (%TEMP%\privwindozelog.txt) DO (
+IF ERRORLEVEL 1 ( GOTO :ClearTemp )
+FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     RD /S/Q "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache\%%g" >NUL 2>&1
 )
-:: Files
+:ClearTemp
+IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
+DIR /B/A:-D "%TEMP%\*"|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Files )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "deltemp=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!TEMP!\!deltemp!" >NUL 2>&1
+    ENDLOCAL
+)
 :Files
 FOR %%g in (
 "%PROGRAMS17%\Microsoft Edge.lnk"
@@ -598,14 +636,14 @@ FOR %%g in (
 "%USERPROFILE%\Favorites\Bing.url"
 "%TEMP%\privwindozelog*"
 "%TEMP%\README.md"
-"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\AMD\DxCache\*.*"
-"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\FontCache\*.*"
-"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Temp\*.*"
-"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*.*"
-"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\INetCache\*.*"
-"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*.*"
-"%WINDIR%\SystemTemp\*.*"
-"%WINDIR%\Temp\*.*"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\AMD\DxCache\*"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\FontCache\*"
+"%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Temp\*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Logs\*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\INetCache\*"
+"%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*"
+"%WINDIR%\SystemTemp\*"
+"%WINDIR%\Temp\*"
 "%WINDIR%\grep.exe"
 "%WINDIR%\libiconv2.dll"
 "%WINDIR%\libintl3.dll"
@@ -634,6 +672,7 @@ FOR %%g in (
 "%LOCALA%\Microsoft\TeamsMeetingAddin"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\OneDrive"
+"%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES(x86)%\Microsoft\Edge"
