@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.2.0
-ECHO(PrivWindoze by Furtivex - Version 2.2.0
+title PrivWindoze by Furtivex - Version 2.2.1
+ECHO(PrivWindoze by Furtivex - Version 2.2.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -75,11 +75,13 @@ FOR %%g in (
 "tobii.service.exe"
 "touchpointanalyticsclientservice.exe"
 "ubtservice.exe"
+"udclientservice.exe"
 "uninstall.exe"
 "update.exe"
 "widgets.exe"
 "xboxpcapp.exe"
 "xboxpcappft.exe"
+"lrio.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
@@ -408,6 +410,7 @@ IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
 FOR %%g in (
 "HPOneAgentRepairTask"
 "HP\Consent Manager Launcher"
+"Intel\Intel Telemetry 3"
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
@@ -685,8 +688,7 @@ sc delete tobiirgb>nul
 sc delete udcservice>nul
 sc delete ueipsvc>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
-REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
+
 :ServicesHuer
 IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
 IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
@@ -767,35 +769,36 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :RKTelem )
+IF ERRORLEVEL 1 ( GOTO :Rootkits )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "packages=%%g"
     SETLOCAL EnableDelayedExpansion
     RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
     ENDLOCAL
 )
-:RKTelem
-DIR /B/S "%SYSDIR%\DriverStore\FileRepository" 2>NUL|GREP -Es "\\FileRepository\\hp(customcap|analytics)comp\.inf_amd64_[a-f0-9]{16}\\x64\\([A-Za-z]{5,}Cap\.exe|TouchpointAnalyticsClientService\.exe|hpcustomcapdriver\.sys)$|\\FileRepository\\lenovoyxx0\.inf.*_runtime_(ALENOVOYX80|RGB)_service\.exe$">"%TEMP%\privwindozelogRK.txt"
+:Rootkits
+IF NOT EXIST %SYS32%\pnputil.exe GOTO :Files
+IF NOT EXIST %WINDIR%\sed.exe GOTO :Files
+IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
+IF NOT EXIST %WINDIR%\nircmd.exe GOTO :Files
+PNPUTIL -E 2>NUL|GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$>"%TEMP%\privwindozeROOT.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
-ECHO(~~~~~~~~~~~~~~~~~~~~~~~~ PRIVWINDOZE ~~~~~~~~~~~~~~~~~~~~~~~~>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(I found the following files:>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(=======>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-TYPE "%TEMP%\privwindozelogRK.txt">>"%USERPROFILE%\Desktop\PrivWindoze.txt" >NUL 2>&1
-ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(I did not feel comfortable trying to remove them myself as there is a risk for BSOD>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(However, I did attempt to stop and delete the services they are connected to>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(Please use caution if you should try to remove any remnants yourself>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-ECHO(Thanks for using PrivWindoze. A future update may have this covered.>>"%USERPROFILE%\Desktop\PrivWindoze.txt"
-NIRCMD BEEP 1400 50 && SET longexit=true
+ECHO.
+ECHO.
+ECHO(======= Lenovo or Hewlett Packard telemetry driver files detected! =======
+NIRCMD BEEP 1400 50
+SED -r "s/^Published name :            //" <"%TEMP%\privwindozeROOT.txt" >"%TEMP%\privwindozeROOT2.txt"
+FOR /F %%g in (%TEMP%\privwindozeROOT2.txt) DO (
+    PNPUTIL -D %%g /uninstall /force >NUL 2>&1
+)
 
-REM ATTRIB -R -A -S -H "%SYSDIR%\DriverStore\FileRepository\%%g" >NUL 2>&1
-REM DEL /F/Q "%SYSDIR%\DriverStore\FileRepository\%%g" >NUL 2>&1
-REM SED trim just the .inf
-REM PNPUTIL /delete-driver <oem#.inf> [/uninstall] [/force] [/reboot]
-REM https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/   LENOVO RK
+REM lenovoyx80.inf
+REM lenovoyxx0.inf
+REM hpcustomcapcomp.inf
+REM hpanalyticscomp.inf
+
+REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
+REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
 
 :Files
 FOR %%g in (
@@ -851,6 +854,7 @@ FOR %%g in (
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
+"%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
@@ -877,18 +881,10 @@ FOR %%g in (
       )
 )
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
-IF %longexit%==true (
-  ECHO.
-  ECHO.
-  ECHO(Scan complete! Enjoy a more private Windows!
-  ECHO.
-  ECHO(Side note: I left a log on your Desktop named PrivWindoze.txt
-  TIMEOUT /t 20>NUL
-)
-IF %longexit%==false (
-  ECHO.
-  ECHO.
-  ECHO(Scan complete! Enjoy a more private Windows!
-  TIMEOUT /t 03>NUL
-)
+
+ECHO.
+ECHO.
+ECHO(Scan complete! Enjoy a more private Windows!
+TIMEOUT /t 03>NUL
+
 :eof
