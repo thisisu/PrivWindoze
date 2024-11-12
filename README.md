@@ -4,9 +4,24 @@ PrivWindoze is a small batch script designed to quickly disable telemetry and re
 -  Microsoft Copilot
 -  Microsoft Cortana
 -  Microsoft Edge
+-  Microsoft Game Bar
 -  Microsoft OneDrive
 -  Microsoft Teams
--  Microsoft XBoxLive
+-  Microsoft XBox
+-  Microsoft Zune Music/Video
+-  Acer User Experience Improvement Program
+-  Discord Cache
+-  DirectX Shader Cache
+-  Font Cache
+-  HP Touchpoint Analytics Client
+-  Intel Analytics / Telemetry
+-  Lenovo Vantage
+-  McAfee PC Optimizer
+-  Slate Digital Connect SDACollector
+-  Temporary Internet Files
+-  Tobii Help Center / Experience
+-  Windows Firewall Orphans
+
 
 There are currently no prompts or logs, but this may change in the future if there is enough interest.
 

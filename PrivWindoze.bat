@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.2.1
-ECHO(PrivWindoze by Furtivex - Version 2.2.1
+title PrivWindoze by Furtivex - Version 2.2.2
+ECHO(PrivWindoze by Furtivex - Version 2.2.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -747,7 +747,7 @@ FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
 )
 :D3DSCache3
 DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :TwTmp )
+IF ERRORLEVEL 1 ( GOTO :Twtmp )
 FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\D3DSCache\%%g" >NUL 2>&1
 )
