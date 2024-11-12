@@ -36,7 +36,6 @@ SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinne
 SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-SET longexit=false
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 :Processes
 Echo([^|     ] Scanning Processes
@@ -98,6 +97,7 @@ SORT_ -f -u <"%TEMP%\privwindozeloga3.txt" >"%TEMP%\privwindozeloga4.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga4.txt) DO (
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
+
 REM 549981C3F5F10 = MS Cortana
 REM 9426MICRO = MSI // Micro Star International Bundles
 REM AD2F1837 = HP Bundles
@@ -603,7 +603,6 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\UDC\MessagingPlugin\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
-
 :UDCLen2
 DIR /B "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :Services )
@@ -780,15 +779,17 @@ IF NOT EXIST %SYS32%\pnputil.exe GOTO :Files
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Files
 IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
 IF NOT EXIST %WINDIR%\nircmd.exe GOTO :Files
-PNPUTIL -E 2>NUL|GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$>"%TEMP%\privwindozeROOT.txt"
+%SYS32%\pnputil.exe -E>"%TEMP%\privwindozeROOT.txt"
+GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozeROOT.txt" >"%TEMP%\privwindozeROOT2.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 ECHO.
 ECHO.
 ECHO(======= Lenovo or Hewlett Packard telemetry driver files detected! =======
 NIRCMD BEEP 1400 50
-SED -r "s/^Published name :            //" <"%TEMP%\privwindozeROOT.txt" >"%TEMP%\privwindozeROOT2.txt"
-FOR /F %%g in (%TEMP%\privwindozeROOT2.txt) DO (
-    PNPUTIL -D %%g /uninstall /force >NUL 2>&1
+SED -r "s/^Published name :            //" <"%TEMP%\privwindozeROOT2.txt" >"%TEMP%\privwindozeROOT3.txt"
+FOR /F %%g in (%TEMP%\privwindozeROOT3.txt) DO (
+    ECHO(Uninstalling Driver: %%g
+    %SYS32%\pnputil.exe -D %%g /uninstall /force >NUL 2>&1
 )
 
 REM lenovoyx80.inf
