@@ -8,7 +8,7 @@ PrivWindoze is a small batch script designed to quickly disable telemetry and re
 -  Microsoft OneDrive
 -  Microsoft Teams
 -  Microsoft XBox
--  Microsoft Zune Music / Video
+-  Microsoft Zune
 -  Acer User Experience Improvement Program
 -  Discord Cache
 -  DirectX Shader Cache
