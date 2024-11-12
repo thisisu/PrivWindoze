@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.1.9
-ECHO(PrivWindoze by Furtivex - Version 2.1.9
+title PrivWindoze by Furtivex - Version 2.2.0
+ECHO(PrivWindoze by Furtivex - Version 2.2.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -740,14 +740,25 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :D3DSCache2
 DIR /B/A:D "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :ClearTemp )
+IF ERRORLEVEL 1 ( GOTO :D3DSCache3 )
 FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     RD /S/Q "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache\%%g" >NUL 2>&1
 )
+:D3DSCache3
+DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :TwTmp )
+FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
+    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\D3DSCache\%%g" >NUL 2>&1
+)
+:Twtmp
+DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local" 2>NUL|GREP -Es "^tw-[a-f0-9]{2,}-[a-f0-9]{2,}-[a-f0-9]{2,}\.tmp$">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :ClearTemp )
+FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
+    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\%%g" >NUL 2>&1
+)
 :ClearTemp
-IF NOT EXIST %WINDIR%\grep.exe GOTO :Localpackages
 DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Files )
+IF ERRORLEVEL 1 ( GOTO :Localpackages )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "deltemp=%%g"
     SETLOCAL EnableDelayedExpansion
@@ -756,14 +767,14 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :HPTelem )
+IF ERRORLEVEL 1 ( GOTO :RKTelem )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "packages=%%g"
     SETLOCAL EnableDelayedExpansion
     RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
     ENDLOCAL
 )
-:HPTelem
+:RKTelem
 DIR /B/S "%SYSDIR%\DriverStore\FileRepository" 2>NUL|GREP -Es "\\FileRepository\\hp(customcap|analytics)comp\.inf_amd64_[a-f0-9]{16}\\x64\\([A-Za-z]{5,}Cap\.exe|TouchpointAnalyticsClientService\.exe|hpcustomcapdriver\.sys)$|\\FileRepository\\lenovoyxx0\.inf.*_runtime_(ALENOVOYX80|RGB)_service\.exe$">"%TEMP%\privwindozelogRK.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 ECHO(~~~~~~~~~~~~~~~~~~~~~~~~ PRIVWINDOZE ~~~~~~~~~~~~~~~~~~~~~~~~>"%USERPROFILE%\Desktop\PrivWindoze.txt"
@@ -795,8 +806,9 @@ FOR %%g in (
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
+"%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
+"%SYS32%\config\systemprofile\AppData\Local\AMD\DxCache\*"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
-"%TEMP%\README.md"
 "%TEMP%\privwindozelog*"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
@@ -871,7 +883,6 @@ IF %longexit%==true (
   ECHO(Scan complete! Enjoy a more private Windows!
   ECHO.
   ECHO(Side note: I left a log on your Desktop named PrivWindoze.txt
-  ECHO(Please read it when you get a chance. It is about some of the HP software I found
   TIMEOUT /t 20>NUL
 )
 IF %longexit%==false (
