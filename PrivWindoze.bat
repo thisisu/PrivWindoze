@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.2.2
-ECHO(PrivWindoze by Furtivex - Version 2.2.2
+title PrivWindoze by Furtivex - Version 2.2.3
+ECHO(PrivWindoze by Furtivex - Version 2.2.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -779,15 +779,15 @@ IF NOT EXIST %SYS32%\pnputil.exe GOTO :Files
 IF NOT EXIST %WINDIR%\sed.exe GOTO :Files
 IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
 IF NOT EXIST %WINDIR%\nircmd.exe GOTO :Files
-%SYS32%\pnputil.exe -E>"%TEMP%\privwindozeROOT.txt"
-GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozeROOT.txt" >"%TEMP%\privwindozeROOT2.txt"
+%SYS32%\pnputil.exe -E>"%TEMP%\privwindozelogr.txt"
+GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 ECHO.
 ECHO.
 ECHO(======= Lenovo or Hewlett Packard telemetry driver files detected! =======
 NIRCMD BEEP 1400 50
-SED -r "s/^Published name :            //" <"%TEMP%\privwindozeROOT2.txt" >"%TEMP%\privwindozeROOT3.txt"
-FOR /F %%g in (%TEMP%\privwindozeROOT3.txt) DO (
+SED -r "s/^Published name :            //" <"%TEMP%\privwindozelogr2.txt" >"%TEMP%\privwindozelogr3.txt"
+FOR /F %%g in (%TEMP%\privwindozelogr3.txt) DO (
     ECHO(Uninstalling Driver: %%g
     %SYS32%\pnputil.exe -D %%g /uninstall /force >NUL 2>&1
 )
