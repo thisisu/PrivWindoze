@@ -49,7 +49,6 @@ FOR %%g in (
 "dcv2.exe"
 "diagscap.exe"
 "elevation_service.exe"
-"UDClientService.exe"
 "filecoauth.exe"
 "filesynchelper.exe"
 "gamebar_widget.exe"
@@ -57,6 +56,7 @@ FOR %%g in (
 "installedpackagesagent.exe"
 "intelanalyticsservice.exe"
 "lenovonow.task.exe"
+"lrio.exe"
 "microsoft.media.player.exe"
 "microsoft.sharepoint.exe"
 "microsoftedgeupdate.exe"
@@ -81,7 +81,6 @@ FOR %%g in (
 "widgets.exe"
 "xboxpcapp.exe"
 "xboxpcappft.exe"
-"lrio.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
       )
