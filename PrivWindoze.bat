@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.2.7
-ECHO(PrivWindoze by Furtivex - Version 2.2.7
+title PrivWindoze by Furtivex - Version 2.4.0
+ECHO(PrivWindoze by Furtivex - Version 2.4.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -48,7 +48,6 @@ regex2.dll
 sed.exe
 sort_.exe
 ) DO ( IF NOT EXIST %WINDIR%\%%g GOTO :eof )
-
 
 :Processes
 Echo([^|     ] Scanning Processes
@@ -369,10 +368,8 @@ REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
-   ECHO(- %%g -
    REG DELETE "%%g" /F >NUL 2>&1
 )
-
 REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL>"%TEMP%\privwindozelogp.txt"
 REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL>>"%TEMP%\privwindozelogp.txt"
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL>>"%TEMP%\privwindozelogp.txt"
@@ -383,7 +380,6 @@ SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
-
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
@@ -806,14 +802,16 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
 )
 :Rootkits
 IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
-%SYS32%\pnputil.exe -E>"%TEMP%\privwindozelogr.txt"
-GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
+%SYS32%\pnputil.exe /enum-drivers 2>NUL|GREP -G "^Original Name">"%TEMP%\privwindozelogrk.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
-NIRCMD BEEP 1400 50
-SED -r "s/^Published name :            //" <"%TEMP%\privwindozelogr2.txt" >"%TEMP%\privwindozelogr3.txt"
-FOR /F %%g in (%TEMP%\privwindozelogr3.txt) DO (
-    ECHO(- Unloading Driver: %%g -
-    %SYS32%\pnputil.exe -D %%g /uninstall /force >NUL 2>&1
+SED -r "s/^Original Name.\s{4,}//" <"%TEMP%\privwindozelogrk.txt" >"%TEMP%\privwindozelogrk2.txt"
+SORT_ -f -u <"%TEMP%\privwindozelogrk2.txt" >"%TEMP%\privwindozelogrk3.txt"
+GREP -Eis "^(hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
+IF ERRORLEVEL 1 ( GOTO :Files )
+:: NIRCMD BEEP 1400 50
+FOR /F %%g in (%TEMP%\privwindozelogrk4.txt) DO (
+    Echo(Uninstalling driver: %%g
+    %SYS32%\pnputil.exe /delete-driver %%g /uninstall /force >NUL 2>&1
 )
 
 REM lenovoyx80.inf
@@ -823,8 +821,8 @@ REM hpanalyticscomp.inf
 
 REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
 REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
-
 :Files
+
 FOR %%g in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
@@ -837,6 +835,7 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxCache\*"
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
+"%TEMP%\privwindozelog*.txt"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
@@ -849,12 +848,10 @@ FOR %%g in (
 "%WINDIR%\SystemTemp\*"
 "%WINDIR%\Temp\*"
 ) DO (
-       IF EXIST %%g (
-                      DEL /F/Q %%g >NUL 2>&1
-                      )
+      DEL /F/Q %%g >NUL 2>&1
       )
 )
-:Folders
+
 FOR %%g in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
@@ -894,18 +891,14 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\GameExplorer"
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
 ) DO (
-      IF EXIST %%g (
-                     RD /S/Q %%g >NUL 2>&1
-                    )
+       RD /S/Q %%g >NUL 2>&1
       )
 )
+
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
 
 ECHO.
 ECHO.
 ECHO(Scan complete! Enjoy a more private Windows!
-DEL /F/Q "%TEMP%\privwindoze*" >NUL 2>&1
-RD /S/Q "%TEMP%\dependencies" >NUL 2>&1
 TIMEOUT /t 03>NUL
-
 :eof
