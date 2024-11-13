@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.5
-ECHO(PrivWindoze by Furtivex - Version 2.4.5
+title PrivWindoze by Furtivex - Version 2.4.6
+ECHO(PrivWindoze by Furtivex - Version 2.4.6
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -17,6 +17,12 @@ regex2.dll
 sed.exe
 sort_.exe
 ) DO ( COPY /Y "%CD%\dependencies\%%g" "%WINDIR%" >NUL 2>&1 )
+
+FOR %%g in (
+proc_kill.dat
+svc_delete.dat
+svc_stop_disable.dat
+) DO ( COPY /Y "%CD%\%%g" "%TEMP%" >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
 SET "PROGRAMS1ALL=%ALLUSERSPROFILE%\Start Menu\Programs"
@@ -49,54 +55,18 @@ sed.exe
 sort_.exe
 ) DO ( IF NOT EXIST %WINDIR%\%%g GOTO :eof )
 
+FOR %%g in (
+proc_kill.dat
+svc_delete.dat
+svc_stop_disable.dat
+) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
+
 :Processes
 Echo([^|     ] Scanning Processes
-IF NOT EXIST %SYS32%\taskkill.exe ECHO Taskkill.exe is missing && GOTO :Packages
-FOR %%g in (
-"apphelpercap.exe"
-"appmonitorplugin.exe"
-"bingpopup.exe"
-"camusage.exe"
-"dcv2.exe"
-"diagscap.exe"
-"elevation_service.exe"
-"explorer.exe"
-"filecoauth.exe"
-"filesynchelper.exe"
-"gamebar_widget.exe"
-"hpcommrecovery.exe"
-"hponeagent.exe"
-"installedpackagesagent.exe"
-"intelanalyticsservice.exe"
-"lenovonow.task.exe"
-"lrio.exe"
-"microsoft.media.player.exe"
-"microsoft.sharepoint.exe"
-"microsoftedgeupdate.exe"
-"micusage.exe"
-"ms-teams.exe"
-"msedge.exe"
-"msedgewebview2.exe"
-"networkcap.exe"
-"onedrive.exe"
-"onedriveupdaterservice.exe"
-"operfmon.exe"
-"sc.exe"
-"scheduleeventaction.exe"
-"sysinfocap.exe"
-"teams.exe"
-"tobii.service.exe"
-"touchpointanalyticsclientservice.exe"
-"ubtservice.exe"
-"udclientservice.exe"
-"uninstall.exe"
-"update.exe"
-"widgets.exe"
-"xboxpcapp.exe"
-"xboxpcappft.exe"
-) DO (
-       TASKKILL /F /IM %%g >NUL 2>&1
+FOR /F %%g in (%TEMP%\proc_kill.dat) DO (
+    TASKKILL /F /IM "%%g" >NUL 2>&1
 )
+
 :Packages
 Echo([^|^|    ] Scanning Packages
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Registry
@@ -105,7 +75,8 @@ SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwind
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
 GREP -Eis "^MicrosoftWindows\.Client\.WebExperience" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
-SORT_ -f -u <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_del.txt"
+GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
+SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
@@ -355,10 +326,6 @@ REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lis
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.slatedigital.analytics" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-
-rem GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
-rem GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
-rem GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
@@ -635,84 +602,22 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
-IF NOT EXIST %SYS32%\sc.exe ECHO SC.exe is missing! && GOTO :ServicesHuer
-sc config "hp comm recover" start= disabled>nul
-sc config "onedrive updater service" start= disabled>nul
-sc config diagtrack start= disabled>nul
-sc config dmwappushservice start= disabled>nul
-sc config dosvc start= disabled>nul
-sc config DusmSvc start= disabled>nul
-sc config edgeupdate start= disabled>nul
-sc config edgeupdatem start= disabled>nul
-sc config filesynchelper start= disabled>nul
-sc config hp-one-agent-service start= disabled>nul
-sc config hpapphelpercap start= disabled>nul
-sc config hpcustomcapdriver start= disabled>nul
-sc config hpdiagscap start= disabled>nul
-sc config hpnetworkcap start= disabled>nul
-sc config hpsysinfocap start= disabled>nul
-sc config hptouchpointanalyticsservice start= disabled>nul
-sc config installservice start= disabled>nul
-sc config tobiialenovoyx80 start= disabled>nul
-sc config tobiirgb start= disabled>nul
-sc config udcservice start= disabled>nul
-sc config ueipsvc start= disabled>nul
-sc config wpnservice start= disabled>nul
-sc config xblauthmanager start= disabled>nul
-sc config xblgamesave start= disabled>nul
-sc config xboxgipsvc start= disabled>nul
-REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-sc stop "hp comm recover">nul
-sc stop "onedrive updater service">nul
-sc stop diagtrack>nul
-sc stop dmwappushservice>nul
-sc stop dosvc>nul
-sc stop edgeupdate>nul
-sc stop edgeupdatem>nul
-sc stop filesynchelper>nul
-sc stop hp-one-agent-service>nul
-sc stop DusmSvc>nul
-sc stop hpapphelpercap>nul
-sc stop hpcustomcapdriver>nul
-sc stop hpdiagscap>nul
-sc stop hpnetworkcap>nul
-sc stop hpsysinfocap>nul
-sc stop hptouchpointanalyticsservice>nul
-sc stop installservice>nul
-sc stop tobiialenovoyx80>nul
-sc stop tobiirgb>nul
-sc stop udcservice>nul
-sc stop ueipsvc>nul
-sc stop wpnservice>nul
-sc stop xblauthmanager>nul
-sc stop xblgamesave>nul
-sc stop xboxgipsvc>nul
-sc stop xboxnetapisvc>nul
-REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-sc delete "hp comm recover">nul
-sc delete "onedrive updater service">nul
-sc delete edgeupdate>nul
-sc delete edgeupdatem>nul
-sc delete filesynchelper>nul
-sc delete hp-one-agent-service>nul
-sc delete hpapphelpercap>nul
-sc delete hpcustomcapdriver>nul
-sc delete hpdiagscap>nul
-sc delete hpnetworkcap>nul
-sc delete hpsysinfocap>nul
-sc delete hptouchpointanalyticsservice>nul
-sc delete microsoftedgeelevationservice>nul
-sc delete tobiialenovoyx80>nul
-sc delete tobiirgb>nul
-sc delete udcservice>nul
-sc delete ueipsvc>nul
-REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+FOR /F %%g in (%TEMP%\svc_stop_disable.dat) DO (
+    SC CONFIG "%%g" start= disabled>nul
+    SC STOP "%%g">nul
+)
+FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
+    SC DELETE "%%g">nul
+)
 
-:ServicesHuer
-REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Eis "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
+:EdgeService
+REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
+SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
+GREP -Eis "^edgeupdate(m?[a-f0-9]{10,})?" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
+SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
-FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
-    REG DELETE "%%g" /F >NUL 2>&1
+FOR /F %%g in (%TEMP%\privwindozesvc2_del.txt) DO (
+    REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%g" /F >NUL 2>&1
 )
 :DiscordFiles
 Echo([^|^|^|^|^|^|] Scanning File System
@@ -771,18 +676,9 @@ FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
 )
 :Twtmp
 DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local" 2>NUL|GREP -Es "^tw-[a-f0-9]{2,}-[a-f0-9]{2,}-[a-f0-9]{2,}\.tmp$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :ClearTemp )
+IF ERRORLEVEL 1 ( GOTO :Localpackages )
 FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
     RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\%%g" >NUL 2>&1
-)
-:ClearTemp
-DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Localpackages )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
-    SET "deltemp=%%g"
-    SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!TEMP!\!deltemp!" >NUL 2>&1
-    ENDLOCAL
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
@@ -902,10 +798,17 @@ FOR %%g in (
 
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
 
+:ClearTemp
+DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "deltemp=%%g"
+    SETLOCAL EnableDelayedExpansion
+    DEL /F/Q "!TEMP!\!deltemp!" >NUL 2>&1
+    ENDLOCAL
+)
 ECHO.
 ECHO.
-START /D"%userprofile%" /I %WINDIR%\explorer.exe
-NIRCMD BEEP 1400 50
+START /D "%userprofile%" /I %WINDIR%\explorer.exe
 ECHO(Scan complete! Enjoy a more private Windows!
 TIMEOUT /t 05>NUL
 :eof
