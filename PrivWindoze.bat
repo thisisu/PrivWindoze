@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.0
-ECHO(PrivWindoze by Furtivex - Version 2.4.0
+title PrivWindoze by Furtivex - Version 2.4.1
+ECHO(PrivWindoze by Furtivex - Version 2.4.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -147,11 +147,10 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
 ) DO (
-      IF EXIST %%g (
-                     REG DELETE %%g /F >NUL 2>&1
-                    )
+       REG DELETE %%g /F >NUL 2>&1
       )
 )
+
 FOR %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
@@ -327,10 +326,7 @@ FOR %%g in (
 "HKU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot"
 "HKU\Software\Microsoft\Xbox"
 ) DO (
-      IF EXIST %%g (
-                     REG DELETE %%g /F >NUL 2>&1
-                    )
-      )
+       REG DELETE %%g /F >NUL 2>&1
 )
 
 REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
@@ -538,7 +534,6 @@ FOR %%g in (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
        DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
        DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
-      )
 )
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
@@ -849,7 +844,6 @@ FOR %%g in (
 "%WINDIR%\Temp\*"
 ) DO (
       DEL /F/Q %%g >NUL 2>&1
-      )
 )
 
 FOR %%g in (
@@ -860,6 +854,7 @@ FOR %%g in (
 "%APPDATA%\Microsoft\Teams"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\Microsoft\Edge"
+"%LOCALA%\Microsoft\GameDVR"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
@@ -892,7 +887,6 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
 ) DO (
        RD /S/Q %%g >NUL 2>&1
-      )
 )
 
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
