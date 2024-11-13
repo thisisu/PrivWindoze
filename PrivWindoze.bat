@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.7
-ECHO(PrivWindoze by Furtivex - Version 2.4.7
+title PrivWindoze by Furtivex - Version 2.4.8
+ECHO(PrivWindoze by Furtivex - Version 2.4.8
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -42,6 +42,10 @@ SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinne
 SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
+SET "dump_f=%TEMP%\dump_f"
+SET "dump_r=%TEMP%\dump_r"
+SET "dump_d=%TEMP%\dump_d"
+SET "dump_p=%TEMP%\dump_p"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 FOR %%g in (
@@ -80,6 +84,7 @@ GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellI
 GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
+    Echo(%%g ^(Package ^)>>"%dump_p%"
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
 REM 549981C3F5F10 = MS Cortana
@@ -644,7 +649,10 @@ IF ERRORLEVEL 1 ( GOTO :InboxApps )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "locallow64hex=%%g"
     SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
+    IF EXIST "!LOCALLOW!\!locallow64hex!" (
+            ECHO("!LOCALLOW!\!locallow64hex!" ^(File^)>>"%dump_f%"
+            DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
+            )
     ENDLOCAL
 )
 :InboxApps
@@ -796,9 +804,8 @@ FOR %%g in (
 )
 
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
-
 :ClearTemp
-DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Ev "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
+DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Esv "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "deltemp=%%g"
     SETLOCAL EnableDelayedExpansion
