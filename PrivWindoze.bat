@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.1
-ECHO(PrivWindoze by Furtivex - Version 2.4.1
+title PrivWindoze by Furtivex - Version 2.4.2
+ECHO(PrivWindoze by Furtivex - Version 2.4.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -821,6 +821,11 @@ REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constan
 FOR %%g in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+"%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
+"%LOCALA%\AMDSoftwareInstaller\cache\qmlcache\*"
+"%LOCALA%\AMD\DxCache\*"
+"%LOCALA%\AMD\DxcCache\*"
+"%LOCALA%\AMD\VkCache\*"
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
 "%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
@@ -853,12 +858,14 @@ FOR %%g in (
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
 "%APPDATA%\Microsoft\Teams"
 "%LOCALA%\MicrosoftEdge"
+"%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\GameDVR"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
 "%LOCALA%\Microsoft\TeamsMeetingAddin"
+"%LOCALA%\Microsoft\TeamsPresenceAddin"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
