@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.3
-ECHO(PrivWindoze by Furtivex - Version 2.4.3
+title PrivWindoze by Furtivex - Version 2.4.4
+ECHO(PrivWindoze by Furtivex - Version 2.4.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -60,6 +60,7 @@ FOR %%g in (
 "dcv2.exe"
 "diagscap.exe"
 "elevation_service.exe"
+"explorer.exe"
 "filecoauth.exe"
 "filesynchelper.exe"
 "gamebar_widget.exe"
@@ -95,7 +96,6 @@ FOR %%g in (
 "xboxpcappft.exe"
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
-      )
 )
 :WindowsApps
 Echo([^|^|    ] Scanning Windows Apps
@@ -103,7 +103,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe i
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
-GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+GREP -Eis "^MicrosoftWindows\.Client\.WebExperience" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
@@ -904,6 +904,8 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
 
 ECHO.
 ECHO.
+START /HIGH explorer.exe
+NIRCMD BEEP 1400 50
 ECHO(Scan complete! Enjoy a more private Windows!
-TIMEOUT /t 03>NUL
+TIMEOUT /t 05>NUL
 :eof
