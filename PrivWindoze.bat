@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.2
-ECHO(PrivWindoze by Furtivex - Version 2.4.2
+title PrivWindoze by Furtivex - Version 2.4.3
+ECHO(PrivWindoze by Furtivex - Version 2.4.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -641,6 +641,7 @@ sc config "onedrive updater service" start= disabled>nul
 sc config diagtrack start= disabled>nul
 sc config dmwappushservice start= disabled>nul
 sc config dosvc start= disabled>nul
+sc config DusmSvc start= disabled>nul
 sc config edgeupdate start= disabled>nul
 sc config edgeupdatem start= disabled>nul
 sc config filesynchelper start= disabled>nul
@@ -670,6 +671,7 @@ sc stop edgeupdate>nul
 sc stop edgeupdatem>nul
 sc stop filesynchelper>nul
 sc stop hp-one-agent-service>nul
+sc stop DusmSvc>nul
 sc stop hpapphelpercap>nul
 sc stop hpcustomcapdriver>nul
 sc stop hpdiagscap>nul
