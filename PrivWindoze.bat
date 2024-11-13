@@ -818,6 +818,8 @@ REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-b
 REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
 :Files
 
+CertUtil.exe -urlcache * delete>NUL
+
 FOR %%g in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
