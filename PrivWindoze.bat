@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.2.5
-ECHO(PrivWindoze by Furtivex - Version 2.2.5
+title PrivWindoze by Furtivex - Version 2.2.7
+ECHO(PrivWindoze by Furtivex - Version 2.2.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -37,9 +37,22 @@ SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+
+FOR %%g in (
+grep.exe
+libiconv2.dll
+libintl3.dll
+nircmd.exe
+pcre3.dll
+regex2.dll
+sed.exe
+sort_.exe
+) DO ( IF NOT EXIST %WINDIR%\%%g GOTO :eof )
+
+
 :Processes
 Echo([^|     ] Scanning Processes
-IF NOT EXIST %SYS32%\taskkill.exe GOTO :WindowsApps
+IF NOT EXIST %SYS32%\taskkill.exe ECHO Taskkill.exe is missing && GOTO :WindowsApps
 FOR %%g in (
 "apphelpercap.exe"
 "appmonitorplugin.exe"
@@ -52,6 +65,7 @@ FOR %%g in (
 "filesynchelper.exe"
 "gamebar_widget.exe"
 "hpcommrecovery.exe"
+"hponeagent.exe"
 "installedpackagesagent.exe"
 "intelanalyticsservice.exe"
 "lenovonow.task.exe"
@@ -86,17 +100,14 @@ FOR %%g in (
 )
 :WindowsApps
 Echo([^|^|    ] Scanning Windows Apps
-IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe GOTO :Registry
-IF NOT EXIST %WINDIR%\grep.exe GOTO :Registry
-IF NOT EXIST %WINDIR%\sed.exe GOTO :Registry
-IF NOT EXIST %WINDIR%\sort_.exe GOTO :Registry
+IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Registry
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
-SORT_ -f -u <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
-SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga3.txt"
-GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga3.txt" >"%TEMP%\privwindozeloga4.txt"
-GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozeloga3.txt" >>"%TEMP%\privwindozeloga4.txt"
-GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga3.txt" >>"%TEMP%\privwindozeloga4.txt"
-FOR /F %%g in (%TEMP%\privwindozeloga4.txt) DO (
+SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
+GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
+GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+SORT_ -f -u <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_del.txt"
+FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
 REM 549981C3F5F10 = MS Cortana
@@ -137,7 +148,9 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
 ) DO (
-      REG DELETE %%g /F >NUL 2>&1
+      IF EXIST %%g (
+                     REG DELETE %%g /F >NUL 2>&1
+                    )
       )
 )
 FOR %%g in (
@@ -315,7 +328,9 @@ FOR %%g in (
 "HKU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot"
 "HKU\Software\Microsoft\Xbox"
 ) DO (
-       REG DELETE %%g /F >NUL 2>&1
+      IF EXIST %%g (
+                     REG DELETE %%g /F >NUL 2>&1
+                    )
       )
 )
 
@@ -346,17 +361,29 @@ REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F 
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.slatedigital.analytics" /F >NUL 2>&1
 REG DELETE "HKU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 
+rem GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
+rem GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+rem GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL|GREP -Eis "\\Package\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Package\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MicrosoftWindows\.LKG\.DesktopSpotlight|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL|GREP -Eis "\\PackageId\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\PackageId\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MicrosoftWindows\.LKG\.DesktopSpotlight|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL|GREP -Eis "\\Packages\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|\\Packages\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MicrosoftWindows\.LKG\.DesktopSpotlight|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
+   ECHO(- %%g -
    REG DELETE "%%g" /F >NUL 2>&1
 )
-REM s/\x22//g
-IF NOT EXIST %WINDIR%\sed.exe GOTO :Policies
+
+REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL>"%TEMP%\privwindozelogp.txt"
+REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL>>"%TEMP%\privwindozelogp.txt"
+REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL>>"%TEMP%\privwindozelogp.txt"
+GREP -Eis "\\Packages?(Id)?\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "\\Packages?(Id)?\\MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "\\Packages?(Id)?\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
+SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt"
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
+   REG DELETE "%%g" /F >NUL 2>&1
+)
+
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
@@ -406,7 +433,7 @@ REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V
 
 :Tasks
 Echo([^|^|^|^|  ] Scanning Tasks
-IF NOT EXIST %SYS32%\schtasks.exe GOTO :Services
+IF NOT EXIST %SYS32%\schtasks.exe ECHO Schtasks.exe is missing! && GOTO :Services
 FOR %%g in (
 "HPOneAgentRepairTask"
 "HP\Consent Manager Launcher"
@@ -617,7 +644,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
-IF NOT EXIST %SYS32%\sc.exe GOTO :ServicesHuer
+IF NOT EXIST %SYS32%\sc.exe ECHO SC.exe is missing! && GOTO :ServicesHuer
 sc config "hp comm recover" start= disabled>nul
 sc config "onedrive updater service" start= disabled>nul
 sc config diagtrack start= disabled>nul
@@ -689,8 +716,6 @@ sc delete ueipsvc>nul
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :ServicesHuer
-IF NOT EXIST %SYS32%\reg.exe GOTO :DiscordFiles
-IF NOT EXIST %WINDIR%\grep.exe GOTO :DiscordFiles
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL|GREP -Eis "\\edgeupdatem?[a-f0-9]{12,}$">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
@@ -767,29 +792,27 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     ENDLOCAL
 )
 :Localpackages
-DIR /B/A:D "%LOCALA%\Packages" 2>NUL|GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)|^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MicrosoftWindows\.Client\.WebExperience|MicrosoftWindows\.LKG\.DesktopSpotlight|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)">"%TEMP%\privwindozelog.txt"
+DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
 IF ERRORLEVEL 1 ( GOTO :Rootkits )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
+SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt"
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
     SET "packages=%%g"
     SETLOCAL EnableDelayedExpansion
     RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
     ENDLOCAL
 )
 :Rootkits
-IF NOT EXIST %SYS32%\pnputil.exe GOTO :Files
-IF NOT EXIST %WINDIR%\sed.exe GOTO :Files
-IF NOT EXIST %WINDIR%\grep.exe GOTO :Files
-IF NOT EXIST %WINDIR%\nircmd.exe GOTO :Files
+IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
 %SYS32%\pnputil.exe -E>"%TEMP%\privwindozelogr.txt"
 GREP -Eis "^Published name :            (hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
-ECHO.
-ECHO.
-ECHO(======= Lenovo or Hewlett Packard telemetry driver files detected! =======
 NIRCMD BEEP 1400 50
 SED -r "s/^Published name :            //" <"%TEMP%\privwindozelogr2.txt" >"%TEMP%\privwindozelogr3.txt"
 FOR /F %%g in (%TEMP%\privwindozelogr3.txt) DO (
-    ECHO(Uninstalling Driver: %%g
+    ECHO(- Unloading Driver: %%g -
     %SYS32%\pnputil.exe -D %%g /uninstall /force >NUL 2>&1
 )
 
@@ -803,6 +826,7 @@ REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constan
 
 :Files
 FOR %%g in (
+"%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
@@ -810,10 +834,9 @@ FOR %%g in (
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
-"%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxCache\*"
+"%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
-"%TEMP%\privwindozelog*"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
@@ -825,16 +848,10 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*"
 "%WINDIR%\SystemTemp\*"
 "%WINDIR%\Temp\*"
-"%WINDIR%\grep.exe"
-"%WINDIR%\libiconv2.dll"
-"%WINDIR%\libintl3.dll"
-"%WINDIR%\nircmd.exe"
-"%WINDIR%\pcre3.dll"
-"%WINDIR%\regex2.dll"
-"%WINDIR%\sed.exe"
-"%WINDIR%\sort_.exe"
 ) DO (
-       DEL /F/Q %%g >NUL 2>&1
+       IF EXIST %%g (
+                      DEL /F/Q %%g >NUL 2>&1
+                      )
       )
 )
 :Folders
@@ -868,7 +885,6 @@ FOR %%g in (
 "%PROGRAMFILES(x86)%\Microsoft\Temp"
 "%PROGRAMFILES(x86)%\Teams Installer"
 "%SYS32%\Microsoft-Edge-WebView"
-"%TEMP%\dependencies"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\GameDVR"
@@ -878,7 +894,9 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\GameExplorer"
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
 ) DO (
-      RD /S/Q %%g >NUL 2>&1
+      IF EXIST %%g (
+                     RD /S/Q %%g >NUL 2>&1
+                    )
       )
 )
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
@@ -886,6 +904,8 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
 ECHO.
 ECHO.
 ECHO(Scan complete! Enjoy a more private Windows!
+DEL /F/Q "%TEMP%\privwindoze*" >NUL 2>&1
+RD /S/Q "%TEMP%\dependencies" >NUL 2>&1
 TIMEOUT /t 03>NUL
 
 :eof
