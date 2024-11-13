@@ -904,7 +904,7 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
 
 ECHO.
 ECHO.
-START /HIGH explorer.exe
+START /D"%userprofile%" /I %WINDIR%\explorer.exe
 NIRCMD BEEP 1400 50
 ECHO(Scan complete! Enjoy a more private Windows!
 TIMEOUT /t 05>NUL
