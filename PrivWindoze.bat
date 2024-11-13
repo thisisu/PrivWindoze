@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.4
-ECHO(PrivWindoze by Furtivex - Version 2.4.4
+title PrivWindoze by Furtivex - Version 2.4.5
+ECHO(PrivWindoze by Furtivex - Version 2.4.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -51,7 +51,7 @@ sort_.exe
 
 :Processes
 Echo([^|     ] Scanning Processes
-IF NOT EXIST %SYS32%\taskkill.exe ECHO Taskkill.exe is missing && GOTO :WindowsApps
+IF NOT EXIST %SYS32%\taskkill.exe ECHO Taskkill.exe is missing && GOTO :Packages
 FOR %%g in (
 "apphelpercap.exe"
 "appmonitorplugin.exe"
@@ -97,8 +97,8 @@ FOR %%g in (
 ) DO (
        TASKKILL /F /IM %%g >NUL 2>&1
 )
-:WindowsApps
-Echo([^|^|    ] Scanning Windows Apps
+:Packages
+Echo([^|^|    ] Scanning Packages
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Registry
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
