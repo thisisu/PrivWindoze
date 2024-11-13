@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.6
-ECHO(PrivWindoze by Furtivex - Version 2.4.6
+title PrivWindoze by Furtivex - Version 2.4.7
+ECHO(PrivWindoze by Furtivex - Version 2.4.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -61,12 +61,14 @@ svc_delete.dat
 svc_stop_disable.dat
 ) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
 
+:: PROCESSES ::
 :Processes
 Echo([^|     ] Scanning Processes
 FOR /F %%g in (%TEMP%\proc_kill.dat) DO (
     TASKKILL /F /IM "%%g" >NUL 2>&1
 )
 
+:: PACKAGES ::
 :Packages
 Echo([^|^|    ] Scanning Packages
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Registry
@@ -86,6 +88,7 @@ REM AD2F1837 = HP Bundles
 REM B9ECED6F = Asus bundles
 REM E046963F = Lenovo Bundles
 
+:: REGISTRY ::
 :Registry
 Echo([^|^|^|   ] Scanning Registry
 IF %ARCH%==x64 (
@@ -117,11 +120,8 @@ IF %ARCH%==x64 (
 "HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
 "HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
-) DO (
-       REG DELETE %%g /F >NUL 2>&1
-      )
+) DO ( REG DELETE %%g /F >NUL 2>&1 )
 )
-
 FOR %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
@@ -372,6 +372,7 @@ SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\p
 FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
+:: POLICIES ::
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
@@ -390,9 +391,8 @@ REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Disa
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
 
 
-:Tasks
+:: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
-IF NOT EXIST %SYS32%\schtasks.exe ECHO Schtasks.exe is missing! && GOTO :Services
 FOR %%g in (
 "HPOneAgentRepairTask"
 "HP\Consent Manager Launcher"
@@ -735,7 +735,6 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxCache\*"
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
-"%TEMP%\privwindozelog*.txt"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
@@ -806,6 +805,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     DEL /F/Q "!TEMP!\!deltemp!" >NUL 2>&1
     ENDLOCAL
 )
+RD /S/Q "%TEMP%\dependencies" >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
