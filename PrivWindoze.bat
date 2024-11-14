@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.9
-ECHO(PrivWindoze by Furtivex - Version 2.4.9
+title PrivWindoze by Furtivex - Version 2.5.0
+ECHO(PrivWindoze by Furtivex - Version 2.5.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -84,7 +84,7 @@ GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellI
 GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
-    Echo(%%g ^(Package ^)>>"%dump_p%"
+    Echo(%%g ^(Package^)>>"%dump_p%"
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
 REM 549981C3F5F10 = MS Cortana
