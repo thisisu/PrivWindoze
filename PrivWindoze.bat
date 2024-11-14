@@ -1,12 +1,12 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.0
-ECHO(PrivWindoze by Furtivex - Version 2.5.0
+title PrivWindoze by Furtivex - Version 2.5.1
+ECHO(PrivWindoze by Furtivex - Version 2.5.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-CD /d %~dp0
+CD /d "%~dp0"
 FOR %%g in (
 grep.exe
 libiconv2.dll
@@ -22,6 +22,7 @@ FOR %%g in (
 proc_kill.dat
 svc_delete.dat
 svc_stop_disable.dat
+reglocs_pkgs.dat
 ) DO ( COPY /Y "%CD%\%%g" "%TEMP%" >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
@@ -42,11 +43,24 @@ SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinne
 SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-SET "dump_f=%TEMP%\dump_f"
-SET "dump_r=%TEMP%\dump_r"
-SET "dump_d=%TEMP%\dump_d"
-SET "dump_p=%TEMP%\dump_p"
+
+FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
+FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
+Set StartDate=%date%
+set StartTime=%time%
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+
+net session >NUL 2>&1
+IF %ERRORLEVEL% EQU 0 ( SET USERSTATUS=Administrator) else (
+ Echo(*** PrivWindoze runs best with administrator privileges ***
+ echo.
+ Echo(If you wish to run with administrator privileges, please close this window and run as an administrator.
+ echo.
+ Echo(If you wish to run without administrator privileges, please hit any key to continue.
+ echo.
+ SET USERSTATUS=Limited
+ pause
+)
 
 FOR %%g in (
 grep.exe
@@ -84,7 +98,7 @@ GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellI
 GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
-    Echo(%%g ^(Package^)>>"%dump_p%"
+    Echo(%%g ^(Package^)>>"%TEMP%\003"
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%g" >NUL 2>&1
 )
 REM 549981C3F5F10 = MS Cortana
@@ -173,6 +187,8 @@ FOR %%g in (
 "HKCR\microsoftmusic"
 "HKCR\microsoftvideo"
 "HKCR\ms-clipchamp"
+"HKCR\com.clipchamp.app"
+"HKCR\com.microsoft.3dviewer"
 "HKCR\ms-cortana"
 "HKCR\ms-gamingoverlay"
 "HKCR\ms-insights"
@@ -342,16 +358,25 @@ REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
-REG QUERY "HKCR\ActivatableClasses\Package" 2>NUL>"%TEMP%\privwindozelogp.txt"
-REG QUERY "HKCR\Extensions\ContractId\Windows.AppService\PackageId" 2>NUL>>"%TEMP%\privwindozelogp.txt"
-REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages" 2>NUL>>"%TEMP%\privwindozelogp.txt"
-GREP -Eis "\\Packages?(Id)?\\Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
-GREP -Eis "\\Packages?(Id)?\\MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
-GREP -Eis "\\Packages?(Id)?\\(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
-SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt"
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
-   REG DELETE "%%g" /F >NUL 2>&1
+
+:: new area
+FOR /F "usebackq delims=" %%g in ("%TEMP%\reglocs_pkgs.dat") DO ( REG QUERY "%%g" 2>NUL>>"%TEMP%\privwindozelogp.txt" )
+
+GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|ContentDeliveryManager|DellInc|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+
+SORT_ -f -u <"%TEMP%\privwindozelogp2_found.txt" >"%TEMP%\privwindozelogp2_del.txt"
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
+   SET "regpath=%%g"
+   SETLOCAL EnableDelayedExpansion
+   ECHO(!regpath! ^(Registry Key^)>>"%TEMP%\004"
+   REG DELETE "!regpath!" /F >NUL 2>&1
+   ENDLOCAL
 )
+
+REM HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\S-1-5-21-3486783578-3334741446-41134680-1002
+
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelogMS.txt"
@@ -654,7 +679,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "locallow64hex=%%g"
     SETLOCAL EnableDelayedExpansion
     IF EXIST "!LOCALLOW!\!locallow64hex!" (
-            ECHO("!LOCALLOW!\!locallow64hex!" ^(File^)>>"%dump_f%"
+            ECHO(!LOCALLOW!\!locallow64hex! ^(File^)>>"%TEMP%\001"
             DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
             )
     ENDLOCAL
@@ -715,7 +740,7 @@ GREP -Eis "^(hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\pr
 IF ERRORLEVEL 1 ( GOTO :Files )
 :: NIRCMD BEEP 1400 50
 FOR /F %%g in (%TEMP%\privwindozelogrk4.txt) DO (
-    Echo(Uninstalling driver: %%g
+    Echo(%%g ^(Driver^)>>>>"%TEMP%\000"
     %SYS32%\pnputil.exe /delete-driver %%g /uninstall /force >NUL 2>&1
 )
 
@@ -727,7 +752,6 @@ REM hpanalyticscomp.inf
 REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
 REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
 :Files
-
 CertUtil.exe -urlcache * delete>NUL
 
 FOR %%g in (
@@ -807,7 +831,64 @@ FOR %%g in (
        RD /S/Q %%g >NUL 2>&1
 )
 
-IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" )
+IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
+
+:DoLog
+
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.5.1 ^(01.14.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
+Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+ECHO(Drivers^:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+IF EXIST "%TEMP%\000" (
+  SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
+  TYPE "%TEMP%\000rdy">>"%TEMP%\pwindoze.txt"
+)
+
+ECHO(Files^:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+  IF EXIST "%TEMP%\001" (
+  SORT_ -f -u <"%TEMP%\001" >"%TEMP%\001_rdy"
+  TYPE "%TEMP%\001_rdy">>"%TEMP%\pwindoze.txt"
+)
+:: Under construction
+IF EXIST "%TEMP%\002" (
+  SORT_ -f -u <"%TEMP%\002" >"%TEMP%\002rdy"
+  TYPE "%TEMP%\002rdy">>"%TEMP%\pwindoze.txt"
+)
+:: Under construction
+ECHO(Packages^:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+IF EXIST "%TEMP%\003" (
+  SORT_ -f -u <"%TEMP%\003" >"%temp%\003rdy"
+  TYPE "%TEMP%\003rdy">>"%TEMP%\pwindoze.txt"
+)
+
+ECHO(Registry^:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+IF EXIST "%TEMP%\004" (
+  SORT_ -f -u <"%TEMP%\004" >"%temp%\004rdy"
+  TYPE "%TEMP%\004rdy">>"%TEMP%\pwindoze.txt"
+)
+
+echo.>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
+Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+SED "s/\x22//g;s/\http/hxxp/g;s/Sysnative/system32/;s/HKEY_LOCAL_MACHINE/HKLM/;s/HKEY_CURRENT_USER/HKCU/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+
+
 :ClearTemp
 DIR /B/A:-D "%TEMP%\*" 2>NUL|GREP -Esv "PrivWindoze\.bat$">"%TEMP%\privwindozelog.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (

@@ -1,0 +1,16 @@
+HKCR\ActivatableClasses\Package
+HKCR\Extensions\ContractId\Windows.AppService\PackageId
+HKCR\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PolicyCache
+HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PolicyCache
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\HostActivityManager\CommitHistory
+HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications
+HKLM\System\Setup\Upgrade\Appx\AppxAllUserStore\Staged
+HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\Applications
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages
+HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications
+HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Deprovisioned
+HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\S-1-5-18
+HKU\.DEFAULT\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
+HKU\S-1-5-18\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
+HKU\S-1-5-19\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
+HKU\S-1-5-20\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
