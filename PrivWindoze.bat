@@ -75,7 +75,7 @@ FOR /F %%g in (%TEMP%\proc_kill.dat) DO (
 :: PACKAGES ::
 :Packages
 Echo([^|^|    ] Scanning Packages
-IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Registry
+IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Recall
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
@@ -93,7 +93,8 @@ REM AD2F1837 = HP Bundles
 REM B9ECED6F = Asus bundles
 REM E046963F = Lenovo Bundles
 
-:: 24H2 Update
+:Recall
+REM 24H2 Update
 Dism /Online /Disable-Feature /Featurename:Recall>NUL
 
 :: REGISTRY ::
