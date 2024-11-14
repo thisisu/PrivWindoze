@@ -29,4 +29,4 @@ A log is created on the User Desktop after completion.
 ![privwindozelog](https://github.com/user-attachments/assets/b0726f4a-3b94-4cb0-9f10-e93ee29d9792)
 
 
-[![donate](https://github.com/user-attachments/assets/dc5cbf65-0848-4da0-bc5f-c0555cca3068)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
+[![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N) - [![donate_amz](https://github.com/user-attachments/assets/10476e9c-92f3-4271-8410-6f38624c94b8)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
