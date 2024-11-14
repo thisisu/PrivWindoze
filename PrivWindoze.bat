@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.4
-ECHO(PrivWindoze by Furtivex - Version 2.5.4
+title PrivWindoze by Furtivex - Version 2.5.5
+ECHO(PrivWindoze by Furtivex - Version 2.5.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -77,6 +77,7 @@ FOR %%g in (
 proc_kill.dat
 svc_delete.dat
 svc_stop_disable.dat
+reglocs_pkgs.dat
 ) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
 
 :: PROCESSES ::
@@ -109,7 +110,8 @@ REM E046963F = Lenovo Bundles
 
 :Recall
 REM 24H2 Update
-Dism /Online /Disable-Feature /Featurename:Recall>NUL
+IF NOT EXIST %SYS32%\Dism.exe ECHO Dism.exe is missing! && GOTO :Registry
+%SYS32%\Dism.exe /Online /Disable-Feature /Featurename:Recall>NUL
 
 :: REGISTRY ::
 :Registry
@@ -359,23 +361,22 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
 )
 
-:: new area
 FOR /F "usebackq delims=" %%g in ("%TEMP%\reglocs_pkgs.dat") DO ( REG QUERY "%%g" 2>NUL>>"%TEMP%\privwindozelogp.txt" )
 
 GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
-GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|ContentDeliveryManager|DellInc|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 
 SORT_ -f -u <"%TEMP%\privwindozelogp2_found.txt" >"%TEMP%\privwindozelogp2_del.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
    SET "regpath=%%g"
    SETLOCAL EnableDelayedExpansion
-   ECHO(!regpath! ^(Registry Key^)>>"%TEMP%\004"
+   ECHO("!regpath!" ^(Registry Key^)>>"%TEMP%\004"
    REG DELETE "!regpath!" /F >NUL 2>&1
    ENDLOCAL
 )
 
-REM HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\S-1-5-21-3486783578-3334741446-41134680-1002
+REM TODO HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\S-1-5-21-3486783578-3334741446-41134680-1002
 
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
@@ -652,7 +653,7 @@ FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
 :EdgeService
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
-GREP -Eis "^edgeupdate(m?[a-f0-9]{10,})?" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
+GREP -Eis "^edgeupdate.*" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
 SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 FOR /F %%g in (%TEMP%\privwindozesvc2_del.txt) DO (
@@ -684,7 +685,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "locallow64hex=%%g"
     SETLOCAL EnableDelayedExpansion
     IF EXIST "!LOCALLOW!\!locallow64hex!" (
-            ECHO(!LOCALLOW!\!locallow64hex! ^(File^)>>"%TEMP%\001"
+            ECHO("!LOCALLOW!\!locallow64hex!" ^(File^)>>"%TEMP%\001"
             DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
             )
     ENDLOCAL
@@ -852,7 +853,7 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.5.4 ^(01.14.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.5.5 ^(01.14.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -905,7 +906,7 @@ Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwin
 Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
 Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-SED "s/\x22//g;s/\http/hxxp/g;s/Sysnative/system32/;s/HKEY_LOCAL_MACHINE/HKLM/;s/HKEY_CURRENT_USER/HKCU/;s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+SED "s/\x22//g; s/\http/hxxp/g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
 
 
 :ClearTemp
