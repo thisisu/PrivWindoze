@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.3
-ECHO(PrivWindoze by Furtivex - Version 2.5.3
+title PrivWindoze by Furtivex - Version 2.5.4
+ECHO(PrivWindoze by Furtivex - Version 2.5.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -760,25 +760,35 @@ REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constan
 CertUtil.exe -urlcache * delete>NUL
 
 FOR %%g in (
-"%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
-"%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
-"%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
-"%LOCALA%\AMDSoftwareInstaller\cache\qmlcache\*"
-"%LOCALA%\AMD\DxCache\*"
-"%LOCALA%\AMD\DxcCache\*"
-"%LOCALA%\AMD\VkCache\*"
+"%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
+"%USERPROFILE%\Desktop\Microsoft Edge.lnk"
+"%USERPROFILE%\Desktop\Microsoft Teams.lnk"
+"%USERPROFILE%\Favorites\Bing.url"
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
 "%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
+"%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
+"%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+) DO (
+       IF EXIST %%g (
+                      ECHO(%%g ^(File^)>>"%TEMP%\001"
+                      DEL /F/Q %%g >NUL 2>&1
+                      )
+)
+
+REM FOR /F "usebackq delims=" %%i in ("%TEMP%\privwindozelog3paths.txt") DO (
+    
+FOR %%g in (
+"%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
+"%LOCALA%\AMDSoftwareInstaller\cache\qmlcache\*"
+"%LOCALA%\AMD\DxCache\*"
+"%LOCALA%\AMD\DxcCache\*"
+"%LOCALA%\AMD\VkCache\*"
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxCache\*"
 "%SYS32%\config\systemprofile\AppData\Local\AMD\DxcCache\*"
-"%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
-"%USERPROFILE%\Desktop\Microsoft Edge.lnk"
-"%USERPROFILE%\Desktop\Microsoft Teams.lnk"
-"%USERPROFILE%\Favorites\Bing.url"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\AMD\DxCache\*"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\FontCache\*"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Temp\*"
@@ -842,7 +852,7 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.5.3 ^(01.14.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.5.4 ^(01.14.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -855,6 +865,7 @@ echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000" (
   SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
   TYPE "%TEMP%\000rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
 )
 
 ECHO(Files^:>>"%TEMP%\pwindoze.txt"
@@ -862,6 +873,7 @@ echo.>>"%TEMP%\pwindoze.txt"
   IF EXIST "%TEMP%\001" (
   SORT_ -f -u <"%TEMP%\001" >"%TEMP%\001_rdy"
   TYPE "%TEMP%\001_rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
 )
 :: Under construction
 IF EXIST "%TEMP%\002" (
@@ -874,6 +886,7 @@ echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\003" (
   SORT_ -f -u <"%TEMP%\003" >"%temp%\003rdy"
   TYPE "%TEMP%\003rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
 )
 
 ECHO(Registry^:>>"%TEMP%\pwindoze.txt"
@@ -881,6 +894,7 @@ echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\004" (
   SORT_ -f -u <"%TEMP%\004" >"%temp%\004rdy"
   TYPE "%TEMP%\004rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
 )
 
 echo.>>"%TEMP%\pwindoze.txt"
