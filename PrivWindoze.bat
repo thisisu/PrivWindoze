@@ -396,7 +396,7 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
     SET "firewallpath=%%i"
     SETLOCAL EnableDelayedExpansion
     IF NOT EXIST "!firewallpath!" (
-                                     ECHO(HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules\\%%g -^> "!firewallpath!" ^(Registry Value - Orphan^)>>"%TEMP%\004"
+                                     ECHO(HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules\\%%g -^> "!firewallpath!" ^(No File^)>>"%TEMP%\004"
                                      REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g /F >NUL 2>&1
                                     )
     ENDLOCAL
