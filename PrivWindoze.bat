@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.2
-ECHO(PrivWindoze by Furtivex - Version 2.5.2
+title PrivWindoze by Furtivex - Version 2.5.3
+ECHO(PrivWindoze by Furtivex - Version 2.5.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -395,7 +395,10 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
     FOR /F "usebackq delims=" %%i in ("%TEMP%\privwindozelog3paths.txt") DO (
     SET "firewallpath=%%i"
     SETLOCAL EnableDelayedExpansion
-    IF NOT EXIST "!firewallpath!" REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g /F >NUL 2>&1
+    IF NOT EXIST "!firewallpath!" (
+                                     ECHO(HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules\\%%g -^> "!firewallpath!" ^(Registry Value - Orphan^)>>"%TEMP%\004"
+                                     REG DELETE "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /V %%g /F >NUL 2>&1
+                                    )
     ENDLOCAL
     )
 )
@@ -430,8 +433,8 @@ Echo([^|^|^|^|  ] Scanning Tasks
 FOR %%g in (
 "HPOneAgentRepairTask"
 "HP\Consent Manager Launcher"
-"Intel\Intel Telemetry 3"
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
+"Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
 "Lenovo\LenovoNowQuarterlyLaunch"
@@ -454,6 +457,8 @@ FOR %%g in (
 "Lenovo\Vantage\Schedule\VantageCoreAddinIdleScheduleTask"
 "Lenovo\Vantage\Schedule\VantageCoreAddinWeekScheduleTask"
 "Lenovo\Vantage\StartupFixPlan"
+"MSI_GamebarConnect"
+"MSI_GamebarTool"
 "McAfee\WPS\McAfee Anti-Tracker Scanner"
 "McAfee\WPS\McAfee Anti-tracker notification"
 "McAfee\WPS\McAfee Cloud Configuration Check"
@@ -494,8 +499,6 @@ FOR %%g in (
 "Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting"
 "Microsoft\Windows\Flighting\OneSettings\RefreshCache"
 "Microsoft\Windows\InstallService\RestoreDevice"
-"MSI_GamebarConnect"
-"MSI_GamebarTool"
 "Microsoft\Windows\InstallService\ScanForUpdates"
 "Microsoft\Windows\InstallService\ScanForUpdatesAsUser"
 "Microsoft\Windows\InstallService\SmartRetry"
@@ -888,7 +891,7 @@ Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwin
 Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
 Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-SED "s/\x22//g;s/\http/hxxp/g;s/Sysnative/system32/;s/HKEY_LOCAL_MACHINE/HKLM/;s/HKEY_CURRENT_USER/HKCU/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+SED "s/\x22//g;s/\http/hxxp/g;s/Sysnative/system32/;s/HKEY_LOCAL_MACHINE/HKLM/;s/HKEY_CURRENT_USER/HKCU/;s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
 
 
 :ClearTemp
@@ -903,6 +906,6 @@ RD /S/Q "%TEMP%\dependencies" >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
-ECHO(Scan complete! Enjoy a more private Windows!
+ECHO(Scan completed. A log can be found on your Desktop.
 TIMEOUT /t 05>NUL && DEL /F/Q "%TEMP%\PrivWindoze.bat">NUL
 :eof
