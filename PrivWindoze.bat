@@ -494,6 +494,8 @@ FOR %%g in (
 "Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting"
 "Microsoft\Windows\Flighting\OneSettings\RefreshCache"
 "Microsoft\Windows\InstallService\RestoreDevice"
+"MSI_GamebarConnect"
+"MSI_GamebarTool"
 "Microsoft\Windows\InstallService\ScanForUpdates"
 "Microsoft\Windows\InstallService\ScanForUpdatesAsUser"
 "Microsoft\Windows\InstallService\SmartRetry"
@@ -902,5 +904,5 @@ ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 ECHO(Scan complete! Enjoy a more private Windows!
-TIMEOUT /t 05>NUL
+TIMEOUT /t 05>NUL && DEL /F/Q "%TEMP%\PrivWindoze.bat">NUL
 :eof
