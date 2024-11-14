@@ -6,6 +6,7 @@ PrivWindoze is a small batch script designed to quickly disable telemetry and re
 -  Microsoft Edge
 -  Microsoft Game Bar
 -  Microsoft OneDrive
+-  Microsoft Recall
 -  Microsoft Teams
 -  Microsoft XBox
 -  Microsoft Zune
@@ -24,6 +25,6 @@ PrivWindoze is a small batch script designed to quickly disable telemetry and re
 
 ![privwindozerun](https://github.com/user-attachments/assets/a6424388-50d1-4305-995c-120c4c30ce21)
 
-There are currently no prompts or logs, but this may change in the future if there is enough interest
+A log is created on the User Desktop after completion.
 
 [![donate](https://github.com/user-attachments/assets/dc5cbf65-0848-4da0-bc5f-c0555cca3068)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
