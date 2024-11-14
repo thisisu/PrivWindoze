@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.1
-ECHO(PrivWindoze by Furtivex - Version 2.5.1
+title PrivWindoze by Furtivex - Version 2.5.2
+ECHO(PrivWindoze by Furtivex - Version 2.5.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -742,7 +742,7 @@ GREP -Eis "^(hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\pr
 IF ERRORLEVEL 1 ( GOTO :Files )
 :: NIRCMD BEEP 1400 50
 FOR /F %%g in (%TEMP%\privwindozelogrk4.txt) DO (
-    Echo(%%g ^(Driver^)>>>>"%TEMP%\000"
+    Echo(%%g ^(Driver^)>>"%TEMP%\000"
     %SYS32%\pnputil.exe /delete-driver %%g /uninstall /force >NUL 2>&1
 )
 
