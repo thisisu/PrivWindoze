@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.4.8
-ECHO(PrivWindoze by Furtivex - Version 2.4.8
+title PrivWindoze by Furtivex - Version 2.4.9
+ECHO(PrivWindoze by Furtivex - Version 2.4.9
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -92,6 +92,9 @@ REM 9426MICRO = MSI // Micro Star International Bundles
 REM AD2F1837 = HP Bundles
 REM B9ECED6F = Asus bundles
 REM E046963F = Lenovo Bundles
+
+:: 24H2 Update
+Dism /Online /Disable-Feature /Featurename:Recall>NUL
 
 :: REGISTRY ::
 :Registry
