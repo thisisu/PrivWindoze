@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.6
-ECHO(PrivWindoze by Furtivex - Version 2.5.6
+title PrivWindoze by Furtivex - Version 2.5.7
+ECHO(PrivWindoze by Furtivex - Version 2.5.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -539,8 +539,6 @@ FOR %%g in (
 "UbtFrameworkService"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
-       DEL /F/Q "%SYS32%\Tasks\%%g" >NUL 2>&1
-       DEL /F/Q "%SYS32%\Tasks_Migrated\%%g" >NUL 2>&1
 )
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
@@ -733,7 +731,10 @@ SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
     SET "packages=%%g"
     SETLOCAL EnableDelayedExpansion
-    RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
+    IF EXIST "!LOCALA!\Packages\!packages!" (
+                                              ECHO("!LOCALA!\Packages\!packages!" ^(Folder^)>>"%TEMP%\001b"
+                                              RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
+                                              )
     ENDLOCAL
 )
 :Rootkits
@@ -853,7 +854,7 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.5.6 ^(01.14.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.5.7 ^(01.15.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -876,12 +877,23 @@ echo.>>"%TEMP%\pwindoze.txt"
   TYPE "%TEMP%\001_rdy">>"%TEMP%\pwindoze.txt"
   echo.>>"%TEMP%\pwindoze.txt"
 )
-:: Under construction
+
+ECHO(Folders^:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+IF EXIST "%TEMP%\001b" (
+  SORT_ -f -u <"%TEMP%\001b" >"%temp%\001brdy"
+  TYPE "%TEMP%\001brdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
+)
+
+ECHO(Tasks^:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\002" (
   SORT_ -f -u <"%TEMP%\002" >"%TEMP%\002rdy"
   TYPE "%TEMP%\002rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
 )
-:: Under construction
+
 ECHO(Packages^:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\003" (
