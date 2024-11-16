@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.6.4
-ECHO(PrivWindoze by Furtivex - Version 2.6.4
+title PrivWindoze by Furtivex - Version 2.6.5
+ECHO(PrivWindoze by Furtivex - Version 2.6.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -48,8 +48,15 @@ FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlS
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
 Set StartDate=%date%
 set StartTime=%time%
+
+whoami /user>"%TEMP%\privwindozewho.txt"
+GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozewho.txt" >"%TEMP%\privwindozewho2.txt"
+IF ERRORLEVEL 1 ( GOTO :AdminChk )
+SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozewho2.txt" >"%TEMP%\privwindozewho3.txt"
+FOR /F %%g in (%TEMP%\privwindozewho3.txt) DO ( SET SID=%%g )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
+:AdminChk
 net session >NUL 2>&1
 IF %ERRORLEVEL% EQU 0 ( SET USERSTATUS=Administrator) else (
  Echo(*** PrivWindoze runs best with administrator privileges ***
@@ -167,7 +174,6 @@ FOR %%g in (
 "HKCR\ms-cortana"
 "HKCR\ms-gamingoverlay"
 "HKCR\ms-insights"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
 "HKCR\ms-meetnow"
 "HKCR\ms-meetnowflyout"
 "HKCR\ms-mobileplans"
@@ -343,7 +349,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
 )
 
 FOR /F "usebackq delims=" %%g in ("%TEMP%\reglocs_pkgs.dat") DO ( REG QUERY "%%g" 2>NUL>>"%TEMP%\privwindozelogp.txt" )
-
+REG QUERY "HKLM\SYSTEM\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\%SID%" 2>NUL>>"%TEMP%\privwindozelogp.txt"
 GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
@@ -356,8 +362,6 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp2_del.txt") DO (
    REG DELETE "!regpath!" /F >NUL 2>&1
    ENDLOCAL
 )
-
-REM TODO HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\S-1-5-21-3486783578-3334741446-41134680-1002
 
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
@@ -404,6 +408,17 @@ FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
 
 :: POLICIES ::
 :Policies
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
@@ -422,9 +437,6 @@ REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_D
 REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
-
-
-REM ContentDeliveryManager HKEY_CURRENT_USER\Software\RegisteredApplications
 
 
 :: TASKS ::
@@ -653,10 +665,12 @@ FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
 GREP -Eis "^edgeupdate.*" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
-SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
+SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
 FOR /F %%g in (%TEMP%\privwindozesvc2_del.txt) DO (
-    REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%g" /F >NUL 2>&1
+    SC CONFIG %%g start= disabled>nul
+    SC STOP %%g>nul
+    SC DELETE %%g>nul    
 )
 :DiscordFiles
 Echo([^|^|^|^|^|^|] Scanning File System
@@ -752,13 +766,6 @@ FOR /F %%g in (%TEMP%\privwindozelogrk4.txt) DO (
     %SYS32%\pnputil.exe /delete-driver %%g /uninstall /force >NUL 2>&1
 )
 
-REM lenovoyx80.inf
-REM lenovoyxx0.inf
-REM hpcustomcapcomp.inf
-REM hpanalyticscomp.inf
-
-REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
-REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
 :Files
 
 IF EXIST %SYS32%\CertUtil.exe %SYS32%\CertUtil.exe -urlcache * delete>NUL
@@ -787,8 +794,6 @@ FOR %%g in (
                       DEL /F/Q %%g >NUL 2>&1
                       )
 )
-
-REM FOR /F "usebackq delims=" %%i in ("%TEMP%\privwindozelog3paths.txt") DO (
     
 FOR %%g in (
 "%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
@@ -861,9 +866,9 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.6.4 ^(11.16.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.6.5 ^(11.16.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
-Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
+Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
