@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.6.1
-ECHO(PrivWindoze by Furtivex - Version 2.6.1
+title PrivWindoze by Furtivex - Version 2.6.2
+ECHO(PrivWindoze by Furtivex - Version 2.6.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -120,37 +120,6 @@ IF NOT EXIST %SYS32%\Dism.exe ECHO Dism.exe is missing! && GOTO :Registry
 :: REGISTRY ::
 :Registry
 Echo([^|^|^|   ] Scanning Registry
-IF %ARCH%==x64 (
-                 FOR %%g in (
-"HKCR\WOW6432Node\AppID\MicrosoftEdgeUpdate.exe"
-"HKCR\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\Classes\WOW6432Node\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\WOW6432Node\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\WOW6432Node\Clients\StartMenuInternet\Microsoft Edge"
-"HKLM\Software\WOW6432Node\Microsoft\Edge"
-"HKLM\Software\WOW6432Node\Microsoft\EdgeUpdate"
-"HKLM\Software\WOW6432Node\Microsoft\OneDrive"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive1"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive2"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive3"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive4"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive5"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive6"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive7"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
-"HKLM\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
-"HKLM\Software\WOW6432Node\Policies\Microsoft\Edge"
-"HKLM\Software\WOW6432Node\Policies\Microsoft\MicrosoftEdge"
-) DO ( REG DELETE %%g /F >NUL 2>&1 )
-)
 FOR %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
@@ -186,6 +155,8 @@ FOR %%g in (
 "HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc"
 "HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0"
+"HKCR\com.clipchamp.app"
+"HKCR\com.microsoft.3dviewer"
 "HKCR\ie_to_edge_bho.IEToEdgeBHO"
 "HKCR\ie_to_edge_bho.IEToEdgeBHO.1"
 "HKCR\microsoft-edge"
@@ -193,11 +164,10 @@ FOR %%g in (
 "HKCR\microsoftmusic"
 "HKCR\microsoftvideo"
 "HKCR\ms-clipchamp"
-"HKCR\com.clipchamp.app"
-"HKCR\com.microsoft.3dviewer"
 "HKCR\ms-cortana"
 "HKCR\ms-gamingoverlay"
 "HKCR\ms-insights"
+"HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
 "HKCR\ms-meetnow"
 "HKCR\ms-meetnowflyout"
 "HKCR\ms-mobileplans"
@@ -285,6 +255,7 @@ FOR %%g in (
 "HKLM\Software\Clients\StartMenuInternet\Microsoft Edge"
 "HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}"
 "HKLM\Software\Microsoft\Edge"
+"HKLM\Software\Microsoft\EdgeUpdate"
 "HKLM\Software\Microsoft\KGL"
 "HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite"
 "HKLM\Software\Microsoft\MicrosoftEdge"
@@ -300,15 +271,20 @@ FOR %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive6"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive7"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}"
 "HKLM\Software\Microsoft\Xbox"
+"HKLM\Software\Policies\Microsoft\Edge"
+"HKLM\Software\Policies\Microsoft\MicrosoftEdge"
 "HKLM\Software\Policies\Microsoft\Windows\OneDrive"
 "HKU\.DEFAULT\Software\Microsoft\Edge"
 "HKU\.DEFAULT\Software\Microsoft\OneDrive"
@@ -327,6 +303,8 @@ FOR %%g in (
 "HKU\Software\Microsoft\Windows\CurrentVersion\Cortana"
 "HKU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot"
 "HKU\Software\Microsoft\Xbox"
+"HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
 )
@@ -341,12 +319,11 @@ REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" 
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V LenovoVantageToolbar /F >NUL 2>&1
+REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
-REG DELETE "HKLM\Software\WOW6432Node\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
-REG DELETE "HKLM\Software\WOW6432Node\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-19\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
@@ -392,7 +369,7 @@ FOR /F %%g in (%TEMP%\privwindozeMS2.txt) DO (
 )
 :FirewallOrphans
 GREP -Es "\|App=[A-Za-z]:.*\.exe" <"%TEMP%\privwindozelog.txt" >"%TEMP%\privwindozelog2.txt"
-IF ERRORLEVEL 1 ( GOTO :Autolaunch )
+IF ERRORLEVEL 1 ( GOTO :EdgeAutoLaunch )
 SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})\s+REG_SZ\s+v.*\|App=([A-Za-z]:.*\.exe).*\|$/\1     \2/" <"%TEMP%\privwindozelog2.txt" >"%TEMP%\privwindozelog3.txt"
 SED -r "s/^(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3clsids.txt"
 SED -r "s/^.*\s{5}([A-Za-z]:.*\.exe)$/\1/" <"%TEMP%\privwindozelog3.txt" >"%TEMP%\privwindozelog3paths.txt"
@@ -407,16 +384,29 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
     ENDLOCAL
     )
 )
-:Autolaunch
+:EdgeAutoLaunch
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
-IF ERRORLEVEL 1 ( GOTO :Policies )
-SED -r "s/^\s{4}//;s/\s+REG_SZ\s+.*//g" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
+IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
+SED -r "s/^\s{4}(MicrosoftEdgeAutoLaunch_[A-F0-9]{32})\s+REG_SZ\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
+    ECHO(HKCU\Software\Microsoft\Windows\CurrentVersion\Run\\%%g ^(Registry Value^)>>"%TEMP%\004"
     REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
 )
+:SubscribedContent
+REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
+IF ERRORLEVEL 1 ( GOTO :Policies )
+SED -r "s/^\s{4}(SubscribedContent-[0-9]{5,}Enabled)\s+REG_DWORD\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
+FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
+    ECHO(HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\\%%g ^(Registry Value^)>>"%TEMP%\004"
+    REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /V "%%g" /F >NUL 2>&1
+)
+
+
 :: POLICIES ::
 :Policies
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry" /T REG_DWORD /V value /D 0 /F >NUL 2>&1
@@ -424,6 +414,7 @@ REG ADD "HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsC
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\DataCollection" /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
@@ -431,6 +422,9 @@ REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_D
 REG ADD "HKU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKU\Software\Policies\Microsoft\Windows\WindowsCopilot" /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
+
+
+REM ContentDeliveryManager HKEY_CURRENT_USER\Software\RegisteredApplications
 
 
 :: TASKS ::
@@ -858,7 +852,10 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\GameExplorer"
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
 ) DO (
-       RD /S/Q %%g >NUL 2>&1
+       IF EXIST %%g (
+                      ECHO(%%g ^(Folder^)>>"%TEMP%\001b"
+                      RD /S/Q %%g >NUL 2>&1
+                      )
 )
 
 IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
@@ -867,7 +864,7 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.6.1 ^(11.16.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.6.2 ^(11.16.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
