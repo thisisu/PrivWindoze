@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.5.8
-ECHO(PrivWindoze by Furtivex - Version 2.5.8
+title PrivWindoze by Furtivex - Version 2.6.0
+ECHO(PrivWindoze by Furtivex - Version 2.6.0
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -79,6 +79,10 @@ svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 ) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
+
+:: Create System Restore Point
+IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Processes
+POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePointType 'MODIFY_SETTINGS'"
 
 :: PROCESSES ::
 :Processes
@@ -742,7 +746,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
 )
 :Rootkits
 IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
-%SYS32%\pnputil.exe /enum-drivers 2>NUL|GREP -G "^Original Name">"%TEMP%\privwindozelogrk.txt"
+%SYS32%\pnputil.exe /enum-drivers 2>NUL|GREP -Es "^Original Name">"%TEMP%\privwindozelogrk.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 SED -r "s/^Original Name.\s{4,}//" <"%TEMP%\privwindozelogrk.txt" >"%TEMP%\privwindozelogrk2.txt"
 SORT_ -f -u <"%TEMP%\privwindozelogrk2.txt" >"%TEMP%\privwindozelogrk3.txt"
@@ -762,8 +766,13 @@ REM hpanalyticscomp.inf
 REM HP ROOTKIT https://www.bleepingcomputer.com/forums/t/802684/d-evice-in-use-by-another-user-screen-flashing-only-able-to-get-cmd-running/
 REM LENOVO ROOTKIT https://www.bleepingcomputer.com/forums/t/803174/time-constantly-gets-off-taskbar-malfunctions-mbr-says-my-atldll-is-bad/
 :Files
-CertUtil.exe -urlcache * delete>NUL
 
+IF EXIST %SYS32%\CertUtil.exe %SYS32%\CertUtil.exe -urlcache * delete>NUL
+IF NOT EXIST %SYS32%\wevtutil.exe GOTO :Files2
+%SYS32%\wevtutil.exe el|GREP -Es "^(Application|Security|Setup|System|ForwardedEvents)$">"%TEMP%\privwindozelogcl.txt"
+FOR /F %%g in (%TEMP%\privwindozelogcl.txt) DO ( %SYS32%\wevtutil.exe cl %%g>NUL )
+     
+:Files2
 FOR %%g in (
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
@@ -858,7 +867,7 @@ IF %ARCH%==x64 ( MD "%PROGRAMFILES(x86)%\Microsoft\Temp" >NUL 2>&1 )
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.5.8 ^(01.15.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.6.0 ^(01.15.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
