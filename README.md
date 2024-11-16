@@ -22,13 +22,13 @@ PrivWindoze is a batch script designed to quickly turn off all telemetry and rem
 -  Tobii Help Center / Experience
 -  Windows Firewall Orphans
 
-A system restore point is created before the scan starts
-
-A log is created on the User Desktop after completion.
-
-![privwindozerun](https://github.com/user-attachments/assets/a6424388-50d1-4305-995c-120c4c30ce21)
-
-![privwindozelog](https://github.com/user-attachments/assets/b0726f4a-3b94-4cb0-9f10-e93ee29d9792)
+A system restore point is created before the scan starts. Please use this if there are any unintended changes. Or.. just wait a couple of days until Microsoft sends it back to your system via Windows Update.
 
 
 [![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N)  [![donate_amz](https://github.com/user-attachments/assets/10476e9c-92f3-4271-8410-6f38624c94b8)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
+
+![privwindozerun](https://github.com/user-attachments/assets/a6424388-50d1-4305-995c-120c4c30ce21)
+
+Log created on the User Desktop after completion:
+
+![privwindozelog](https://github.com/user-attachments/assets/cf105b6c-f5fb-48f5-b41c-cb92029ebf82)
