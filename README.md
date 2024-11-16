@@ -33,7 +33,7 @@ The primary purpose of the PrivWindoze is to stop and remove any nag screens[[4]
 
 ![privwindozerun](https://github.com/user-attachments/assets/a6424388-50d1-4305-995c-120c4c30ce21)
 
-Windows Explorer may close during the course of the scan -- This is normal behavior
+Windows Explorer may close during the course of the scan -- This is expected behavior
 
 Log created on the Desktop after execution:
 
