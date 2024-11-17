@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.6.6
-ECHO(PrivWindoze by Furtivex - Version 2.6.6
+title PrivWindoze by Furtivex - Version 2.6.7
+ECHO(PrivWindoze by Furtivex - Version 2.6.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -11,7 +11,6 @@ FOR %%g in (
 grep.exe
 libiconv2.dll
 libintl3.dll
-nircmd.exe
 pcre3.dll
 regex2.dll
 sed.exe
@@ -49,11 +48,11 @@ FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\Curren
 Set StartDate=%date%
 set StartTime=%time%
 
-whoami /user>"%TEMP%\privwindozewho.txt"
-GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozewho.txt" >"%TEMP%\privwindozewho2.txt"
+whoami /user>"%TEMP%\privwindozelogwho.txt"
+GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozelogwho.txt" >"%TEMP%\privwindozelogwho2.txt"
 IF ERRORLEVEL 1 ( GOTO :AdminChk )
-SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozewho2.txt" >"%TEMP%\privwindozewho3.txt"
-FOR /F %%g in (%TEMP%\privwindozewho3.txt) DO ( SET SID=%%g )
+SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozelogwho2.txt" >"%TEMP%\privwindozelogwho3.txt"
+FOR /F %%g in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%g )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 
 :AdminChk
@@ -73,7 +72,6 @@ FOR %%g in (
 grep.exe
 libiconv2.dll
 libintl3.dll
-nircmd.exe
 pcre3.dll
 regex2.dll
 sed.exe
@@ -118,6 +116,7 @@ FOR /F %%g in (%TEMP%\privwindozeloga2_del.txt) DO (
 REM 24H2 Update
 IF NOT EXIST %SYS32%\Dism.exe ECHO Dism.exe is missing! && GOTO :Registry
 %SYS32%\Dism.exe /Online /Disable-Feature /Featurename:Recall>NUL
+REM DISM /Online /Cleanup-Image /CheckHealth (other useful command)
 
 :: REGISTRY ::
 :Registry
@@ -848,12 +847,12 @@ FOR %%g in (
 
 :DoLog
 
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.6.6 ^(11.16.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.6.7 ^(11.17.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
@@ -910,11 +909,11 @@ echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
 Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-SED "s/\x22//g; s/\http/hxxp/g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
 
 
 :ClearTemp
@@ -930,5 +929,5 @@ ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 ECHO(Scan completed. A log can be found on your Desktop.
-TIMEOUT /t 05>NUL && DEL /F/Q "%TEMP%\PrivWindoze.bat">NUL
+TIMEOUT /t 05>NUL && DEL /F/Q "%TEMP%\PrivWindoze.bat">NUL 2>&1
 :eof
