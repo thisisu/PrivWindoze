@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.7.2
-ECHO(PrivWindoze by Furtivex - Version 2.7.2
+title PrivWindoze by Furtivex - Version 2.7.3
+ECHO(PrivWindoze by Furtivex - Version 2.7.3
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -122,6 +122,7 @@ REM DISM /Online /Cleanup-Image /CheckHealth (other useful command)
 :Registry
 Echo([^|^|^|   ] Scanning Registry
 FOR %%g in (
+"HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}"
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
 "HKCR\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
@@ -767,6 +768,76 @@ FOR /F %%g in (%TEMP%\privwindozelogcl.txt) DO ( %SYS32%\wevtutil.exe cl %%g>NUL
      
 :Files2
 FOR %%g in (
+"%ALLUSERSPROFILE%\*.bat"
+"%ALLUSERSPROFILE%\*.cmd"
+"%ALLUSERSPROFILE%\*.dll"
+"%ALLUSERSPROFILE%\*.exe"
+"%ALLUSERSPROFILE%\*.js"
+"%ALLUSERSPROFILE%\*.pif"
+"%ALLUSERSPROFILE%\*.ps1"
+"%ALLUSERSPROFILE%\*.tmp"
+"%ALLUSERSPROFILE%\*.vbe"
+"%ALLUSERSPROFILE%\*.vbs"
+"%APPDATA%\*.bat"
+"%APPDATA%\*.cmd"
+"%APPDATA%\*.dll"
+"%APPDATA%\*.exe"
+"%APPDATA%\*.js"
+"%APPDATA%\*.pif"
+"%APPDATA%\*.ps1"
+"%APPDATA%\*.tmp"
+"%APPDATA%\*.vbe"
+"%APPDATA%\*.vbs"
+"%LOCALA%\*.bat"
+"%LOCALA%\*.cmd"
+"%LOCALA%\*.dll"
+"%LOCALA%\*.exe"
+"%LOCALA%\*.js"
+"%LOCALA%\*.pif"
+"%LOCALA%\*.ps1"
+"%LOCALA%\*.tmp"
+"%LOCALA%\*.vbe"
+"%LOCALA%\*.vbs"
+"%LOCALLOW%\*.bat"
+"%LOCALLOW%\*.cmd"
+"%LOCALLOW%\*.dll"
+"%LOCALLOW%\*.exe"
+"%LOCALLOW%\*.js"
+"%LOCALLOW%\*.pif"
+"%LOCALLOW%\*.ps1"
+"%LOCALLOW%\*.tmp"
+"%LOCALLOW%\*.vbe"
+"%LOCALLOW%\*.vbs"
+"%SYS32%\config\systemprofile\AppData\*.bat"
+"%SYS32%\config\systemprofile\AppData\*.cmd"
+"%SYS32%\config\systemprofile\AppData\*.dll"
+"%SYS32%\config\systemprofile\AppData\*.exe"
+"%SYS32%\config\systemprofile\AppData\*.js"
+"%SYS32%\config\systemprofile\AppData\*.pif"
+"%SYS32%\config\systemprofile\AppData\*.ps1"
+"%SYS32%\config\systemprofile\AppData\*.tmp"
+"%SYS32%\config\systemprofile\AppData\*.vbe"
+"%SYS32%\config\systemprofile\AppData\*.vbs"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.bat"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.cmd"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.dll"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.exe"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.js"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.pif"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.ps1"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.tmp"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.vbe"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.vbs"
+"%SYS32%\config\systemprofile\AppData\Local\*.bat"
+"%SYS32%\config\systemprofile\AppData\Local\*.cmd"
+"%SYS32%\config\systemprofile\AppData\Local\*.dll"
+"%SYS32%\config\systemprofile\AppData\Local\*.exe"
+"%SYS32%\config\systemprofile\AppData\Local\*.js"
+"%SYS32%\config\systemprofile\AppData\Local\*.pif"
+"%SYS32%\config\systemprofile\AppData\Local\*.ps1"
+"%SYS32%\config\systemprofile\AppData\Local\*.tmp"
+"%SYS32%\config\systemprofile\AppData\Local\*.vbe"
+"%SYS32%\config\systemprofile\AppData\Local\*.vbs"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
@@ -781,13 +852,13 @@ FOR %%g in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 ) DO (
-       IF EXIST %%g (
-                      ECHO(%%g ^(File^)>>"%TEMP%\001"
-                      DEL /F/Q %%g >NUL 2>&1
-                      )
+       IF EXIST "%%g" (
+                        ECHO("%%g" ^(File^)>>"%TEMP%\001"
+                        DEL /F/Q "%%g" >NUL 2>&1
+                       )
 )
-    
 FOR %%g in (
+"%APPDATA%\obs-studio\logs\*"
 "%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
 "%LOCALA%\AMDSoftwareInstaller\cache\qmlcache\*"
 "%LOCALA%\AMD\DxCache\*"
@@ -858,7 +929,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.2 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.3 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
