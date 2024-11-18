@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.7.1
-ECHO(PrivWindoze by Furtivex - Version 2.7.1
+title PrivWindoze by Furtivex - Version 2.7.2
+ECHO(PrivWindoze by Furtivex - Version 2.7.2
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -858,7 +858,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.1 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.2 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
