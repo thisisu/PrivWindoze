@@ -223,7 +223,7 @@ FOR %%g in (
 "HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
 "HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
-"HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
+"HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather"
