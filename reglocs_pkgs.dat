@@ -4,9 +4,12 @@ HKCR\Extensions\ContractId\Windows.BackgroundTasks\PackageId
 HKCR\Extensions\ContractId\Windows.Launch\PackageId
 HKCR\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PolicyCache
 HKCU\Software\Classes\Extensions\ContractId\Windows.AppService\PackageId
+HKCU\Software\Classes\Extensions\ContractId\Windows.BackgroundTasks\PackageId
+HKCU\Software\Classes\Extensions\ContractId\Windows.Protocol\PackageId
 HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PolicyCache
 HKCU\Software\Microsoft\Windows NT\CurrentVersion\HostActivityManager\CommitHistory
 HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications
+HKCU\Software\Software\Classes\Extensions\ContractId\Windows.Protocol\PackageId
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages
 HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications
 HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Deprovisioned

@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.7.0
-ECHO(PrivWindoze by Furtivex - Version 2.7.0
+title PrivWindoze by Furtivex - Version 2.7.1
+ECHO(PrivWindoze by Furtivex - Version 2.7.1
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -124,7 +124,9 @@ Echo([^|^|^|   ] Scanning Registry
 FOR %%g in (
 "HKCR\AppID\MicrosoftEdgeUpdate.exe"
 "HKCR\AppID\ie_to_edge_bho.dll"
+"HKCR\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKCR\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKCR\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKCR\MSEdgeHTM"
 "HKCR\MSEdgeMHT"
 "HKCR\MSEdgePDF"
@@ -191,6 +193,7 @@ FOR %%g in (
 "HKCR\xboxgames"
 "HKCR\xboxidp"
 "HKCR\xboxmusic"
+"HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 "HKCU\Software\Classes\bingmaps"
 "HKCU\Software\Classes\bingnews"
 "HKCU\Software\Classes\bingweather"
@@ -211,13 +214,16 @@ FOR %%g in (
 "HKCU\Software\Microsoft\GameBarApi"
 "HKCU\Software\Microsoft\MicrosoftEdge"
 "HKCU\Software\Microsoft\OneDrive"
+"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams"
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
+"HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
 "HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+"HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews"
 "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather"
@@ -273,10 +279,13 @@ FOR %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1"
+"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
@@ -293,8 +302,6 @@ FOR %%g in (
 "HKU\.DEFAULT\Software\Microsoft\Xbox"
 "HKU\S-1-5-19\Software\Microsoft\OneDrive"
 "HKU\S-1-5-20\Software\Microsoft\OneDrive"
-"HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 ) DO (
        REG DELETE %%g /F >NUL 2>&1
 )
@@ -431,6 +438,7 @@ FOR %%g in (
 "Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
+"Lenovo\LenovoNowLauncher"
 "Lenovo\LenovoNowQuarterlyLaunch"
 "Lenovo\LenovoNowTask"
 "Lenovo\UDC\Lenovo UDC Diagnostic Scan"
@@ -444,6 +452,7 @@ FOR %%g in (
 "Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.DelayedMonthlyReport"
 "Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.MonthlyReport"
 "Lenovo\Vantage\Schedule\Lenovo.Vantage.SmartPerformance.SScan"
+"Lenovo\Vantage\Schedule\LenovoBoostAddin.Prompt"
 "Lenovo\Vantage\Schedule\LenovoCompanionAppAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\LenovoSystemUpdateAddin_WeeklyTask"
 "Lenovo\Vantage\Schedule\SettingsWidgetAddinDailyScheduleTask"
@@ -461,9 +470,12 @@ FOR %%g in (
 "McAfee\WPS\McAfee Message Check"
 "McAfee\WPS\McAfee PC Optimizer Task"
 "McAfee\WPS\McAfee Scheduled Tracker Remover"
+"Microsoft\Office\Office 15 Subscription Heartbeat"
 "Microsoft\Office\Office Performance Monitor"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
+"Microsoft\Office\OfficeTelemetryAgentFallBack2016"
 "Microsoft\Office\OfficeTelemetryAgentLogOn"
+"Microsoft\Office\OfficeTelemetryAgentLogOn2016"
 "Microsoft\Windows\Application Experience\MareBackup"
 "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
 "Microsoft\Windows\Application Experience\PcaPatchDbTask"
@@ -530,9 +542,6 @@ FOR %%g in (
 "TVT\TVSUUpdateTask_UserLogOn"
 "UEIPInvitation"
 "UbtFrameworkService"
-"Microsoft\Office\Office 15 Subscription Heartbeat"
-"Microsoft\Office\OfficeTelemetryAgentFallBack2016"
-"Microsoft\Office\OfficeTelemetryAgentLogOn2016"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
 )
@@ -849,7 +858,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.0 ^(11.17.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.1 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
