@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.7.3
-ECHO(PrivWindoze by Furtivex - Version 2.7.3
+title PrivWindoze by Furtivex - Version 2.7.4
+ECHO(PrivWindoze by Furtivex - Version 2.7.4
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -22,6 +22,7 @@ proc_kill.dat
 svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
+Urunkey.cfg
 ) DO ( COPY /Y "%CD%\%%g" "%TEMP%" >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
@@ -42,6 +43,8 @@ SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinne
 SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
+SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+SET "MRun=HKLM\Software\Microsoft\Windows\CurrentVersion\Run"
 
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
@@ -83,6 +86,7 @@ proc_kill.dat
 svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
+Urunkey.cfg
 ) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
 
 :: Create System Restore Point
@@ -307,6 +311,7 @@ FOR %%g in (
        REG DELETE %%g /F >NUL 2>&1
 )
 
+REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE "HKCR\.htm\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.html\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCR\.mht\OpenWithProgids" /V MSEdgeMHT /F >NUL 2>&1
@@ -315,11 +320,11 @@ REG DELETE "HKCR\.shtml\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "Microsoft.Lists" /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.slatedigital.analytics" /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V LenovoVantageToolbar /F >NUL 2>&1
+REG DELETE "%URun%" /V "Microsoft.Lists" /F >NUL 2>&1
+REG DELETE "%URun%" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "%URun%" /V "com.slatedigital.analytics" /F >NUL 2>&1
+REG DELETE "%URun%" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
+REG DELETE "%URun%" /V LenovoVantageToolbar /F >NUL 2>&1
 REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
@@ -332,7 +337,21 @@ REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "
 REG DELETE "HKU\S-1-5-20\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
+REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~/\
 
+REM ~~~~~ START OF MALWARE ~~~~~~~\/
+:CRUN
+REG QUERY %URun% 2>NUL|GREP -s "    REG_SZ    ">"%TEMP%\_crun"
+SED -r "s/^\s{4}(.*)\s{4}REG_SZ\s{4}(.*)$/\1 ===> \2/" <"%TEMP%\_crun" >"%TEMP%\_crunboth"
+SED -r "s/^(.*)\s===>.*/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlykey"
+SED -r "s/^.*===>\s(\x22.*)$/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlypath"
+FOR /F "usebackq delims=" %%g in ("%TEMP%\Urunkey.cfg") DO (
+    REG QUERY %URUN% /V "%%g" >NUL 2>&1
+    IF NOT ERRORLEVEL 1 (
+                           ECHO(%URUN%\\"%%g" ^(Registry Value^)>>"%TEMP%\004"
+                           REG DELETE %URUN% /V "%%g" /F >NUL 2>&1
+                          )
+)
 
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
@@ -382,12 +401,12 @@ FOR /F %%g in (%TEMP%\privwindozelog3clsids.txt) DO (
     )
 )
 :EdgeAutoLaunch
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
+REG QUERY "%URun%" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
 SED -r "s/^\s{4}(MicrosoftEdgeAutoLaunch_[A-F0-9]{32})\s+REG_SZ\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
-    ECHO(HKCU\Software\Microsoft\Windows\CurrentVersion\Run\\%%g ^(Registry Value^)>>"%TEMP%\004"
-    REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /V "%%g" /F >NUL 2>&1
+    ECHO(%URun%\\%%g ^(Registry Value^)>>"%TEMP%\004"
+    REG DELETE "%URun%" /V "%%g" /F >NUL 2>&1
 )
 :SubscribedContent
 REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
@@ -929,7 +948,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.3 ^(11.18.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.4 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -937,7 +956,7 @@ echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
-ECHO(Drivers^:>>"%TEMP%\pwindoze.txt"
+ECHO(Drivers:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000" (
   SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
@@ -945,7 +964,7 @@ IF EXIST "%TEMP%\000" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Files^:>>"%TEMP%\pwindoze.txt"
+ECHO(Files:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
   IF EXIST "%TEMP%\001" (
   SORT_ -f -u <"%TEMP%\001" >"%TEMP%\001_rdy"
@@ -953,7 +972,7 @@ echo.>>"%TEMP%\pwindoze.txt"
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Folders^:>>"%TEMP%\pwindoze.txt"
+ECHO(Folders:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\001b" (
   SORT_ -f -u <"%TEMP%\001b" >"%temp%\001brdy"
@@ -961,7 +980,7 @@ IF EXIST "%TEMP%\001b" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Tasks^:>>"%TEMP%\pwindoze.txt"
+ECHO(Tasks:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\002" (
   SORT_ -f -u <"%TEMP%\002" >"%TEMP%\002rdy"
@@ -969,7 +988,7 @@ IF EXIST "%TEMP%\002" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Packages^:>>"%TEMP%\pwindoze.txt"
+ECHO(Packages:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\003" (
   SORT_ -f -u <"%TEMP%\003" >"%temp%\003rdy"
@@ -977,7 +996,7 @@ IF EXIST "%TEMP%\003" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Registry^:>>"%TEMP%\pwindoze.txt"
+ECHO(Registry:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\004" (
   SORT_ -f -u <"%TEMP%\004" >"%temp%\004rdy"
