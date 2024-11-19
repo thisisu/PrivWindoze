@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.7.4
-ECHO(PrivWindoze by Furtivex - Version 2.7.4
+title PrivWindoze by Furtivex - Version 2.7.5
+ECHO(PrivWindoze by Furtivex - Version 2.7.5
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -23,6 +23,8 @@ svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 Urunkey.cfg
+bwords.dat
+NULL
 ) DO ( COPY /Y "%CD%\%%g" "%TEMP%" >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
@@ -38,6 +40,7 @@ SET "LOCALLOW=%USERPROFILE%\Appdata\LocalLow"
 SET "PROGRAMS17=%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs"
 SET "PROGRAMS27=%APPDATA%\Microsoft\Windows\Start Menu\Programs"
 SET "PUBDESKTOP=%SYSTEMDRIVE%\Users\Public\Desktop"
+SET "PUBLIC=%SYSTEMDRIVE%\Users\Public"
 SET "QUICKLAUNCH17=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu"
 SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar"
 SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
@@ -45,6 +48,10 @@ SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
 SET "MRun=HKLM\Software\Microsoft\Windows\CurrentVersion\Run"
+SET "w.proto=HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol"
+SET "CUCDM=HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
+SET "LMUninst=HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall"
+SET "CUUninst=HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
@@ -87,6 +94,8 @@ svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 Urunkey.cfg
+bwords.dat
+NULL
 ) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
 
 :: Create System Restore Point
@@ -220,45 +229,45 @@ FOR %%g in (
 "HKCU\Software\Microsoft\MicrosoftEdge"
 "HKCU\Software\Microsoft\OneDrive"
 "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive"
-"HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams"
+"%CUUninst%\Microsoft EdgeWebView"
+"%CUUninst%\Microsoft OneDrive"
+"%CUUninst%\Teams"
 "HKCU\Software\Microsoft\Xbox"
 "HKCU\Software\Microsoft\XboxLive"
 "HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
 "HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}"
 "HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\feedback-hub"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\insiderhub"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebar"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebarservices"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamingoverlay"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-insights"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-meetnowflyout"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-teams"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-xbet-survey"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamepass"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamingapp"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msnweather"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\mswindowsmusic"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\windows-feedback"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-captures"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-friendfinder"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-gamehub"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-lfg"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-network"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-profile"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-settings"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-store"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-tcui"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxgames"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxidp"
-"HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune"
+"%w.proto%\bingmaps"
+"%w.proto%\bingnews"
+"%w.proto%\bingweather"
+"%w.proto%\feedback-hub"
+"%w.proto%\insiderhub"
+"%w.proto%\ms-gamebar"
+"%w.proto%\ms-gamebarservices"
+"%w.proto%\ms-gamingoverlay"
+"%w.proto%\ms-insights"
+"%w.proto%\ms-meetnowflyout"
+"%w.proto%\ms-teams"
+"%w.proto%\ms-xbet-survey"
+"%w.proto%\msgamepass"
+"%w.proto%\msgamingapp"
+"%w.proto%\msnweather"
+"%w.proto%\mswindowsmusic"
+"%w.proto%\windows-feedback"
+"%w.proto%\xbox"
+"%w.proto%\xbox-captures"
+"%w.proto%\xbox-friendfinder"
+"%w.proto%\xbox-gamehub"
+"%w.proto%\xbox-lfg"
+"%w.proto%\xbox-network"
+"%w.proto%\xbox-profile"
+"%w.proto%\xbox-settings"
+"%w.proto%\xbox-store"
+"%w.proto%\xbox-tcui"
+"%w.proto%\xboxgames"
+"%w.proto%\xboxidp"
+"%w.proto%\zune"
 "HKLM\Software\Classes\MSEdgeHTM"
 "HKLM\Software\Classes\MSEdgeMHT"
 "HKLM\Software\Classes\MSEdgePDF"
@@ -284,17 +293,17 @@ FOR %%g in (
 "HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
-"HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
+"%LMUninst%\Lenovo Now"
+"%LMUninst%\Microsoft Edge Update"
+"%LMUninst%\Microsoft Edge WebView2 Runtime"
+"%LMUninst%\Microsoft Edge"
+"%LMUninst%\Microsoft EdgeWebView"
+"%LMUninst%\VantageSRV_is1"
+"%LMUninst%\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1"
+"%LMUninst%\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}"
+"%LMUninst%\{39AF0813-FA7B-4860-ADBE-93B9B214B914}"
+"%LMUninst%\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}"
+"%LMUninst%\{DF8C4194-1791-41CC-A455-8EBCCF084366}"
 "HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}"
 "HKLM\Software\Microsoft\Xbox"
 "HKLM\Software\Policies\Microsoft\Edge"
@@ -307,8 +316,12 @@ FOR %%g in (
 "HKU\.DEFAULT\Software\Microsoft\Xbox"
 "HKU\S-1-5-19\Software\Microsoft\OneDrive"
 "HKU\S-1-5-20\Software\Microsoft\OneDrive"
-) DO (
-       REG DELETE %%g /F >NUL 2>&1
+) DO ( 
+      REG QUERY %%g >NUL 2>&1
+      IF NOT ERRORLEVEL 1 (
+                             ECHO(%%g ^(Registry Key^)>>"%TEMP%\004"
+                             REG DELETE %%g /F >NUL 2>&1
+                           )
 )
 
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
@@ -354,7 +367,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\Urunkey.cfg") DO (
 )
 
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
+REG QUERY "%w.proto%" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
    REG DELETE "%%g" /F >NUL 2>&1
@@ -409,29 +422,29 @@ FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
     REG DELETE "%URun%" /V "%%g" /F >NUL 2>&1
 )
 :SubscribedContent
-REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
+REG QUERY %CUCDM% 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}(SubscribedContent-[0-9]{5,}Enabled)\s+REG_DWORD\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
-    ECHO(HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\\%%g ^(Registry Value^)>>"%TEMP%\004"
-    REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /V "%%g" /F >NUL 2>&1
+    ECHO(%CUCDM%\\%%g ^(Registry Value^)>>"%TEMP%\004"
+    REG DELETE "%CUCDM%" /V "%%g" /F >NUL 2>&1
 )
 
 
 :: POLICIES ::
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
-REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
@@ -797,6 +810,7 @@ FOR %%g in (
 "%ALLUSERSPROFILE%\*.tmp"
 "%ALLUSERSPROFILE%\*.vbe"
 "%ALLUSERSPROFILE%\*.vbs"
+"%ALLUSERSPROFILE%\*.scr"
 "%APPDATA%\*.bat"
 "%APPDATA%\*.cmd"
 "%APPDATA%\*.dll"
@@ -807,6 +821,7 @@ FOR %%g in (
 "%APPDATA%\*.tmp"
 "%APPDATA%\*.vbe"
 "%APPDATA%\*.vbs"
+"%APPDATA%\*.scr"
 "%LOCALA%\*.bat"
 "%LOCALA%\*.cmd"
 "%LOCALA%\*.dll"
@@ -817,6 +832,7 @@ FOR %%g in (
 "%LOCALA%\*.tmp"
 "%LOCALA%\*.vbe"
 "%LOCALA%\*.vbs"
+"%LOCALA%\*.scr"
 "%LOCALLOW%\*.bat"
 "%LOCALLOW%\*.cmd"
 "%LOCALLOW%\*.dll"
@@ -827,6 +843,7 @@ FOR %%g in (
 "%LOCALLOW%\*.tmp"
 "%LOCALLOW%\*.vbe"
 "%LOCALLOW%\*.vbs"
+"%LOCALLOW%\*.scr"
 "%SYS32%\config\systemprofile\AppData\*.bat"
 "%SYS32%\config\systemprofile\AppData\*.cmd"
 "%SYS32%\config\systemprofile\AppData\*.dll"
@@ -837,6 +854,7 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\*.tmp"
 "%SYS32%\config\systemprofile\AppData\*.vbe"
 "%SYS32%\config\systemprofile\AppData\*.vbs"
+"%SYS32%\config\systemprofile\AppData\*.scr"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.bat"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.cmd"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.dll"
@@ -847,6 +865,7 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.tmp"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.vbe"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.vbs"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.scr"
 "%SYS32%\config\systemprofile\AppData\Local\*.bat"
 "%SYS32%\config\systemprofile\AppData\Local\*.cmd"
 "%SYS32%\config\systemprofile\AppData\Local\*.dll"
@@ -857,6 +876,7 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\Local\*.tmp"
 "%SYS32%\config\systemprofile\AppData\Local\*.vbe"
 "%SYS32%\config\systemprofile\AppData\Local\*.vbs"
+"%SYS32%\config\systemprofile\AppData\Local\*.scr"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
@@ -876,6 +896,179 @@ FOR %%g in (
                         DEL /F/Q "%%g" >NUL 2>&1
                        )
 )
+
+:DF1
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%LOCALA%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF2 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%LOCALA%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%LOCALA%\%%g" >NUL 2>&1
+)
+:DF2
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF3 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%LOCALLOW%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%LOCALLOW%\%%g" >NUL 2>&1
+)
+:DF3
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%USERPROFILE%\AppData" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF4 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%USERPROFILE%\AppData\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%USERPROFILE%\AppData\%%g" >NUL 2>&1
+)
+:DF4
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%APPDATA%\Microsoft" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF5 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%APPDATA%\Microsoft\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%APPDATA%\Microsoft\%%g" >NUL 2>&1
+)
+:DF5
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%APPDATA%\Microsoft\Windows" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF6 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%APPDATA%\Microsoft\Windows\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%APPDATA%\Microsoft\Windows\%%g" >NUL 2>&1
+)
+:DF6
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%APPDATA%\Microsoft\Templates" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF7 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%APPDATA%\Microsoft\Templates\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%APPDATA%\Microsoft\Templates\%%g" >NUL 2>&1
+)
+:DF7
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%ALLUSERSPROFILE%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF8 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%ALLUSERSPROFILE%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%ALLUSERSPROFILE%\%%g" >NUL 2>&1
+)
+:DF8
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%ALLUSERSPROFILE%\Microsoft" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF9 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%ALLUSERSPROFILE%\Microsoft\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%ALLUSERSPROFILE%\Microsoft\%%g" >NUL 2>&1
+)
+:DF9
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%PROGRAMFILES%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF10 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%PROGRAMFILES%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%PROGRAMFILES%\%%g" >NUL 2>&1
+)
+:DF10
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%PROGRAMFILES(x86)%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF11 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%PROGRAMFILES(x86)%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%PROGRAMFILES(x86)%\%%g" >NUL 2>&1
+)
+:DF11
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%PROGRAMFILES%\Common Files" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF12 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%PROGRAMFILES%\Common Files\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%PROGRAMFILES%\Common Files\%%g" >NUL 2>&1
+)
+:DF12
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%PROGRAMFILES(x86)%\Common Files" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF13 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%PROGRAMFILES(x86)%\Common Files\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%PROGRAMFILES(x86)%\Common Files\%%g" >NUL 2>&1
+)
+:DF13
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%WINDIR%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF14 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%WINDIR%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%WINDIR%\%%g" >NUL 2>&1
+)
+:DF14
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%TEMP%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF15 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%TEMP%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%TEMP%\%%g" >NUL 2>&1
+)
+:DF15
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%SYSTEMDRIVE%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF16 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%SYSTEMDRIVE%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%SYSTEMDRIVE%\%%g" >NUL 2>&1
+)
+:DF16
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%PUBLIC%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF17 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%PUBLIC%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%PUBLIC%\%%g" >NUL 2>&1
+)
+:DF17
+FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
+    DIR /B/A:-D "%USERPROFILE%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
+    )
+FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
+IF %ERRORLEVEL% NEQ 1 ( GOTO :DF18 )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
+    ECHO("%USERPROFILE%\%%g" ^(File^)>>"%TEMP%\001"
+    DEL /F/Q "%USERPROFILE%\%%g" >NUL 2>&1
+)
+
+:DF18
 FOR %%g in (
 "%APPDATA%\obs-studio\logs\*"
 "%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
@@ -948,7 +1141,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.4 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.5 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
