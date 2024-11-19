@@ -23,7 +23,6 @@ svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 Urunkey.cfg
-bwords.dat
 NULL
 ) DO ( COPY /Y "%CD%\%%g" "%TEMP%" >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -94,7 +93,6 @@ svc_delete.dat
 svc_stop_disable.dat
 reglocs_pkgs.dat
 Urunkey.cfg
-bwords.dat
 NULL
 ) DO ( IF NOT EXIST "%TEMP%\%%g" GOTO :eof )
 
@@ -116,7 +114,7 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe i
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozeloga2.txt" >"%TEMP%\privwindozeloga2_found.txt"
-GREP -Eis "^MicrosoftWindows\.Client\.WebExperience|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
+GREP -Eis "^MicrosoftWindows\.Client\.WebExperience|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozeloga2.txt" >>"%TEMP%\privwindozeloga2_found.txt"
 GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
@@ -376,7 +374,7 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogh.txt") DO (
 FOR /F "usebackq delims=" %%g in ("%TEMP%\reglocs_pkgs.dat") DO ( REG QUERY "%%g" 2>NUL>>"%TEMP%\privwindozelogp.txt" )
 REG QUERY "HKLM\SYSTEM\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\%SID%" 2>NUL>>"%TEMP%\privwindozelogp.txt"
 GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
-GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
+GREP -Eis "MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp2_found.txt"
 
 SORT_ -f -u <"%TEMP%\privwindozelogp2_found.txt" >"%TEMP%\privwindozelogp2_del.txt"
@@ -465,12 +463,16 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
 FOR %%g in (
+"HPAudioSwitch"
 "HPOneAgentRepairTask"
 "HP\Consent Manager Launcher"
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
+"Hewlett-Packard\HP Support Assistant\WarrantyChecker"
+"Hewlett-Packard\HP Support Assistant\WarrantyChecker_DeviceScan"
 "Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
+"Lenovo\Lenovo Service Bridge\%SID%"
 "Lenovo\LenovoNowLauncher"
 "Lenovo\LenovoNowQuarterlyLaunch"
 "Lenovo\LenovoNowTask"
@@ -573,6 +575,7 @@ FOR %%g in (
 "Samsung_PSSD_Registration_Plus"
 "TVT\TVSUUpdateTask"
 "TVT\TVSUUpdateTask_UserLogOn"
+"Tasks\McAfeeTsk\OOBEUpgrader"
 "UEIPInvitation"
 "UbtFrameworkService"
 ) DO (
@@ -634,6 +637,17 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Optimize
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :OmenHp )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:OmenHp
+DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^Omen(Install|Overlay)">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :TimeBasedEvents )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
@@ -765,7 +779,7 @@ FOR /F %%g in (%TEMP%\privwindozelog.txt) DO (
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
 IF ERRORLEVEL 1 ( GOTO :Rootkits )
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
-GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
+GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
 GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
 SORT_ -f -u <"%TEMP%\privwindozelogp_found.txt" >"%TEMP%\privwindozelogp_del.txt"
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelogp_del.txt") DO (
@@ -897,178 +911,6 @@ FOR %%g in (
                        )
 )
 
-:DF1
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%LOCALA%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF2 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%LOCALA%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%LOCALA%\%%g" >NUL 2>&1
-)
-:DF2
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF3 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%LOCALLOW%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%LOCALLOW%\%%g" >NUL 2>&1
-)
-:DF3
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%USERPROFILE%\AppData" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF4 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%USERPROFILE%\AppData\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%USERPROFILE%\AppData\%%g" >NUL 2>&1
-)
-:DF4
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%APPDATA%\Microsoft" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF5 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%APPDATA%\Microsoft\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%APPDATA%\Microsoft\%%g" >NUL 2>&1
-)
-:DF5
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%APPDATA%\Microsoft\Windows" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF6 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%APPDATA%\Microsoft\Windows\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%APPDATA%\Microsoft\Windows\%%g" >NUL 2>&1
-)
-:DF6
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%APPDATA%\Microsoft\Templates" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF7 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%APPDATA%\Microsoft\Templates\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%APPDATA%\Microsoft\Templates\%%g" >NUL 2>&1
-)
-:DF7
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%ALLUSERSPROFILE%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF8 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%ALLUSERSPROFILE%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%ALLUSERSPROFILE%\%%g" >NUL 2>&1
-)
-:DF8
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%ALLUSERSPROFILE%\Microsoft" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF9 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%ALLUSERSPROFILE%\Microsoft\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%ALLUSERSPROFILE%\Microsoft\%%g" >NUL 2>&1
-)
-:DF9
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%PROGRAMFILES%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF10 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%PROGRAMFILES%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%PROGRAMFILES%\%%g" >NUL 2>&1
-)
-:DF10
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%PROGRAMFILES(x86)%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF11 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%PROGRAMFILES(x86)%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%PROGRAMFILES(x86)%\%%g" >NUL 2>&1
-)
-:DF11
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%PROGRAMFILES%\Common Files" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF12 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%PROGRAMFILES%\Common Files\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%PROGRAMFILES%\Common Files\%%g" >NUL 2>&1
-)
-:DF12
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%PROGRAMFILES(x86)%\Common Files" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF13 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%PROGRAMFILES(x86)%\Common Files\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%PROGRAMFILES(x86)%\Common Files\%%g" >NUL 2>&1
-)
-:DF13
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%WINDIR%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF14 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%WINDIR%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%WINDIR%\%%g" >NUL 2>&1
-)
-:DF14
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%TEMP%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF15 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%TEMP%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%TEMP%\%%g" >NUL 2>&1
-)
-:DF15
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%SYSTEMDRIVE%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF16 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%SYSTEMDRIVE%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%SYSTEMDRIVE%\%%g" >NUL 2>&1
-)
-:DF16
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%PUBLIC%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF17 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%PUBLIC%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%PUBLIC%\%%g" >NUL 2>&1
-)
-:DF17
-FOR /F %%g in (%TEMP%\bwords.dat) DO ( 
-    DIR /B/A:-D "%USERPROFILE%" 2>NUL|GREP -Eis "[[:space:]_.-]%%g[[:space:]_.-]">>"%TEMP%\privwindoze!.txt"
-    )
-FC "%TEMP%\privwindoze!.txt" "%TEMP%\NULL" >NUL 2>&1
-IF %ERRORLEVEL% NEQ 1 ( GOTO :DF18 )
-FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindoze!.txt") DO (
-    ECHO("%USERPROFILE%\%%g" ^(File^)>>"%TEMP%\001"
-    DEL /F/Q "%USERPROFILE%\%%g" >NUL 2>&1
-)
-
-:DF18
 FOR %%g in (
 "%APPDATA%\obs-studio\logs\*"
 "%LOCALA%\AMDIdentifyWindow\cache\qmlcache\*"
@@ -1109,6 +951,7 @@ FOR %%g in (
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
+""%PROGRAMFILES(x86)\%HP\HP Support Framework\Resources\BingPopup"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
@@ -1130,6 +973,7 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\GameDVR"
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\GameExplorer"
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
+"%PROGRAMFILES%\HP\OmenInstallMonitor"
 ) DO (
        IF EXIST %%g (
                       ECHO(%%g ^(Folder^)>>"%TEMP%\001b"
