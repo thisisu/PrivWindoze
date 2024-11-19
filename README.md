@@ -1,4 +1,4 @@
-PrivWindoze (Private Windows) is a Microsoft Windows tool, which aims to quickly turn off all telemetry and remove known problematic software that either uses too many system resources, or has been difficult to remove for a considerable amount of users.
+PrivWindoze (Private Windows) is a Microsoft Windows tool, which aims to quickly delete malware, spyware, and telemetry.
 
 Below is a list of what is currently removed:
 
@@ -23,13 +23,13 @@ PrivWindoze also does some other nuanced things, such as clearing caches and tem
 
 Additional Information:
 
-PrivWindoze is compatible with Windows 10 and 11 and is updated daily as of November 2024. The project originates from my [GitHub](https://github.com/thisisu) and is considered [freeware](https://en.wikipedia.org/wiki/Freeware). To report issues, visit this [page](https://github.com/thisisu/PrivWindoze/issues). Lastly, please keep in mind that even software with an entire team working on them often contain bugs and / or undesired results[[6](https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages)][[7](https://www.bleepingcomputer.com/news/technology/malwarebytes-mistakenly-blocks-google-youtube-for-malware/)]. I try my best as a one man army :)
+PrivWindoze is compatible with Windows 10 and 11 and is updated daily as of November 2024. The project originates from my [GitHub](https://github.com/thisisu) and is considered [freeware](https://en.wikipedia.org/wiki/Freeware). To report issues or to suggest detections to be added, visit this [page](https://github.com/thisisu/PrivWindoze/issues).
 
-The primary purpose of the PrivWindoze is to stop and remove any nag screens[[4](https://www.elevenforum.com/t/enable-or-disable-lets-finish-setting-up-your-device-in-windows-11.5205/)], pop ups[[2](https://www.theverge.com/2023/8/30/23851902/microsoft-bing-popups-windows-11-malware)], high CPU usage issues, data collection and transmission[[5](https://www.pcmag.com/news/hp-accused-of-quietly-installing-spyware-on-windows-pcs)] -- also known as telemetry and analytics, as well as removing programs which are difficult to locate and remove or lack an 'Uninstall' button[[1](https://www.wintips.org/fix-cannot-uninstall-microsoft-edge-uninstall-is-greyed-out/)][[3](https://www.reddit.com/r/Hewlett_Packard/comments/lpxcwv/uninstall_hp_touchpoint_analytics_client/)]. Before the tool begins its scan, it will attempt to create a System Restore point. Please refer to this if there are any undesired results on your end. Or... just wait for Microsoft to send the software back to you in a couple of days via Windows Update. After the tool completes its scan, a report entitled 'PrivWindoze.txt' can be found on the User Desktop for review.
+The primary purpose of PrivWindoze is to stop and remove any nag screens[[4](https://www.elevenforum.com/t/enable-or-disable-lets-finish-setting-up-your-device-in-windows-11.5205/)], pop ups[[2](https://www.theverge.com/2023/8/30/23851902/microsoft-bing-popups-windows-11-malware)], high CPU usage issues, data collection and transmission[[5](https://www.pcmag.com/news/hp-accused-of-quietly-installing-spyware-on-windows-pcs)] -- also known as telemetry and analytics, as well as removing programs which are difficult to locate and remove or lack an 'Uninstall' button[[1](https://www.wintips.org/fix-cannot-uninstall-microsoft-edge-uninstall-is-greyed-out/)][[3](https://www.reddit.com/r/Hewlett_Packard/comments/lpxcwv/uninstall_hp_touchpoint_analytics_client/)]. Before the tool begins its scan, it will attempt to create a System Restore point. Please refer to this if there are any undesired results on your end. Or... just wait for Microsoft to send the software back to you in a couple of days via Windows Update. After the tool completes its scan, a report entitled 'PrivWindoze.txt' can be found on the User Desktop for review.
 
-[Download PrivWindoze](https://furtivex.net/PrivWindoze.exe) – v2.7.2 [[VT](https://www.virustotal.com/gui/file/a7d1cfddd23e97e2445e5d97b37496df52ac614d0bb2c707f01c4417bad00751/detection)]
+[Download PrivWindoze](https://furtivex.net/PrivWindoze.exe)
 
-[Download PrivWindoze Lite](https://furtivex.net/PrivWindozeLite.exe) – v2.7.2 [[VT](https://www.virustotal.com/gui/file/168ef9de18dd9f9d67f2110a271bed28d060846a8eb95377850fb6a8195c0fbd)]
+[Download PrivWindoze Lite](https://furtivex.net/PrivWindozeLite.exe)
 
 [![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N)  [![donate_amz](https://github.com/user-attachments/assets/10476e9c-92f3-4271-8410-6f38624c94b8)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
 
