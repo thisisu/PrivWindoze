@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
 @echo OFF && color 17
-title PrivWindoze by Furtivex - Version 2.7.6
-ECHO(PrivWindoze by Furtivex - Version 2.7.6
+title PrivWindoze by Furtivex - Version 2.7.7
+ECHO(PrivWindoze by Furtivex - Version 2.7.7
 ECHO.
 ECHO.
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
@@ -46,11 +46,13 @@ SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
 SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
 SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+SET "StartupApprovedRun=HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run"
 SET "MRun=HKLM\Software\Microsoft\Windows\CurrentVersion\Run"
 SET "w.proto=HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol"
 SET "CUCDM=HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
 SET "LMUninst=HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall"
 SET "CUUninst=HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall"
+SET "WTASKS=%WINDIR%\Tasks"
 
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
@@ -331,28 +333,29 @@ REG DELETE "HKCR\.shtml\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
-REG DELETE "%URun%" /V "Microsoft.Lists" /F >NUL 2>&1
-REG DELETE "%URun%" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "%URun%" /V "com.slatedigital.analytics" /F >NUL 2>&1
-REG DELETE "%URun%" /V "com.squirrel.Teams.Teams" /F >NUL 2>&1
-REG DELETE "%URun%" /V LenovoVantageToolbar /F >NUL 2>&1
-REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V "OneDrive.exe" /F >NUL 2>&1
+REG DELETE %URun% /V Microsoft.Lists /F >NUL 2>&1
+REG DELETE %URun% /V OneDrive /F >NUL 2>&1
+REG DELETE %URun% /V com.slatedigital.analytics /F >NUL 2>&1
+REG DELETE %URun% /V com.squirrel.Teams.Teams /F >NUL 2>&1
+REG DELETE %URun% /V LenovoVantageToolbar /F >NUL 2>&1
+REG DELETE "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDrive /F >NUL 2>&1
+REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V OneDrive.exe /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V HPOneAgentService /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /V XboxStat /F >NUL 2>&1
 REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-19\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Environment" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDrive" /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V "OneDriveSetup" /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-19\Environment" /V OneDrive /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDrive /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDriveSetup /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-20\Environment" /V OneDrive /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDrive /F >NUL 2>&1
+REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDriveSetup /F >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~/\
 
 REM ~~~~~ START OF MALWARE ~~~~~~~\/
 :CRUN
 REG QUERY %URun% 2>NUL|GREP -s "    REG_SZ    ">"%TEMP%\_crun"
+IF ERRORLEVEL 1 ( GOTO :XboxHuer )
 SED -r "s/^\s{4}(.*)\s{4}REG_SZ\s{4}(.*)$/\1 ===> \2/" <"%TEMP%\_crun" >"%TEMP%\_crunboth"
 SED -r "s/^(.*)\s===>.*/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlykey"
 SED -r "s/^.*===>\s(\x22.*)$/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlypath"
@@ -363,7 +366,21 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\Urunkey.cfg") DO (
                            REG DELETE %URUN% /V "%%g" /F >NUL 2>&1
                           )
 )
+REM :StartupApprovedRun
+REM REG QUERY %StartupApprovedRun% 2>NUL|GREP -s "    REG_BINARY    ">"%TEMP%\_crun"
+REM IF ERRORLEVEL 1 ( GOTO :XboxHuer )
+REM SED -r "s/^\s{4}(.*)\s{4}REG_BINARY\s{4}(0[2|3]).*$/\1 ===> \2/" <"%TEMP%\_crun" >"%TEMP%\_crunboth"
+REM SED -r "s/^(.*)\s===>.*/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlykey"
+REM SED -r "s/^.*===>\s(\x22.*)$/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlypath"
+REM FOR /F "usebackq delims=" %%g in ("%TEMP%\Urunkey.cfg") DO (
+REM    REG QUERY %StartupApprovedRun% /V "%%g" >NUL 2>&1
+REM    IF NOT ERRORLEVEL 1 (
+REM                           ECHO(%StartupApprovedRun%\\"%%g" ^(Registry Value^)>>"%TEMP%\004"
+REM                           REG DELETE %StartupApprovedRun% /V "%%g" /F >NUL 2>&1
+REM                          )
+REM )
 
+:XboxHuer
 REG QUERY "HKCR" 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
 REG QUERY "%w.proto%" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY "HKLM\Software\Microsoft\Tracing" 2>NUL>>"%TEMP%\privwindozelogh.txt"
@@ -428,7 +445,6 @@ FOR /F %%g in (%TEMP%\privwindozelogr2.txt) DO (
     REG DELETE "%CUCDM%" /V "%%g" /F >NUL 2>&1
 )
 
-
 :: POLICIES ::
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
@@ -463,6 +479,11 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V Dis
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
 FOR %%g in (
+"$nya-Loli"
+"$nya-svc64"
+"AsusFCNotification"
+"DropboxSyncTaskMachineUA"
+"Gtask"
 "HPAudioSwitch"
 "HPOneAgentRepairTask"
 "HP\Consent Manager Launcher"
@@ -497,6 +518,7 @@ FOR %%g in (
 "Lenovo\Vantage\StartupFixPlan"
 "MSI_GamebarConnect"
 "MSI_GamebarTool"
+"McAfeeTsk\OOBEUpgrader"
 "McAfee\WPS\McAfee Anti-Tracker Scanner"
 "McAfee\WPS\McAfee Anti-tracker notification"
 "McAfee\WPS\McAfee Cloud Configuration Check"
@@ -572,12 +594,19 @@ FOR %%g in (
 "Microsoft\Windows\WwanSvc\OobeDiscovery"
 "Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\XblGameSave\XblGameSaveTask"
+"OneChecker"
 "Samsung_PSSD_Registration_Plus"
 "TVT\TVSUUpdateTask"
 "TVT\TVSUUpdateTask_UserLogOn"
-"Tasks\McAfeeTsk\OOBEUpgrader"
 "UEIPInvitation"
 "UbtFrameworkService"
+"UniversalUpdater"
+"Updater"
+"Window Update"
+"Windows Service Task"
+"YT Storage Logon"
+"dialersvc64"
+"sonic"
 ) DO (
        SCHTASKS /DELETE /TN %%g /F >NUL 2>&1
 )
@@ -681,13 +710,46 @@ FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
 )
 :UDCLen2
 DIR /B "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Services )
+IF ERRORLEVEL 1 ( GOTO :WDNA )
 FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
     SET "taskname=%%g"
     SETLOCAL EnableDelayedExpansion
     SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\!taskname!" /F >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
     DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:WDNA
+DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^WDNA_Updater[0-9]{3,}">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :YTHex )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:YTHex
+DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Es "^YT[a-f0-9]{8,}">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :ICTorrent )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
+    ENDLOCAL
+)
+:ICTorrent
+DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^ICTorrent">"%TEMP%\privwindozelog.txt"
+IF ERRORLEVEL 1 ( GOTO :Services )
+FOR /F "usebackq delims=" %%g in ("%TEMP%\privwindozelog.txt") DO (
+    SET "taskname=%%g"
+    SETLOCAL EnableDelayedExpansion
+    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
+    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
     ENDLOCAL
 )
 :Services
@@ -699,7 +761,6 @@ FOR /F %%g in (%TEMP%\svc_stop_disable.dat) DO (
 FOR /F %%g in (%TEMP%\svc_delete.dat) DO (
     SC DELETE "%%g">nul
 )
-
 :EdgeService
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
@@ -821,10 +882,11 @@ FOR %%g in (
 "%ALLUSERSPROFILE%\*.js"
 "%ALLUSERSPROFILE%\*.pif"
 "%ALLUSERSPROFILE%\*.ps1"
+"%ALLUSERSPROFILE%\*.scr"
 "%ALLUSERSPROFILE%\*.tmp"
 "%ALLUSERSPROFILE%\*.vbe"
 "%ALLUSERSPROFILE%\*.vbs"
-"%ALLUSERSPROFILE%\*.scr"
+"%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\*.bat"
 "%APPDATA%\*.cmd"
 "%APPDATA%\*.dll"
@@ -832,10 +894,16 @@ FOR %%g in (
 "%APPDATA%\*.js"
 "%APPDATA%\*.pif"
 "%APPDATA%\*.ps1"
+"%APPDATA%\*.scr"
 "%APPDATA%\*.tmp"
 "%APPDATA%\*.vbe"
 "%APPDATA%\*.vbs"
-"%APPDATA%\*.scr"
+"%APPDATA%\Custom_update\Update_????????.dll"
+"%APPDATA%\Gitl\mrucl.exe"
+"%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
+"%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe
+"%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+"%APPDATA%\sonicstudio\sonic.exe"
 "%LOCALA%\*.bat"
 "%LOCALA%\*.cmd"
 "%LOCALA%\*.dll"
@@ -843,10 +911,15 @@ FOR %%g in (
 "%LOCALA%\*.js"
 "%LOCALA%\*.pif"
 "%LOCALA%\*.ps1"
+"%LOCALA%\*.scr"
 "%LOCALA%\*.tmp"
 "%LOCALA%\*.vbe"
 "%LOCALA%\*.vbs"
-"%LOCALA%\*.scr"
+"%LOCALA%\LavoshGri\php.exe"
+"%LOCALA%\Updates\Run.vbs"
+"%LOCALA%\Updates\WindowsService.exe"
+"%LOCALA%\programs\common\taskshosts.exe"
+"%LOCALA%\yzsx_cloud\wdcloud_v2.exe"
 "%LOCALLOW%\*.bat"
 "%LOCALLOW%\*.cmd"
 "%LOCALLOW%\*.dll"
@@ -854,10 +927,23 @@ FOR %%g in (
 "%LOCALLOW%\*.js"
 "%LOCALLOW%\*.pif"
 "%LOCALLOW%\*.ps1"
+"%LOCALLOW%\*.scr"
 "%LOCALLOW%\*.tmp"
 "%LOCALLOW%\*.vbe"
 "%LOCALLOW%\*.vbs"
-"%LOCALLOW%\*.scr"
+"%PROGRAMS17%\Microsoft Edge.lnk"
+"%PROGRAMS17%\OneDrive.lnk"
+"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
+"%PROGRAMS27%\Microsoft Edge.lnk"
+"%PROGRAMS27%\OneDrive.lnk"
+"%PUBDESKTOP%\Microsoft Edge.lnk"
+"%PUBLIC%\Documents\Systeem.vbs"
+"%STARTUP%\?.vbs.lnk"
+"%STARTUP%\ITERHPGen.lnk"
+"%STARTUP%\Microsoft.NET Framework.exe"
+"%STARTUP%\SC.cmd"
+"%STARTUP%\bckp_amgr.lnk"
+"%STARTUP%\mrucl.lnk"
 "%SYS32%\config\systemprofile\AppData\*.bat"
 "%SYS32%\config\systemprofile\AppData\*.cmd"
 "%SYS32%\config\systemprofile\AppData\*.dll"
@@ -865,10 +951,10 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\*.js"
 "%SYS32%\config\systemprofile\AppData\*.pif"
 "%SYS32%\config\systemprofile\AppData\*.ps1"
+"%SYS32%\config\systemprofile\AppData\*.scr"
 "%SYS32%\config\systemprofile\AppData\*.tmp"
 "%SYS32%\config\systemprofile\AppData\*.vbe"
 "%SYS32%\config\systemprofile\AppData\*.vbs"
-"%SYS32%\config\systemprofile\AppData\*.scr"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.bat"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.cmd"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.dll"
@@ -876,10 +962,10 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.js"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.pif"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.ps1"
+"%SYS32%\config\systemprofile\AppData\LocalLow\*.scr"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.tmp"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.vbe"
 "%SYS32%\config\systemprofile\AppData\LocalLow\*.vbs"
-"%SYS32%\config\systemprofile\AppData\LocalLow\*.scr"
 "%SYS32%\config\systemprofile\AppData\Local\*.bat"
 "%SYS32%\config\systemprofile\AppData\Local\*.cmd"
 "%SYS32%\config\systemprofile\AppData\Local\*.dll"
@@ -887,23 +973,17 @@ FOR %%g in (
 "%SYS32%\config\systemprofile\AppData\Local\*.js"
 "%SYS32%\config\systemprofile\AppData\Local\*.pif"
 "%SYS32%\config\systemprofile\AppData\Local\*.ps1"
+"%SYS32%\config\systemprofile\AppData\Local\*.scr"
 "%SYS32%\config\systemprofile\AppData\Local\*.tmp"
 "%SYS32%\config\systemprofile\AppData\Local\*.vbe"
 "%SYS32%\config\systemprofile\AppData\Local\*.vbs"
-"%SYS32%\config\systemprofile\AppData\Local\*.scr"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
-"%PROGRAMS17%\Microsoft Edge.lnk"
-"%PROGRAMS17%\OneDrive.lnk"
-"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
-"%PROGRAMS27%\Microsoft Edge.lnk"
-"%PROGRAMS27%\OneDrive.lnk"
-"%PUBDESKTOP%\Microsoft Edge.lnk"
-"%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
-"%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+"%WINDIR%\$nya-onimai3\$nya-Loli.bat"
+"%WTASKS%\Gtask.job"
 ) DO (
        IF EXIST "%%g" (
                         ECHO("%%g" ^(File^)>>"%TEMP%\001"
@@ -951,6 +1031,7 @@ FOR %%g in (
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
+"%PROGRAMFILES%\HP\OmenInstallMonitor"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
@@ -973,7 +1054,6 @@ FOR %%g in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\GameDVR"
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\GameExplorer"
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
-"%PROGRAMFILES%\HP\OmenInstallMonitor"
 ) DO (
        IF EXIST %%g (
                       ECHO(%%g ^(Folder^)>>"%TEMP%\001b"
@@ -985,7 +1065,7 @@ FOR %%g in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.7.6 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.7.7 ^(11.19.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
