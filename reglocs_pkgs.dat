@@ -11,11 +11,18 @@ HKCU\Software\Microsoft\Windows NT\CurrentVersion\HostActivityManager\CommitHist
 HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications
 HKCU\Software\Software\Classes\Extensions\ContractId\Windows.Protocol\PackageId
 HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Packages
+HKLM\Software\Microsoft\SecurityManager\CapAuthz\ApplicationsEx
+HKLM\Software\Microsoft\UEV\Agent\Configuration\Windows8AppList
 HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications
+HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Config
 HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Deprovisioned
 HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\S-1-5-18
+HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Staged
 HKLM\System\Setup\Upgrade\Appx\AppxAllUserStore\Staged
 HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\Applications
+HKLM\System\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\S-1-5-18
+HKLM\System\Setup\Upgrade\Appx\DownlevelGather\PackageInstallState
+HKLM\System\Setup\Upgrade\Appx\DownlevelGather\SisDirectory
 HKU\.DEFAULT\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
 HKU\S-1-5-18\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
 HKU\S-1-5-19\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\SystemAppData
