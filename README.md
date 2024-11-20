@@ -5,12 +5,12 @@ Below is a list of what is currently removed:
     Microsoft Bing
     Microsoft Copilot
     Microsoft Cortana
-    Microsoft Edge - X - not removed in PrivWindoze Lite
-    Microsoft Game Bar - X - not removed in PrivWindoze Lite
-    Microsoft OneDrive - X - not removed in PrivWindoze Lite
+    Microsoft Edge - X - Not removed in PrivWindoze Lite
+    Microsoft Game Bar - X - Not removed in PrivWindoze Lite
+    Microsoft OneDrive - X - Not removed in PrivWindoze Lite
     Microsoft Recall
-    Microsoft Teams - X - not removed in PrivWindoze Lite
-    Microsoft XBox - X - not removed in PrivWindoze Lite
+    Microsoft Teams - X - Not removed in PrivWindoze Lite
+    Microsoft XBox - X - Not removed in PrivWindoze Lite
     Microsoft Zune
     Acer User Experience Improvement Program
     HP Touchpoint Analytics Client
