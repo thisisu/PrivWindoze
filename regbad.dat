@@ -1,0 +1,180 @@
+HKCR\AppID\MicrosoftEdgeUpdate.exe
+HKCR\AppID\ie_to_edge_bho.dll
+HKCR\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
+HKCR\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
+HKCR\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
+HKCR\MSEdgeHTM
+HKCR\MSEdgeMHT
+HKCR\MSEdgePDF
+HKCR\MicrosoftEdgeUpdate.CoreClass
+HKCR\MicrosoftEdgeUpdate.CoreClass.1
+HKCR\MicrosoftEdgeUpdate.CoreMachineClass
+HKCR\MicrosoftEdgeUpdate.CoreMachineClass.1
+HKCR\MicrosoftEdgeUpdate.CredentialDialogMachine
+HKCR\MicrosoftEdgeUpdate.CredentialDialogMachine.1.0
+HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachine
+HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachine.1.0
+HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachineFallback
+HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassMachineFallback.1.0
+HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassSvc
+HKCR\MicrosoftEdgeUpdate.OnDemandCOMClassSvc.1.0
+HKCR\MicrosoftEdgeUpdate.PolicyStatusMachine
+HKCR\MicrosoftEdgeUpdate.PolicyStatusMachine.1.0
+HKCR\MicrosoftEdgeUpdate.PolicyStatusMachineFallback
+HKCR\MicrosoftEdgeUpdate.PolicyStatusMachineFallback.1.0
+HKCR\MicrosoftEdgeUpdate.PolicyStatusSvc
+HKCR\MicrosoftEdgeUpdate.PolicyStatusSvc.1.0
+HKCR\MicrosoftEdgeUpdate.ProcessLauncher
+HKCR\MicrosoftEdgeUpdate.ProcessLauncher.1.0
+HKCR\MicrosoftEdgeUpdate.Update3COMClassService
+HKCR\MicrosoftEdgeUpdate.Update3COMClassService.1.0
+HKCR\MicrosoftEdgeUpdate.Update3WebMachine
+HKCR\MicrosoftEdgeUpdate.Update3WebMachine.1.0
+HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback
+HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0
+HKCR\MicrosoftEdgeUpdate.Update3WebSvc
+HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0
+HKCR\com.clipchamp.app
+HKCR\com.microsoft.3dviewer
+HKCR\ie_to_edge_bho.IEToEdgeBHO
+HKCR\ie_to_edge_bho.IEToEdgeBHO.1
+HKCR\microsoft-edge
+HKCR\microsoft-edge-holographic
+HKCR\microsoftmusic
+HKCR\microsoftvideo
+HKCR\ms-clipchamp
+HKCR\ms-cortana
+HKCR\ms-gamingoverlay
+HKCR\ms-insights
+HKCR\ms-meetnow
+HKCR\ms-meetnowflyout
+HKCR\ms-mobileplans
+HKCR\ms-teams
+HKCR\ms-xbet-survey
+HKCR\msnews
+HKCR\msnnews
+HKCR\msnweather
+HKCR\msxbox
+HKCR\xbox
+HKCR\xbox-arena
+HKCR\xbox-captures
+HKCR\xbox-friendfinder
+HKCR\xbox-gamehub
+HKCR\xbox-lfg
+HKCR\xbox-network
+HKCR\xbox-profile
+HKCR\xbox-settings
+HKCR\xbox-store
+HKCR\xbox-tcui
+HKCR\xboxgames
+HKCR\xboxidp
+HKCR\xboxmusic
+HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
+HKCU\Software\Classes\bingmaps
+HKCU\Software\Classes\bingnews
+HKCU\Software\Classes\bingweather
+HKCU\Software\Classes\feedback-hub
+HKCU\Software\Classes\grvopen
+HKCU\Software\Classes\insiderhub
+HKCU\Software\Classes\ms-cortana2
+HKCU\Software\Classes\ms-gamebar
+HKCU\Software\Classes\ms-gamebarservices
+HKCU\Software\Classes\msgamepass
+HKCU\Software\Classes\msgamingapp
+HKCU\Software\Classes\windows-feedback
+HKCU\Software\Classes\zune
+HKCU\Software\Microsoft\Edge
+HKCU\Software\Microsoft\EdgeUpdate
+HKCU\Software\Microsoft\EdgeWebView
+HKCU\Software\Microsoft\GameBar
+HKCU\Software\Microsoft\GameBarApi
+HKCU\Software\Microsoft\MicrosoftEdge
+HKCU\Software\Microsoft\OneDrive
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
+HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView
+HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive
+HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams
+HKCU\Software\Microsoft\Xbox
+HKCU\Software\Microsoft\XboxLive
+HKLM\Software\Classes\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
+HKLM\Software\Classes\AppID\{C5D3C0E1-DC41-4F83-8BA8-CC0D46BCCDE3}
+HKLM\Software\Classes\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
+HKLM\Software\Classes\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingmaps
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingnews
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\bingweather
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\feedback-hub
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\insiderhub
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebar
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamebarservices
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-gamingoverlay
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-insights
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-meetnowflyout
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-teams
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\ms-xbet-survey
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamepass
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msgamingapp
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\msnweather
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\mswindowsmusic
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\windows-feedback
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-captures
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-friendfinder
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-gamehub
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-lfg
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-network
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-profile
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-settings
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-store
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xbox-tcui
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxgames
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\xboxidp
+HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol\zune
+HKLM\Software\Classes\MSEdgeHTM
+HKLM\Software\Classes\MSEdgeMHT
+HKLM\Software\Classes\MSEdgePDF
+HKLM\Software\Classes\NetworkExplorerPlugins\Microsoft Corporation/Xbox 360
+HKLM\Software\Clients\StartMenuInternet\Microsoft Edge
+HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}
+HKLM\Software\Microsoft\Edge
+HKLM\Software\Microsoft\EdgeUpdate
+HKLM\Software\Microsoft\KGL
+HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite
+HKLM\Software\Microsoft\MicrosoftEdge
+HKLM\Software\Microsoft\OneDrive
+HKLM\Software\Microsoft\PolicyManager\default\TaskScheduler\EnableXboxGameSaveTask
+HKLM\Software\Microsoft\TelemetryClient
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive2
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive3
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive4
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive5
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive6
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers\ OneDrive7
+HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
+HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge
+HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}
+HKLM\Software\Microsoft\Windows\CurrentVersion\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}
+HKLM\Software\Microsoft\Xbox
+HKLM\Software\Policies\Microsoft\Edge
+HKLM\Software\Policies\Microsoft\MicrosoftEdge
+HKLM\Software\Policies\Microsoft\Windows\OneDrive
+HKU\.DEFAULT\Software\Microsoft\Edge
+HKU\.DEFAULT\Software\Microsoft\OneDrive
+HKU\.DEFAULT\Software\Microsoft\TelemetryClient
+HKU\.DEFAULT\Software\Microsoft\Windows Script\Settings\Telemetry
+HKU\.DEFAULT\Software\Microsoft\Xbox
+HKU\S-1-5-19\Software\Microsoft\OneDrive
+HKU\S-1-5-20\Software\Microsoft\OneDrive
