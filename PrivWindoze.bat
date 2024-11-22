@@ -728,6 +728,7 @@ FOR /F "TOKENS=*" %%G IN ( locallow2 ) DO @(
   )
   
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <startup >startup2
+GREP -Esi "^.\.vb[e|s]\.lnk$" <startup >>startup2
 FOR /F "TOKENS=*" %%G IN ( startup2 ) DO @(
   ECHO.%STARTUP%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%STARTUP%\%%G" >NUL 2>&1
@@ -852,7 +853,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.2 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.3 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -921,7 +922,15 @@ SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURREN
 
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
-DEL /A/F/Q temp0? >NUL 2>&1
+FOR %%G in (
+startup*
+appdata*
+allusersprofile*
+locala*
+locallow*
+sys32appdata*
+temp0*
+) DO @DEL /A/F/Q "%CD%\%%G" >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
