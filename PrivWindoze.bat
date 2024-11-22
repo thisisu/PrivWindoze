@@ -230,7 +230,6 @@ SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\})
 IF EXIST temp02 (
   FOR /F "TOKENS=*" %%G IN ( temp02 ) DO @REG DELETE HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules /V "%%G" /F >NUL 2>&1
   )
-DEL /A/F/Q temp0? >NUL 2>&1
 
 :FirewallOrphans
 GREP -Es "\|App=[A-Za-z]:.*\.exe" <temp00 >temp01
