@@ -1,8 +1,9 @@
+AltrsikService
 edgeupdate
 edgeupdatem
 filesynchelper
-hp comm recover
 hp-one-agent-service
+hp comm recover
 hpapphelpercap
 hpcustomcapdriver
 hpdiagscap
@@ -13,10 +14,11 @@ intel analytics service
 lenovovantageservice
 microsoftedgeelevationservice
 onedrive updater service
+SmartAppearanceAISVC
+SmartSense
 tobiialenovoyx80
 tobiirgb
 udcservice
 ueipsvc
-SmartAppearanceAISVC
-SmartSense
 WindowsAutHost
+winsvcmon

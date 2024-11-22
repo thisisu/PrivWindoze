@@ -1,11 +1,14 @@
-HKCR\AppID\MicrosoftEdgeUpdate.exe
-HKCR\AppID\ie_to_edge_bho.dll
 HKCR\AppID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
+HKCR\AppID\ie_to_edge_bho.dll
+HKCR\AppID\MicrosoftEdgeUpdate.exe
 HKCR\CLSID\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
 HKCR\CLSID\{24AC8F2B-4D4A-4C17-9607-6A4B14068F97}
-HKCR\MSEdgeHTM
-HKCR\MSEdgeMHT
-HKCR\MSEdgePDF
+HKCR\com.clipchamp.app
+HKCR\com.microsoft.3dviewer
+HKCR\ie_to_edge_bho.IEToEdgeBHO
+HKCR\ie_to_edge_bho.IEToEdgeBHO.1
+HKCR\microsoft-edge
+HKCR\microsoft-edge-holographic
 HKCR\MicrosoftEdgeUpdate.CoreClass
 HKCR\MicrosoftEdgeUpdate.CoreClass.1
 HKCR\MicrosoftEdgeUpdate.CoreMachineClass
@@ -34,12 +37,6 @@ HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback
 HKCR\MicrosoftEdgeUpdate.Update3WebMachineFallback.1.0
 HKCR\MicrosoftEdgeUpdate.Update3WebSvc
 HKCR\MicrosoftEdgeUpdate.Update3WebSvc.1.0
-HKCR\com.clipchamp.app
-HKCR\com.microsoft.3dviewer
-HKCR\ie_to_edge_bho.IEToEdgeBHO
-HKCR\ie_to_edge_bho.IEToEdgeBHO.1
-HKCR\microsoft-edge
-HKCR\microsoft-edge-holographic
 HKCR\microsoftmusic
 HKCR\microsoftvideo
 HKCR\ms-clipchamp
@@ -51,6 +48,9 @@ HKCR\ms-meetnowflyout
 HKCR\ms-mobileplans
 HKCR\ms-teams
 HKCR\ms-xbet-survey
+HKCR\MSEdgeHTM
+HKCR\MSEdgeMHT
+HKCR\MSEdgePDF
 HKCR\msnews
 HKCR\msnnews
 HKCR\msnweather
@@ -69,10 +69,10 @@ HKCR\xbox-tcui
 HKCR\xboxgames
 HKCR\xboxidp
 HKCR\xboxmusic
-HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
 HKCU\Software\Classes\bingmaps
 HKCU\Software\Classes\bingnews
 HKCU\Software\Classes\bingweather
+HKCU\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
 HKCU\Software\Classes\feedback-hub
 HKCU\Software\Classes\grvopen
 HKCU\Software\Classes\insiderhub
@@ -91,6 +91,7 @@ HKCU\Software\Microsoft\GameBarApi
 HKCU\Software\Microsoft\MicrosoftEdge
 HKCU\Software\Microsoft\OneDrive
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
+HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\gotosrch
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams
@@ -139,8 +140,8 @@ HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F
 HKLM\Software\Microsoft\Edge
 HKLM\Software\Microsoft\EdgeUpdate
 HKLM\Software\Microsoft\KGL
-HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite
 HKLM\Software\Microsoft\MicrosoftEdge
+HKLM\Software\Microsoft\MSN Apps\MSN Toolbar Suite
 HKLM\Software\Microsoft\OneDrive
 HKLM\Software\Microsoft\PolicyManager\default\TaskScheduler\EnableXboxGameSaveTask
 HKLM\Software\Microsoft\TelemetryClient
@@ -155,18 +156,20 @@ HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifi
 HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
 HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge
 HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6B2B4E31-FF1C-4719-9982-47964782F963}_is1
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\AltrsikApplication
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge WebView2 Runtime
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\VantageSRV_is1
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}
 HKLM\Software\Microsoft\Xbox
 HKLM\Software\Policies\Microsoft\Edge
 HKLM\Software\Policies\Microsoft\MicrosoftEdge

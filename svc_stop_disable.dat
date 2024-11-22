@@ -1,3 +1,4 @@
+AltrsikService
 diagtrack
 dmwappushservice
 dosvc
@@ -5,8 +6,8 @@ dusmsvc
 edgeupdate
 edgeupdatem
 filesynchelper
-hp comm recover
 hp-one-agent-service
+hp comm recover
 hpapphelpercap
 hpcustomcapdriver
 hpdiagscap
@@ -16,14 +17,15 @@ hptouchpointanalyticsservice
 installservice
 lenovovantageservice
 onedrive updater service
+SmartAppearanceAISVC
+SmartSense
 tobiialenovoyx80
 tobiirgb
 udcservice
 ueipsvc
+WindowsAutHost
+winsvcmon
 wpnservice
 xblauthmanager
 xblgamesave
 xboxgipsvc
-SmartAppearanceAISVC
-SmartSense
-WindowsAutHost

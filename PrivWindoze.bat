@@ -20,13 +20,13 @@ sort_.exe
 ) DO ( COPY /Y "%CD%\dependencies\%%G" "%WINDIR%" >NUL 2>&1 )
 
 FOR %%G in (
+NULL
 proc_kill.dat
+regbad.dat
+reglocs_pkgs.dat
 svc_delete.dat
 svc_stop_disable.dat
-reglocs_pkgs.dat
 Urunkey.cfg
-NULL
-regbad.dat
 ) DO ( COPY /Y "%CD%\%%G" %systemdrive%\PrivWindoze >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
@@ -91,13 +91,13 @@ sort_.exe
 ) DO ( IF NOT EXIST %WINDIR%\%%G GOTO :eof )
 
 FOR %%G in (
+NULL
 proc_kill.dat
+regbad.dat
+reglocs_pkgs.dat
 svc_delete.dat
 svc_stop_disable.dat
-reglocs_pkgs.dat
 Urunkey.cfg
-NULL
-regbad.dat
 ) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :eof )
 
 :: Create System Restore Point
@@ -429,9 +429,9 @@ FOR %%G in (
 "YT Storage Logon"
 "dialersvc64"
 "sonic"
-) DO (
-       SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
-)
+) DO @SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
+
+
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
@@ -586,7 +586,7 @@ FOR /F %%G in ( svc_delete.dat ) DO (
 :EdgeService
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
-GREP -Eis "^edgeupdate.*" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
+GREP -Eis "^(edgeupdate.*|WinSW[0-9]service)" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
 FOR /F %%G in (%TEMP%\privwindozesvc2_del.txt) DO (
@@ -758,10 +758,13 @@ FOR %%G in (
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
+"%PROGRAMFILES(x86)%\pwac\ProW\ProW File Compressor.exe"
+"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe
 "%PUBLIC%\Documents\Systeem.vbs"
 "%STARTUP%\ITERHPGen.lnk"
 "%STARTUP%\Microsoft.NET Framework.exe"
 "%STARTUP%\SC.cmd"
+"%STARTUP%\ProW File Compressor.lnk"
 "%STARTUP%\bckp_amgr.lnk"
 "%STARTUP%\mrucl.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
@@ -850,7 +853,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.0 ^(11.21.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.1 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
