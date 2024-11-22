@@ -435,148 +435,44 @@ FOR %%G in (
     SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
     )
 )
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
+
+DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Optimize|Omen(Install|Overlay)|WDNA_Updater[0-9]{3,}|YT[a-f0-9]{8,}|ICTorrent)" >temp00
+DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "Telemetry|NvTmRep_" >>temp00
+SORT_ -f -u <temp00 >temp01
+@FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
+  ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
+  )
 )
-:OneDriveTask
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^OneDrive">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :TelemetryTask )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
+DEL /A/F temp0? >NUL 2>&1
+
+DIR /B/A:-D "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
+SORT_ -f -u <temp00 >temp01
+@FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
+  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\%%G" /F >NUL 2>&1
+  )
 )
-:TelemetryTask
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "Telemetry">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :NvidiaTask )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
+DEL /A/F temp0? >NUL 2>&1
+
+DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
+SORT_ -f -u <temp00 >temp01
+@FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
+  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\%%G" /F >NUL 2>&1
+  )
 )
-:NvidiaTask
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -i "NvTmRep_">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :WindowsDefenderTask )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
+DEL /A/F temp0? >NUL 2>&1
+
+DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
+SORT_ -f -u <temp00 >temp01
+@FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
+  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\%%G" /F >NUL 2>&1
+  )
 )
-:WindowsDefenderTask
-DIR /B "%SYS32%\Tasks\Microsoft\Windows\Windows Defender" 2>NUL|FINDSTR -ri "^Windows Defender">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Optimize )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "Microsoft\Windows\Windows Defender\!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\Microsoft\Windows\Windows Defender\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:Optimize
-DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^Optimize Push Notification Data File">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :OmenHp )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:OmenHp
-DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^Omen(Install|Overlay)">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :TimeBasedEvents )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:TimeBasedEvents
-DIR /B "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :UDCLen )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\Lenovo\ImController\TimeBasedEvents\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\ImController\TimeBasedEvents\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:UDCLen
-DIR /B "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :UDCLen2 )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\MessagingPlugin\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\UDC\MessagingPlugin\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:UDCLen2
-DIR /B "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :WDNA )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\Lenovo\UDC\SystemNotificationPlugin\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:WDNA
-DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^WDNA_Updater[0-9]{3,}">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :YTHex )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:YTHex
-DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Es "^YT[a-f0-9]{8,}">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :ICTorrent )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
-:ICTorrent
-DIR /B "%SYS32%\Tasks" 2>NUL|GREP -Eis "^ICTorrent">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Services )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "taskname=%%G"
-    SETLOCAL EnableDelayedExpansion
-    SCHTASKS /DELETE /TN "!taskname!" /F >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks\!taskname!" >NUL 2>&1
-    DEL /F/Q "!SYS32!\Tasks_Migrated\!taskname!" >NUL 2>&1
-    ENDLOCAL
-)
+DEL /A/F temp0? >NUL 2>&1
+
 :Services
 Echo([^|^|^|^|^| ] Scanning Services
 FOR /F %%G in ( svc_stop_disable.dat ) DO (
@@ -857,7 +753,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.3 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.4 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
