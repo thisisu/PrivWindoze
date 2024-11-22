@@ -758,7 +758,7 @@ FOR %%G in (
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
 "%PROGRAMFILES(x86)%\pwac\ProW\ProW File Compressor.exe"
-"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe
+"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe"
 "%PUBLIC%\Documents\Systeem.vbs"
 "%STARTUP%\ITERHPGen.lnk"
 "%STARTUP%\Microsoft.NET Framework.exe"
