@@ -428,9 +428,13 @@ FOR %%G in (
 "YT Storage Logon"
 "dialersvc64"
 "sonic"
-) DO @SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
-
-
+"MicrosoftEdgeUpdateBrowserReplacementTask"
+) DO @(
+  IF EXIST "%SYS32%\Tasks\%%G" (
+    ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+    SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
+    )
+)
 DIR /B "%SYS32%\Tasks" 2>NUL|FINDSTR -ri "^MicrosoftEdgeUpdateTask">"%TEMP%\privwindozelog.txt"
 IF ERRORLEVEL 1 ( GOTO :OneDriveTask )
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
