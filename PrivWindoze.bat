@@ -3,7 +3,7 @@
 @SETLOCAL
 @CD /D "%~dp0"
 @ECHO OFF
-SET DEBUG=OFF
+SET DEBUG=ON
 COLOR 17
 TITLE .
 DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
@@ -481,9 +481,14 @@ FOR /F %%G in ( svc_stop_disable.dat ) DO (
     SC CONFIG "%%G" start= disabled>nul
     SC STOP "%%G">nul
 )
-FOR /F %%G in ( svc_delete.dat ) DO (
-    SC DELETE "%%G">nul
+@FOR /F "TOKENS=*" %%G IN ( svc_delete.dat ) DO @(
+  SC QUERY "%%G" 2>NUL|GREP -Es "WAIT_HINT" >temp00
+  IF NOT ERRORLEVEL 1 (
+    ECHO.%%G ^(Service^) >>"%TEMP%\000b"
+    SC DELETE "%%G" >nul
+    )
 )
+
 :EdgeService
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
@@ -761,7 +766,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.5 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.6 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -774,6 +779,14 @@ echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000" (
   SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
   TYPE "%TEMP%\000rdy">>"%TEMP%\pwindoze.txt"
+  echo.>>"%TEMP%\pwindoze.txt"
+)
+
+ECHO(Services:>>"%TEMP%\pwindoze.txt"
+echo.>>"%TEMP%\pwindoze.txt"
+IF EXIST "%TEMP%\000b" (
+  SORT_ -f -u <"%TEMP%\000b" >"%TEMP%\000brdy"
+  TYPE "%TEMP%\000brdy">>"%TEMP%\pwindoze.txt"
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
