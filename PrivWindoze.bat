@@ -3,8 +3,8 @@
 @SETLOCAL
 @CD /D "%~dp0"
 @ECHO OFF
-SET DEBUG=ON
-COLOR 17
+SET DEBUG=OFF
+COLOR 40
 TITLE .
 DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
 IF NOT EXIST %systemdrive%\PrivWindoze MD %systemdrive%\PrivWindoze >NUL 2>&1
@@ -21,7 +21,6 @@ sort_.exe
 
 FOR %%G in (
 NULL
-proc_kill.dat
 regbad.dat
 reglocs_pkgs.dat
 svc_delete.dat
@@ -64,9 +63,18 @@ IF ERRORLEVEL 1 ( GOTO :AdminChk )
 SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozelogwho2.txt" >"%TEMP%\privwindozelogwho3.txt"
 FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+ECHO.=======================================================
+ECHO.*                                                     *
+ECHO.*                  PrivWindoze v2.8.8                 *                  
+ECHO.*                 https://furtivex.net                *               
+ECHO.*                                                     *
+ECHO.*       PLEASE SAVE ALL WORK BEFORE CONTINUING        *
+ECHO.*                                                     *
+ECHO.=======================================================
+ECHO.
+ECHO.
+PAUSE
 ECHO.PrivWindoze Scan Started
-ECHO.
-ECHO.
 :AdminChk
 net session >NUL 2>&1
 IF %ERRORLEVEL% EQU 0 ( SET USERSTATUS=Administrator) else (
@@ -92,7 +100,6 @@ sort_.exe
 
 FOR %%G in (
 NULL
-proc_kill.dat
 regbad.dat
 reglocs_pkgs.dat
 svc_delete.dat
@@ -107,7 +114,12 @@ POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePoin
 :: PROCESSES ::
 :Processes
 Echo([^|     ] Scanning Processes
-@FOR /F "TOKENS=*" %%G IN ( proc_kill.dat ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
+TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
+SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
+SORT_ -f -u <temp01 >temp02
+GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|LsaIso|lsass|OpenConsole|RuntimeBroker|SearchIndexer|services|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
+@FOR /F "TOKENS=*" %%G IN ( temp03 ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
+DEL /A/F/Q temp0? >NUL 2>&1
 
 :: PACKAGES ::
 :Packages
@@ -488,11 +500,11 @@ FOR /F %%G in ( svc_stop_disable.dat ) DO (
     SC DELETE "%%G" >nul
     )
 )
-
+DEL /A/F temp0? >NUL 2>&1
 :EdgeService
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\services" 2>NUL>"%TEMP%\privwindozesvc.txt"
 SED -r "s/^HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\services\\//" <"%TEMP%\privwindozesvc.txt" >"%TEMP%\privwindozesvc2.txt"
-GREP -Eis "^(edgeupdate.*|WinSW[0-9]service)" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
+GREP -Eis "^(edgeupdate.*|WinSW[0-9]service)$" <"%TEMP%\privwindozesvc2.txt" >"%TEMP%\privwindozesvc2_found.txt"
 IF ERRORLEVEL 1 ( GOTO :DiscordFiles )
 SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt"
 FOR /F %%G in (%TEMP%\privwindozesvc2_del.txt) DO (
@@ -653,32 +665,39 @@ rem  )
 
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
-"%APPDATA%\Gitl\mrucl.exe"
 "%APPDATA%\Cpb_Docker\moagent.exe"
-"%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
+"%APPDATA%\Gitl\mrucl.exe"
 "%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe"
+"%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
 "%APPDATA%\sonicstudio\sonic.exe"
 "%LOCALA%\LavoshGri\php.exe"
+"%LOCALA%\programs\common\taskshosts.exe"
+"%LOCALA%\Programs\Pinaview\Pinaview.exe"
 "%LOCALA%\Updates\Run.vbs"
 "%LOCALA%\Updates\WindowsService.exe"
-"%LOCALA%\programs\common\taskshosts.exe"
 "%LOCALA%\yzsx_cloud\wdcloud_v2.exe"
+"%PROGRAMFILES(x86)%\AlricApplication\AtructisApp.exe"
+"%PROGRAMFILES(x86)%\AlrisitApplication\AlrisitApp.exe"
+"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe"
+"%PROGRAMFILES(x86)%\Altruist\Altruistic.exe"
+"%PROGRAMFILES(x86)%\AtrtisApplication\AtrtisService.exe"
+"%PROGRAMFILES(x86)%\Atuctsoft\AtuctService.exe"
+"%PROGRAMFILES(x86)%\Lavasoft\Web Companion\Application\WebCompanion.exe"
+"%PROGRAMFILES(x86)%\pwac\ProW\ProW File Compressor.exe"
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
 "%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
-"%PROGRAMFILES(x86)%\pwac\ProW\ProW File Compressor.exe"
-"%PROGRAMFILES(x86)%\AltrsikApplication\AltrsikService.exe"
 "%PUBLIC%\Documents\Systeem.vbs"
+"%STARTUP%\bckp_amgr.lnk"
 "%STARTUP%\ITERHPGen.lnk"
 "%STARTUP%\Microsoft.NET Framework.exe"
-"%STARTUP%\SC.cmd"
-"%STARTUP%\ProW File Compressor.lnk"
-"%STARTUP%\bckp_amgr.lnk"
 "%STARTUP%\mrucl.lnk"
+"%STARTUP%\ProW File Compressor.lnk"
+"%STARTUP%\SC.cmd"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
@@ -715,11 +734,14 @@ FOR %%G in (
 ) DO @DEL /A/F/Q "%%G" >NUL 2>&1
 
 FOR %%G in (
+"%ALLUSERSPROFILE%\Atructsoft"
+"%ALLUSERSPROFILE%\AweAPCP"
 "%ALLUSERSPROFILE%\Intel Telemetry"
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
 "%APPDATA%\Microsoft\Teams"
-"%LOCALA%\MicrosoftEdge"
+"%LOCALA%\Atructsoft"
+"%LOCALA%\AweAPCP"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
@@ -728,15 +750,22 @@ FOR %%G in (
 "%LOCALA%\Microsoft\TeamsMeetingAddin"
 "%LOCALA%\Microsoft\TeamsPresenceAddin"
 "%LOCALA%\Microsoft\XboxLive"
+"%LOCALA%\MicrosoftEdge"
 "%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
-"%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\HP\HP One Agent"
 "%PROGRAMFILES%\HP\OmenInstallMonitor"
+"%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
+"%PROGRAMFILES(x86)%\AlricApplication"
+"%PROGRAMFILES(x86)%\AlrisitApplication"
+"%PROGRAMFILES(x86)%\AtritcSoft"
+"%PROGRAMFILES(x86)%\AtrtisApplication"
+"%PROGRAMFILES(x86)%\Atuctsoft"
+"%PROGRAMFILES(x86)%\AweAPCP"
 "%PROGRAMFILES(x86)%\HP\HP Support Framework\Resources\BingPopup"
 "%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
 "%PROGRAMFILES(x86)%\Lenovo\VantageService"
@@ -746,6 +775,7 @@ FOR %%G in (
 "%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
 "%PROGRAMFILES(x86)%\Microsoft\Temp"
 "%PROGRAMFILES(x86)%\Teams Installer"
+"%STARTMENU27%\Programs\Pinaview"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
@@ -766,7 +796,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.6 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.8 ^(11.23.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -838,7 +868,7 @@ Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
 Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
 
 
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
