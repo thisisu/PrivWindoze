@@ -303,14 +303,15 @@ FOR %%G in (
 "$nya-Loli"
 "$nya-svc64"
 "AsusFCNotification"
+"dialersvc64"
 "DropboxSyncTaskMachineUA"
 "Gtask"
-"HPAudioSwitch"
-"HPOneAgentRepairTask"
-"HP\Consent Manager Launcher"
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
 "Hewlett-Packard\HP Support Assistant\WarrantyChecker"
 "Hewlett-Packard\HP Support Assistant\WarrantyChecker_DeviceScan"
+"HP\Consent Manager Launcher"
+"HPAudioSwitch"
+"HPOneAgentRepairTask"
 "Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
@@ -337,17 +338,16 @@ FOR %%G in (
 "Lenovo\Vantage\Schedule\VantageCoreAddinIdleScheduleTask"
 "Lenovo\Vantage\Schedule\VantageCoreAddinWeekScheduleTask"
 "Lenovo\Vantage\StartupFixPlan"
-"MSI_GamebarConnect"
-"MSI_GamebarTool"
-"McAfeeTsk\OOBEUpgrader"
-"McAfee\WPS\McAfee Anti-Tracker Scanner"
+"MB Led SDK"
 "McAfee\WPS\McAfee Anti-tracker notification"
+"McAfee\WPS\McAfee Anti-Tracker Scanner"
 "McAfee\WPS\McAfee Cloud Configuration Check"
 "McAfee\WPS\McAfee Health Check"
 "McAfee\WPS\McAfee Hotfix"
 "McAfee\WPS\McAfee Message Check"
 "McAfee\WPS\McAfee PC Optimizer Task"
 "McAfee\WPS\McAfee Scheduled Tracker Remover"
+"McAfeeTsk\OOBEUpgrader"
 "Microsoft\Office\Office 15 Subscription Heartbeat"
 "Microsoft\Office\Office Performance Monitor"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
@@ -360,9 +360,10 @@ FOR %%G in (
 "Microsoft\Windows\Application Experience\PcaWallpaperAppDetect"
 "Microsoft\Windows\Application Experience\SdbinstMergeDbTask"
 "Microsoft\Windows\Application Experience\StartupAppTask"
-"Microsoft\Windows\ApplicationData\DsSvcCleanup"
 "Microsoft\Windows\ApplicationData\appuriverifierdaily"
 "Microsoft\Windows\ApplicationData\appuriverifierinstall"
+"Microsoft\Windows\ApplicationData\DsSvcCleanup"
+"Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\Windows\Chkdsk\ProactiveScan"
 "Microsoft\Windows\CloudExperienceHost\CreateObjectTask"
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
@@ -408,27 +409,28 @@ FOR %%G in (
 "Microsoft\Windows\Sustainability\SustainabilityTelemetry"
 "Microsoft\Windows\UpdateOrchestrator\USO_UxBroker"
 "Microsoft\Windows\User Profile Service\HiveUploadTask"
+"Microsoft\Windows\WlanSvc\CDSSync"
 "Microsoft\Windows\WOF\WIM-Hash-Management"
 "Microsoft\Windows\WOF\WIM-Hash-Validation"
-"Microsoft\Windows\WlanSvc\CDSSync"
 "Microsoft\Windows\WwanSvc\NotificationTask"
 "Microsoft\Windows\WwanSvc\OobeDiscovery"
-"Microsoft\Windows\capabilityaccessmanager\maintenancetasks"
 "Microsoft\XblGameSave\XblGameSaveTask"
+"MicrosoftEdgeUpdateBrowserReplacementTask"
+"moagent"
+"MSI_GamebarConnect"
+"MSI_GamebarTool"
 "OneChecker"
 "Samsung_PSSD_Registration_Plus"
+"sonic"
 "TVT\TVSUUpdateTask"
 "TVT\TVSUUpdateTask_UserLogOn"
-"UEIPInvitation"
 "UbtFrameworkService"
+"UEIPInvitation"
 "UniversalUpdater"
 "Updater"
 "Window Update"
 "Windows Service Task"
 "YT Storage Logon"
-"dialersvc64"
-"sonic"
-"MicrosoftEdgeUpdateBrowserReplacementTask"
 ) DO @(
   IF EXIST "%SYS32%\Tasks\%%G" (
     ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
@@ -505,23 +507,11 @@ FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
 )
 :Discord2
 DIR /B "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :locallow64hex )
+IF ERRORLEVEL 1 ( GOTO :InboxApps )
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
     SET "discord=%%G"
     SETLOCAL EnableDelayedExpansion
     DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
-    ENDLOCAL
-)
-:locallow64hex
-DIR /B/A:-D "%LOCALLOW%" 2>NUL|GREP -Es "^[a-f0-9]{64}$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :InboxApps )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "locallow64hex=%%G"
-    SETLOCAL EnableDelayedExpansion
-    IF EXIST "!LOCALLOW!\!locallow64hex!" (
-            ECHO("!LOCALLOW!\!locallow64hex!" ^(File^)>>"%TEMP%\001"
-            DEL /F/Q "!LOCALLOW!\!locallow64hex!" >NUL 2>&1
-            )
     ENDLOCAL
 )
 :InboxApps
@@ -602,47 +592,64 @@ DIR /B/A:-D "%LOCALA%" 2>NUL>locala
 DIR /B/A:-D "%LOCALLOW%" 2>NUL>locallow
 DIR /B/A:-D "%STARTUP%" 2>NUL>startup
 DIR /B/A:-D "%SYS32%\config\systemprofile\AppData" 2>NUL>sys32appdata
-
+DIR /B/A:-D "%WINDIR%" 2>NUL>windir
+REM ~~~~~ %ALLUSERSPROFILE% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <allusersprofile >allusersprofile2
-FOR /F "TOKENS=*" %%G IN ( allusersprofile2 ) DO @(
+SORT_ -f -u <allusersprofile2 >allusersprofile3
+FOR /F "TOKENS=*" %%G IN ( allusersprofile3 ) DO @(
   ECHO.%ALLUSERSPROFILE%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%ALLUSERSPROFILE%\%%G" >NUL 2>&1
   )
-
+REM ~~~~~ %APPDATA% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <appdata >appdata2
-FOR /F "TOKENS=*" %%G IN ( appdata2 ) DO @(
+SORT_ -f -u <appdata2 >appdata3
+FOR /F "TOKENS=*" %%G IN ( appdata3 ) DO @(
   ECHO.%APPDATA%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%APPDATA%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %LOCALA% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <locala >locala2
-FOR /F "TOKENS=*" %%G IN ( locala2 ) DO @(
+GREP -Esi "^([0-9]{8,}|[0-9a-f]{32})$" <locala >>locala2
+SORT_ -f -u <locala2 >locala3
+FOR /F "TOKENS=*" %%G IN ( locala3 ) DO @(
   ECHO.%LOCALA%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%LOCALA%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %LOCALLOW% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <locallow >locallow2
-FOR /F "TOKENS=*" %%G IN ( locallow2 ) DO @(
+GREP -Esi "^[a-f0-9]{64}$" <locallow >>locallow2
+SORT_ -f -u <locallow2 >locallow3
+FOR /F "TOKENS=*" %%G IN ( locallow3 ) DO @(
   ECHO.%LOCALLOW%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%LOCALLOW%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %STARTUP% SEARCH ~~~~~~~~~ 
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <startup >startup2
-GREP -Esi "^.\.vb[e|s]\.lnk$" <startup >>startup2
-FOR /F "TOKENS=*" %%G IN ( startup2 ) DO @(
+GREP -Esi "^.\.(vb[e|s]|exe|pif|ps1|scr|js|dll|cmd)\.lnk$" <startup >>startup2
+SORT_ -f -u <startup2 >startup3
+FOR /F "TOKENS=*" %%G IN ( startup3 ) DO @(
   ECHO.%STARTUP%\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%STARTUP%\%%G" >NUL 2>&1
   )
-  
+REM ~~~~~ %sys32appdata% SEARCH ~~~~~~~~~
 GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <sys32appdata >sys32appdata2
-FOR /F "TOKENS=*" %%G IN ( sys32appdata2 ) DO @(
+SORT_ -f -u <sys32appdata2 >sys32appdata3
+FOR /F "TOKENS=*" %%G IN ( sys32appdata3 ) DO @(
   ECHO.%SYS32%\config\systemprofile\AppData\%%G ^(File^)>>"%TEMP%\001"
   DEL /A/F/Q "%SYS32%\config\systemprofile\AppData\%%G" >NUL 2>&1
   )
+REM ~~~~~ %WINDIR% SEARCH ~~~~~~~~~
+rem GREP -Esi ".*\.(bat|cmd|dll|exe|js|pif|ps1|scr|tmp|vbe|vbs)$" <sys32appdata >sys32appdata2
+rem SORT_ -f -u <sys32appdata2 >sys32appdata3
+rem FOR /F "TOKENS=*" %%G IN ( sys32appdata3 ) DO @(
+rem  ECHO.%SYS32%\config\systemprofile\AppData\%%G ^(File^)>>"%TEMP%\001"
+rem  DEL /A/F/Q "%SYS32%\config\systemprofile\AppData\%%G" >NUL 2>&1
+rem  )
 
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Gitl\mrucl.exe"
+"%APPDATA%\Cpb_Docker\moagent.exe"
 "%APPDATA%\ITEinboxI2CFlash\ITERHPGen.exe"
 "%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
@@ -674,6 +681,7 @@ FOR %%G in (
 "%USERPROFILE%\Favorites\Bing.url"
 "%WINDIR%\$nya-onimai3\$nya-Loli.bat"
 "%WTASKS%\Gtask.job"
+"%WTASKS%\MB Led SDK.job"
 ) DO @(
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
@@ -753,7 +761,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.4 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.8.5 ^(11.22.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
@@ -829,6 +837,7 @@ allusersprofile*
 locala*
 locallow*
 sys32appdata*
+windir*
 temp0*
 ) DO @DEL /A/F/Q "%CD%\%%G" >NUL 2>&1
 ECHO.
