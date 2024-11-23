@@ -31,7 +31,7 @@ The primary purpose of PrivWindoze is to stop and remove any nag screens[[4](htt
 
 [Download PrivWindoze Lite](https://furtivex.net/PrivWindozeLite.exe)
 
-[![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N)  [![donate_amz](https://github.com/user-attachments/assets/10476e9c-92f3-4271-8410-6f38624c94b8)](https://www.amazon.com/hz/wishlist/ls/C2QC509ZM1BG?ref_=wl_share)
+[![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N)
 
 ![image](https://github.com/user-attachments/assets/584dc9df-2f22-4865-954f-1023efc2ab90)
 
