@@ -65,7 +65,7 @@ FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 ECHO.========================================================
 ECHO.*                                                      *
-ECHO.*                  PrivWindoze v2.8.9                  *                  
+ECHO.*                  PrivWindoze v2.9.0                  *                  
 ECHO.*                 https://furtivex.net                 *               
 ECHO.*                                                      *
 ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
@@ -466,7 +466,7 @@ DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "Telemetry|NvTmRep_" >>temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
-  SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
+  SCHTASKS /DELETE /TN "%%G" /F >NUL 2>&1
   )
 )
 DEL /A/F temp0? >NUL 2>&1
@@ -816,7 +816,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.8.9 ^(11.23.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.9.0 ^(11.23.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
