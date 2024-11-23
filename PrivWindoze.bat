@@ -63,14 +63,14 @@ IF ERRORLEVEL 1 ( GOTO :AdminChk )
 SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozelogwho2.txt" >"%TEMP%\privwindozelogwho3.txt"
 FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-ECHO.=======================================================
-ECHO.*                                                     *
-ECHO.*                  PrivWindoze v2.8.8                 *                  
-ECHO.*                 https://furtivex.net                *               
-ECHO.*                                                     *
-ECHO.*       PLEASE SAVE ALL WORK BEFORE CONTINUING        *
-ECHO.*                                                     *
-ECHO.=======================================================
+ECHO.========================================================
+ECHO.*                                                      *
+ECHO.*                  PrivWindoze v2.8.8                  *                  
+ECHO.*                 https://furtivex.net                 *               
+ECHO.*                                                      *
+ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
+ECHO.*                                                      *
+ECHO.========================================================
 ECHO.
 ECHO.
 PAUSE
