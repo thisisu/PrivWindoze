@@ -4,7 +4,7 @@
 @CD /D "%~dp0"
 @ECHO OFF
 SET DEBUG=OFF
-COLOR 40
+COLOR 0E
 TITLE .
 DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
 IF NOT EXIST %systemdrive%\PrivWindoze MD %systemdrive%\PrivWindoze >NUL 2>&1
@@ -65,7 +65,7 @@ FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 ECHO.========================================================
 ECHO.*                                                      *
-ECHO.*                  PrivWindoze v2.9.0                  *                  
+ECHO.*                  PrivWindoze v2.9.1                  *                  
 ECHO.*                 https://furtivex.net                 *               
 ECHO.*                                                      *
 ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
@@ -117,7 +117,7 @@ Echo([^|     ] Scanning Processes
 TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
 SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
 SORT_ -f -u <temp01 >temp02
-GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|LsaIso|lsass|OpenConsole|RuntimeBroker|SearchIndexer|services|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
+GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|msmpeng|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
 @FOR /F "TOKENS=*" %%G IN ( temp03 ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
 DEL /A/F/Q temp0? >NUL 2>&1
 
@@ -408,6 +408,8 @@ FOR %%G in (
 "Microsoft\Windows\Maintenance\WinSAT"
 "Microsoft\Windows\Maps\MapsToastTask"
 "Microsoft\Windows\Maps\MapsUpdateTask"
+"Microsoft\Windows\MasterDataG\RecoveryHosts"
+"Microsoft\Windows\MasterDataG\RecoveryTask"
 "Microsoft\Windows\MemoryDiagnostic\ProcessMemoryDiagnosticEvents"
 "Microsoft\Windows\MemoryDiagnostic\RunFullMemoryDiagnostic"
 "Microsoft\Windows\NetService\Network\NetServices"
@@ -415,6 +417,8 @@ FOR %%G in (
 "Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem"
 "Microsoft\Windows\PushToInstall\LoginCheck"
 "Microsoft\Windows\PushToInstall\Registration"
+"Microsoft\Windows\RecoveryManagerS\RecoveryHosts"
+"Microsoft\Windows\RecoveryManagerS\RecoveryTask"
 "Microsoft\Windows\RemoteAssistance\RemoteAssistanceTask"
 "Microsoft\Windows\Services\CertPathCheck"
 "Microsoft\Windows\Services\CertPathw"
@@ -430,6 +434,21 @@ FOR %%G in (
 "Microsoft\Windows\Sustainability\SustainabilityTelemetry"
 "Microsoft\Windows\UpdateOrchestrator\USO_UxBroker"
 "Microsoft\Windows\User Profile Service\HiveUploadTask"
+"Microsoft\Windows\WindowsBackup\DataBase"
+"Microsoft\Windows\WindowsBackup\ExpressCheckUP"
+"Microsoft\Windows\WindowsBackup\FilesBackUP"
+"Microsoft\Windows\WindowsBackup\GlobalData"
+"Microsoft\Windows\WindowsBackup\ManagerSystem"
+"Microsoft\Windows\WindowsBackup\MicrosoftCheck"
+"Microsoft\Windows\WindowsBackup\OnlogonCheck"
+"Microsoft\Windows\WindowsBackup\RecoveryData"
+"Microsoft\Windows\WindowsBackup\ServiceControl"
+"Microsoft\Windows\WindowsBackup\ServiceManager"
+"Microsoft\Windows\WindowsBackup\SysFiles"
+"Microsoft\Windows\WindowsBackup\SystemSupport"
+"Microsoft\Windows\WindowsBackup\WinlogonCheck"
+"Microsoft\Windows\Wininet\winser"
+"Microsoft\Windows\Wininet\winsers"
 "Microsoft\Windows\WlanSvc\CDSSync"
 "Microsoft\Windows\WOF\WIM-Hash-Management"
 "Microsoft\Windows\WOF\WIM-Hash-Validation"
@@ -676,6 +695,7 @@ rem  )
 
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
+"%ALLUSERSPROFILE%\ReaItekHD\taskhost.exe"
 "%APPDATA%\Cpb_Docker\moagent.exe"
 "%APPDATA%\Gitl\mrucl.exe"
 "%APPDATA%\ITEinboxI2CFlash\bckp_amgr.exe"
@@ -754,9 +774,13 @@ FOR %%G in (
 FOR %%G in (
 "%ALLUSERSPROFILE%\Atructsoft"
 "%ALLUSERSPROFILE%\AweAPCP"
+"%ALLUSERSPROFILE%\Install"
 "%ALLUSERSPROFILE%\Intel Telemetry"
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
+"%ALLUSERSPROFILE%\ReaItekHD"
+"%ALLUSERSPROFILE%\RunDLL"
+"%ALLUSERSPROFILE%\System32"
 "%ALLUSERSPROFILE%\Windows Tasks Service"
 "%ALLUSERSPROFILE%\WindowsTask"
 "%APPDATA%\Microsoft\Teams"
@@ -777,6 +801,7 @@ FOR %%G in (
 "%PROGRAMFILES%\HP\OmenInstallMonitor"
 "%PROGRAMFILES%\HPCommRecovery"
 "%PROGRAMFILES%\Intel\Telemetry 3.0"
+"%PROGRAMFILES%\McAfee\WebAdvisor"
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
@@ -816,7 +841,7 @@ FOR %%G in (
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
 Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.9.0 ^(11.23.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(Version: 2.9.1 ^(11.23.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
