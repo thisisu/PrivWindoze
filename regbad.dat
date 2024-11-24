@@ -92,7 +92,6 @@ HKCU\Software\Microsoft\MicrosoftEdge
 HKCU\Software\Microsoft\OneDrive
 HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5C66-4533-4307-9B53-224DE2ED1FE6}
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\{84397963-BE19-41C0-96B5-A99788C74F2A}_is1
-HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\gotosrch
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams
@@ -167,10 +166,6 @@ HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-893
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{cb0cd80b-bb32-491f-bcfb-425e08a1c34f}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\AltrsikApplication
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\AtrtisApplication
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\AtuctApplication
-HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\AweAPCP
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update
