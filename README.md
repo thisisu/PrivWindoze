@@ -1,4 +1,4 @@
-PrivWindoze (Private Windows) is a Microsoft Windows tool, which aims to quickly delete malware, spyware, and telemetry.
+PrivWindoze (Private Windows) is a Microsoft Windows tool, which aims to quickly delete telemetry, bundlware, and bloatware.
 
 Below is a list of what is currently removed:
 
