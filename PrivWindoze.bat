@@ -65,7 +65,7 @@ FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO ( SET SID=%%G )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 ECHO.========================================================
 ECHO.*                                                      *
-ECHO.*                  PrivWindoze v2.9.2                  *
+ECHO.*                      PrivWindoze                     *
 ECHO.*                 https://furtivex.net                 *
 ECHO.*                                                      *
 ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
@@ -161,6 +161,7 @@ REG DELETE "HKCR\.mht\OpenWithProgids" /V MSEdgeMHT /F >NUL 2>&1
 REG DELETE "HKCR\.pdf\OpenWithProgids" /V MSEdgePDF /F >NUL 2>&1
 REG DELETE "HKCR\.shtml\OpenWithProgids" /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE "HKCU\Environment" /V "OneDrive" /F >NUL 2>&1
+REG DELETE "HKCU\Environment" /V "OneDriveConsumer" /F >NUL 2>&1
 REG DELETE "HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /V OneDriveSetup /F >NUL 2>&1
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE %URun% /V Microsoft.Lists /F >NUL 2>&1
@@ -292,6 +293,7 @@ FOR %%G in (
 "Intel\Intel Telemetry 3"
 "Lenovo\ImController\Lenovo iM Controller Monitor"
 "Lenovo\ImController\Lenovo iM Controller Scheduled Maintenance"
+"Lenovo\ImController\Plugins\LenovoSystemUpdatePlugin_WeeklyTask"
 "Lenovo\Lenovo Service Bridge\%SID%"
 "Lenovo\LenovoNowLauncher"
 "Lenovo\LenovoNowQuarterlyLaunch"
@@ -310,6 +312,7 @@ FOR %%G in (
 "Lenovo\Vantage\Schedule\LenovoBoostAddin.Prompt"
 "Lenovo\Vantage\Schedule\LenovoCompanionAppAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\LenovoSystemUpdateAddin_WeeklyTask"
+"Lenovo\Vantage\Schedule\NotificationCenter"
 "Lenovo\Vantage\Schedule\SettingsWidgetAddinDailyScheduleTask"
 "Lenovo\Vantage\Schedule\SmartPerformance.ExpireReminder"
 "Lenovo\Vantage\Schedule\VantageCoreAddinIdleScheduleTask"
@@ -403,16 +406,16 @@ FOR %%G in (
 "UEIPInvitation"
 ) DO @(
   IF EXIST "%SYS32%\Tasks\%%G" (
-    ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+    ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
     SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
     )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|NvTmRep_)" >temp00
+DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|NvTmRep_|AsusSystemAnalysis_|ASUS Optimization)" >temp00
 DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "Telemetry" >>temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "%%G" /F >NUL 2>&1
   )
 )
@@ -646,8 +649,8 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze by Furtivex>>"%TEMP%\pwindoze.txt"
-Echo(Version: 2.9.2 ^(11.25.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v2.9.3 ^(11.26.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
