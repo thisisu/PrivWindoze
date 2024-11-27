@@ -20,3 +20,5 @@ TobiiALENOVOYX80
 TobiiRGB
 UDCService
 UEIPSvc
+DDVCollectorSvcApi
+DDVDataCollector

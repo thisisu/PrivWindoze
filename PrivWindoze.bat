@@ -223,7 +223,7 @@ DEL /A/F/Q temp0? >NUL 2>&1
 
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}" >temp00
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
-GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|Xbox|Zune)|Name=@\{Clipchamp\." <temp00 >temp01
+GREP -Es "Name=Microsoft Edge|Name=@\{Microsoft\.(Bing|Todos|microsoftteams|Xbox|Zune)|Name=@\{(Clipchamp|AD2F1837)\." <temp00 >temp01
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
 SED -r "s/^\s+(\{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}).*/\1/" <temp01 >temp02
 IF EXIST temp02 (
@@ -340,6 +340,7 @@ FOR %%G in (
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
+"McAfeeTsk\OOBEUpgrader"
 "Microsoft\Windows\Defrag\ScheduledDefrag"
 "Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner"
 "Microsoft\Windows\Diagnosis\Scheduled"
@@ -411,7 +412,7 @@ FOR %%G in (
     )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|NvTmRep_|AsusSystemAnalysis_|ASUS Optimization)" >temp00
+DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Omen(Install|Overlay)|NvTmRep_|Asus)" >temp00
 DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "Telemetry" >>temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
@@ -560,11 +561,15 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
+"%PROGRAMFILES%\Dell\DellDataVault\DDVCollectorSvcApi.exe"
+"%PROGRAMFILES%\Dell\DellDataVault\DDVDataCollector.exe"
+"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent\Dell.TechHub.Analytics.SubAgent.exe"
 "%PROGRAMS17%\Microsoft Edge.lnk"
 "%PROGRAMS17%\OneDrive.lnk"
 "%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
 "%PROGRAMS27%\Microsoft Edge.lnk"
 "%PROGRAMS27%\OneDrive.lnk"
+"%STARTMENU17%\Adobe offers.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
@@ -625,6 +630,7 @@ FOR %%G in (
 "%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
 "%PROGRAMFILES(x86)%\Lenovo\VantageService"
 "%PROGRAMFILES(x86)%\Microsoft\Edge"
+"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
 "%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"

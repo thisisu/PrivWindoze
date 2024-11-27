@@ -26,3 +26,5 @@ WpnService
 xblauthmanager
 xblgamesave
 xboxgipsvc
+DDVCollectorSvcApi
+DDVDataCollector
