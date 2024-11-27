@@ -1,8 +1,8 @@
 :: PrivWindoze
 :: Created by Furtivex
+@ECHO OFF
 @SETLOCAL
 @CD /D "%~dp0"
-@ECHO OFF
 SET DEBUG=OFF
 COLOR 0E
 TITLE .
@@ -35,6 +35,7 @@ IF EXIST "%WINDIR%\Sysnative\cmd.exe" ( SET "SYS32=%WINDIR%\Sysnative" ) else ( 
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 IF EXIST %WINDIR%\syswow64 ( SET ARCH=x64 ) else ( SET ARCH=x86 )
 IF %ARCH%==x64 ( SET "SYSWOW64=%WINDIR%\SysWOW64" )
+
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "LOCALA=%LOCALAPPDATA%"
 SET "LOCALLOW=%USERPROFILE%\Appdata\LocalLow"
@@ -178,9 +179,10 @@ REG DELETE "HKLM\Software\RegisteredApplications" /V "Microsoft Edge" /F >NUL 2>
 REG DELETE "HKU\S-1-5-19\Environment" /V OneDrive /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDrive /F >NUL 2>&1
 REG DELETE "HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDriveSetup /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Environment" /V OneDrive /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDrive /F >NUL 2>&1
-REG DELETE "HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce" /V OneDriveSetup /F >NUL 2>&1
+REG DELETE HKU\S-1-5-20\Environment /V OneDrive /F >NUL 2>&1
+REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDrive /F >NUL 2>&1
+REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDriveSetup /F >NUL 2>&1
+REG DELETE %StartupApprovedRun% /VA /F >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~/\
 
 REM ~~~~~ START OF MALWARE ~~~~~~~\/
@@ -253,19 +255,14 @@ FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
 :: POLICIES ::
 :Policies
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
-REG ADD %CUCDM% /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack" /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V DisablePreviewDesktop /D 1 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowCopilotButton /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowCortanaButton /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowInfoTip /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V Start_IrisRecommendations /D 0 /F >NUL 2>&1
+REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /T REG_DWORD /V Start_ShowClassicMode /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD "HKCU\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
@@ -279,6 +276,17 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\EdgeUI" /T REG_DWORD /V Disabl
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\WindowsAI" /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V PreInstalledAppsEverEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V RotatingLockScreenOverlayEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
+REG ADD %CUCDM% /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
 
 
 :: TASKS ::
@@ -318,6 +326,7 @@ FOR %%G in (
 "Lenovo\Vantage\Schedule\VantageCoreAddinIdleScheduleTask"
 "Lenovo\Vantage\Schedule\VantageCoreAddinWeekScheduleTask"
 "Lenovo\Vantage\StartupFixPlan"
+"McAfeeTsk\OOBEUpgrader"
 "Microsoft\Office\Office 15 Subscription Heartbeat"
 "Microsoft\Office\Office Performance Monitor"
 "Microsoft\Office\OfficeTelemetryAgentFallBack"
@@ -340,7 +349,6 @@ FOR %%G in (
 "Microsoft\Windows\ConsentUX\UnifiedConsent\UnifiedConsentSyncTask"
 "Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip"
-"McAfeeTsk\OOBEUpgrader"
 "Microsoft\Windows\Defrag\ScheduledDefrag"
 "Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner"
 "Microsoft\Windows\Diagnosis\Scheduled"
@@ -425,7 +433,7 @@ DEL /A/F temp0? >NUL 2>&1
 DIR /B/A:-D "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\%%G" /F >NUL 2>&1
   )
 )
@@ -434,7 +442,7 @@ DEL /A/F temp0? >NUL 2>&1
 DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\%%G" /F >NUL 2>&1
   )
 )
@@ -443,7 +451,7 @@ DEL /A/F temp0? >NUL 2>&1
 DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Startup Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\%%G" /F >NUL 2>&1
   )
 )
@@ -528,7 +536,7 @@ FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
-IF ERRORLEVEL 1 ( GOTO :Rootkits )
+IF ERRORLEVEL 1 ( GOTO :Blizzard )
 GREP -Eis "^Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|People|ScreenSketch|Services\.Store\.Engagement|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <"%TEMP%\privwindozelogp.txt" >"%TEMP%\privwindozelogp_found.txt"
 GREP -Eis "^MicrosoftWindows\.(Client\.WebExperience|LKG\.DesktopSpotlight)|^MicrosoftCorporationII\.(QuickAssist|WinAppRuntime|MicrosoftFamily)|LenovoCompanion|CortanaUI" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
 GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc\.|E046963F|MicrosoftTeams|MSTeams|TobiiAB\.TobiiEyeTrackingPortal|WildTangentGames)" <"%TEMP%\privwindozelogp.txt" >>"%TEMP%\privwindozelogp_found.txt"
@@ -542,6 +550,15 @@ FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogp_del.txt") DO (
                                               )
     ENDLOCAL
 )
+:Blizzard
+DIR /B/A:-D "%LOCALA%\Blizzard Entertainment\Telemetry" 2>NUL|GREP -Es ".*">temp00
+IF ERRORLEVEL 1 ( GOTO :Rootkits )
+@FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
+  ECHO."%LOCALA%\Blizzard Entertainment\Telemetry\%%G" ^(File^)>>"%TEMP%\001"
+  DEL /A/F/Q "%LOCALA%\Blizzard Entertainment\Telemetry\%%G" >NUL 2>&1
+  )
+
+
 :Rootkits
 IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
 %SYS32%\pnputil.exe /enum-drivers 2>NUL|GREP -Es "^Original Name">"%TEMP%\privwindozelogrk.txt"
@@ -557,7 +574,6 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 )
 
 :Files
-
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
@@ -608,17 +624,20 @@ FOR %%G in (
 "%ALLUSERSPROFILE%\Microsoft OneDrive"
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
 "%APPDATA%\Microsoft\Teams"
+"%LOCALA%\Blizzard Entertainment\Telemetry"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
 "%LOCALA%\Microsoft\TeamsMeetingAddin"
+"%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\TeamsPresenceAddin"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\OneDrive"
 "%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
+"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent"
 "%PROGRAMFILES%\HP\HP One Agent"
 "%PROGRAMFILES%\HP\OmenInstallMonitor"
 "%PROGRAMFILES%\HPCommRecovery"
@@ -626,16 +645,6 @@ FOR %%G in (
 "%PROGRAMFILES%\Microsoft OneDrive"
 "%PROGRAMFILES%\Microsoft\EdgeUpdater"
 "%PROGRAMFILES%\Tobii\Tobii EyeX"
-"%PROGRAMFILES(x86)%\HP\HP Support Framework\Resources\BingPopup"
-"%PROGRAMFILES(x86)%\Lenovo\LenovoNow"
-"%PROGRAMFILES(x86)%\Lenovo\VantageService"
-"%PROGRAMFILES(x86)%\Microsoft\Edge"
-"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent"
-"%PROGRAMFILES(x86)%\Microsoft\EdgeCore"
-"%PROGRAMFILES(x86)%\Microsoft\EdgeUpdate"
-"%PROGRAMFILES(x86)%\Microsoft\EdgeWebView"
-"%PROGRAMFILES(x86)%\Microsoft\Temp"
-"%PROGRAMFILES(x86)%\Teams Installer"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
@@ -652,10 +661,29 @@ FOR %%G in (
     )
 )
 
+IF EXIST "%PROGRAMFILES(X86)%" (
+FOR %%G in (
+"%PROGRAMFILES(X86)%\HP\HP Support Framework\Resources\BingPopup"
+"%PROGRAMFILES(X86)%\Lenovo\LenovoNow"
+"%PROGRAMFILES(X86)%\Lenovo\VantageService"
+"%PROGRAMFILES(X86)%\Microsoft\Edge"
+"%PROGRAMFILES(X86)%\Microsoft\EdgeCore"
+"%PROGRAMFILES(X86)%\Microsoft\EdgeUpdate"
+"%PROGRAMFILES(X86)%\Microsoft\EdgeWebView"
+"%PROGRAMFILES(X86)%\Microsoft\Temp"
+"%PROGRAMFILES(X86)%\Teams Installer"
+) DO @(
+  IF EXIST %%G (
+    ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+    RD /S/Q %%G >NUL 2>&1
+    )
+  )
+)
+  
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v2.9.3 ^(11.26.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v2.9.5 ^(11.27.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
