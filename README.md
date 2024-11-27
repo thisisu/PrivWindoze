@@ -31,6 +31,8 @@ The primary purpose of PrivWindoze is to stop and remove any nag screens[[4](htt
 
 [Download PrivWindoze Lite](https://furtivex.net/PrivWindozeLite.exe)
 
+[Video demonstration](https://www.youtube.com/watch?v=80R4Lu_OBKg) Log Example [1](https://furtivex.net/PrivWindoze.txt) [2](https://furtivex.net/PrivWindoze2.txt)
+
 [![donate_paypal](https://github.com/user-attachments/assets/aadd1f47-fe6a-4f61-97d4-5f30ff29fc33)](https://www.paypal.com/donate/?hosted_button_id=E68FUAQG2758N)
 
 ![image](https://github.com/user-attachments/assets/584dc9df-2f22-4865-954f-1023efc2ab90)
@@ -38,7 +40,3 @@ The primary purpose of PrivWindoze is to stop and remove any nag screens[[4](htt
 ![image](https://github.com/user-attachments/assets/2b99a9c8-8248-480b-a131-a5101eb18683)
 
 Windows Explorer may close during the course of the scan -- This is expected behavior
-
-Log created on the Desktop after execution:
-
-![privwindozelog](https://github.com/user-attachments/assets/f1a9fc24-c3af-44c4-bf3d-fd4d72c108e1)
