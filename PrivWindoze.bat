@@ -59,8 +59,10 @@ SET "STASKS=%SYSTEMDRIVE%\WINDOWS\System32\Tasks"
 SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
 SET "WTASKS=%SYSTEMDRIVE%\WINDOWS\Tasks"
 
-FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
+FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion 2^>NUL') DO SET DisplayVersion=%%B
+
+
 Set StartDate=%date%
 set StartTime=%time%
 
@@ -672,6 +674,7 @@ FOR %%G in (
 "%PROGFILES32%\Microsoft OneDrive"
 "%PROGFILES32%\Microsoft\EdgeUpdater"
 "%PROGFILES32%\Tobii\Tobii EyeX"
+"%STASKS%\Microsoft\XblGameSave"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
@@ -710,10 +713,10 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v2.9.9 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.0 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
-Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
-Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
+Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
+Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
