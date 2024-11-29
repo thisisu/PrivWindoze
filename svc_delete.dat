@@ -1,8 +1,10 @@
 DCIService
+DDVCollectorSvcApi
+DDVDataCollector
 edgeupdate
 edgeupdatem
 FileSyncHelper
-hp-one-agent-service
+HP-One-Agent-Service
 HP Comm Recover
 HPAppHelperCap
 HPCustomCapDriver
@@ -20,5 +22,7 @@ TobiiALENOVOYX80
 TobiiRGB
 UDCService
 UEIPSvc
-DDVCollectorSvcApi
-DDVDataCollector
+XblAuthManager
+XblGameSave
+XboxGipSvc
+XboxNetApiSvc

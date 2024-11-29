@@ -33,25 +33,31 @@ SET "PROGRAMS1ALL=%ALLUSERSPROFILE%\Start Menu\Programs"
 SET "PROGRAMS2ALL=%USERPROFILE%\Start Menu\Programs"
 IF EXIST "%WINDIR%\Sysnative\cmd.exe" ( SET "SYS32=%WINDIR%\Sysnative" ) else ( SET "SYS32=%WINDIR%\System32" )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-IF EXIST %WINDIR%\syswow64 ( SET ARCH=x64 ) else ( SET ARCH=x86 )
-IF %ARCH%==x64 ( SET "SYSWOW64=%WINDIR%\SysWOW64" )
+IF EXIST %WINDIR%\syswow64 (SET ARCH=x64) else (SET ARCH=x86)
 
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-SET "LOCALA=%LOCALAPPDATA%"
-SET "LOCALLOW=%USERPROFILE%\Appdata\LocalLow"
-SET "PROGRAMS17=%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs"
-SET "PROGRAMS27=%APPDATA%\Microsoft\Windows\Start Menu\Programs"
+SET "ALLUSERSPROFILE=%SYSTEMDRIVE%\ProgramData"
+SET "APPDATA=%USERPROFILE%\AppData\Roaming"
+SET "COMMON32=%SYSTEMDRIVE%\Program Files\Common Files"
+SET "COMMON64=%SYSTEMDRIVE%\Program Files (x86)\Common Files"
+SET "CUCDM=HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
+SET "LOCALA=%USERPROFILE%\AppData\Local"
+SET "LOCALLOW=%USERPROFILE%\AppData\LocalLow"
+SET "PROGFILES32=%SYSTEMDRIVE%\Program Files"
+SET "PROGFILES64=%SYSTEMDRIVE%\Program Files (x86)"
+SET "PROGRAMSAUP=%SYSTEMDRIVE%\ProgramData\Microsoft\Windows\Start Menu\Programs"
+SET "PROGRAMSCU=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
 SET "PUBDESKTOP=%SYSTEMDRIVE%\Users\Public\Desktop"
 SET "PUBLIC=%SYSTEMDRIVE%\Users\Public"
-SET "QUICKLAUNCH17=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu"
-SET "QUICKLAUNCH27=%APPDATA%\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar"
-SET "STARTMENU17=%ALLUSERSPROFILE%\Microsoft\windows\Start Menu"
-SET "STARTMENU27=%APPDATA%\Microsoft\Windows\Start Menu"
-SET "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+SET "QUICKLAUNCHSM=%USERPROFILE%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu"
+SET "QUICKLAUNCHTB=%USERPROFILE%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar"
+SET "STARTMENUAUP=%SYSTEMDRIVE%\ProgramData\Microsoft\windows\Start Menu"
+SET "STARTMENUCU=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu"
+SET "STARTUP=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
 SET "StartupApprovedRun=HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run"
-SET "CUCDM=HKCU\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager"
-SET "WTASKS=%WINDIR%\Tasks"
+SET "STASKS=%SYSTEMDRIVE%\WINDOWS\System32\Tasks"
+SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+SET "WTASKS=%SYSTEMDRIVE%\WINDOWS\Tasks"
 
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v ComputerName 2^>NUL') DO SET COMPUTERNAME=%%B
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
@@ -120,6 +126,8 @@ POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePoin
 :: PROCESSES ::
 :Processes
 Echo([^|     ] Scanning Processes
+TASKKILL /F /IM explorer.exe >NUL 2>&1
+TIMEOUT /T 2 /NOBREAK >NUL
 TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
 SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
 SORT_ -f -u <temp01 >temp02
@@ -422,13 +430,13 @@ FOR %%G in (
 "UbtFrameworkService"
 "UEIPInvitation"
 ) DO @(
-  IF EXIST "%SYS32%\Tasks\%%G" (
+  IF EXIST "%STASKS%\%%G" (
     ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
     SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
     )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Omen(Install|Overlay)|NvTmRep_|Asus)|Telemetry">temp00
+DIR /B/A:-D "%STASKS%" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Omen(Install|Overlay)|NvTmRep_|Asus)|Telemetry">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
@@ -436,7 +444,7 @@ SORT_ -f -u <temp00 >temp01
   )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
+DIR /B/A:-D "%STASKS%\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Task^)>>"%TEMP%\002"
@@ -444,7 +452,7 @@ SORT_ -f -u <temp00 >temp01
   )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
+DIR /B/A:-D "%STASKS%\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
@@ -452,7 +460,7 @@ SORT_ -f -u <temp00 >temp01
   )
 )
 
-DIR /B/A:-D "%SYS32%\Tasks\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
+DIR /B/A:-D "%STASKS%\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
@@ -596,15 +604,15 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 FOR %%G in (
 "%ALLUSERSPROFILE%\Package Cache\{A59BC4A0-0F57-4F97-95E4-641AB5C3A9B0}\HPOneAgent.exe"
 "%APPDATA%\Slate Digital Connect\SDACollector\sdaCollector.vbs"
-"%PROGRAMFILES%\Dell\DellDataVault\DDVCollectorSvcApi.exe"
-"%PROGRAMFILES%\Dell\DellDataVault\DDVDataCollector.exe"
-"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent\Dell.TechHub.Analytics.SubAgent.exe"
-"%PROGRAMS17%\Microsoft Edge.lnk"
-"%PROGRAMS17%\OneDrive.lnk"
-"%PROGRAMS27%\Microsoft Corporation\Microsoft Teams.lnk"
-"%PROGRAMS27%\Microsoft Edge.lnk"
-"%PROGRAMS27%\OneDrive.lnk"
-"%STARTMENU17%\Adobe offers.lnk"
+"%PROGFILES32%\Dell\DellDataVault\DDVCollectorSvcApi.exe"
+"%PROGFILES32%\Dell\DellDataVault\DDVDataCollector.exe"
+"%PROGFILES32%\Dell\DTP\AnalyticsSubAgent\Dell.TechHub.Analytics.SubAgent.exe"
+"%PROGRAMSAUP%\Microsoft Edge.lnk"
+"%PROGRAMSAUP%\OneDrive.lnk"
+"%PROGRAMSCU%\Microsoft Corporation\Microsoft Teams.lnk"
+"%PROGRAMSCU%\Microsoft Edge.lnk"
+"%PROGRAMSCU%\OneDrive.lnk"
+"%STARTMENUAUP%\Adobe offers.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
@@ -644,26 +652,26 @@ FOR %%G in (
 "%ALLUSERSPROFILE%\Microsoft\EdgeUpdate"
 "%APPDATA%\Microsoft\Teams"
 "%LOCALA%\Blizzard Entertainment\Telemetry"
+"%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
 "%LOCALA%\Microsoft\TeamsMeetingAddin"
-"%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\TeamsPresenceAddin"
 "%LOCALA%\Microsoft\XboxLive"
 "%LOCALA%\MicrosoftEdge"
 "%LOCALA%\OneDrive"
-"%PROGRAMFILES%\Acer\User Experience Improvement Program Service"
-"%PROGRAMFILES%\Dell\DTP\AnalyticsSubAgent"
-"%PROGRAMFILES%\HP\HP One Agent"
-"%PROGRAMFILES%\HP\OmenInstallMonitor"
-"%PROGRAMFILES%\HPCommRecovery"
-"%PROGRAMFILES%\Intel\Telemetry 3.0"
-"%PROGRAMFILES%\Microsoft OneDrive"
-"%PROGRAMFILES%\Microsoft\EdgeUpdater"
-"%PROGRAMFILES%\Tobii\Tobii EyeX"
+"%PROGFILES32%\Acer\User Experience Improvement Program Service"
+"%PROGFILES32%\Dell\DTP\AnalyticsSubAgent"
+"%PROGFILES32%\HP\HP One Agent"
+"%PROGFILES32%\HP\OmenInstallMonitor"
+"%PROGFILES32%\HPCommRecovery"
+"%PROGFILES32%\Intel\Telemetry 3.0"
+"%PROGFILES32%\Microsoft OneDrive"
+"%PROGFILES32%\Microsoft\EdgeUpdater"
+"%PROGFILES32%\Tobii\Tobii EyeX"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
 "%WINDIR%\GameBarPresenceWriter"
@@ -680,17 +688,17 @@ FOR %%G in (
     )
 )
 
-IF EXIST "%PROGRAMFILES(X86)%" (
+IF EXIST "%PROGRAMS64%" (
 FOR %%G in (
-"%PROGRAMFILES(X86)%\HP\HP Support Framework\Resources\BingPopup"
-"%PROGRAMFILES(X86)%\Lenovo\LenovoNow"
-"%PROGRAMFILES(X86)%\Lenovo\VantageService"
-"%PROGRAMFILES(X86)%\Microsoft\Edge"
-"%PROGRAMFILES(X86)%\Microsoft\EdgeCore"
-"%PROGRAMFILES(X86)%\Microsoft\EdgeUpdate"
-"%PROGRAMFILES(X86)%\Microsoft\EdgeWebView"
-"%PROGRAMFILES(X86)%\Microsoft\Temp"
-"%PROGRAMFILES(X86)%\Teams Installer"
+"%PROGFILES64%\HP\HP Support Framework\Resources\BingPopup"
+"%PROGFILES64%\Lenovo\LenovoNow"
+"%PROGFILES64%\Lenovo\VantageService"
+"%PROGFILES64%\Microsoft\Edge"
+"%PROGFILES64%\Microsoft\EdgeCore"
+"%PROGFILES64%\Microsoft\EdgeUpdate"
+"%PROGFILES64%\Microsoft\EdgeWebView"
+"%PROGFILES64%\Microsoft\Temp"
+"%PROGFILES64%\Teams Installer"
 ) DO @(
   IF EXIST %%G (
     ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
@@ -702,7 +710,7 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v2.9.6 ^(11.27.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v2.9.8 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
