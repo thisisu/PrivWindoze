@@ -6,7 +6,7 @@
 SET DEBUG=OFF
 COLOR 0E
 TITLE .
-DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
+DEL /F/Q "%TEMP%\*" >NUL 2>&1
 IF NOT EXIST %systemdrive%\PrivWindoze MD %systemdrive%\PrivWindoze >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 FOR %%G in (
@@ -133,7 +133,7 @@ SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
 SORT_ -f -u <temp01 >temp02
 GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|msmpeng|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
 @FOR /F "TOKENS=*" %%G IN ( temp03 ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
-DEL /A/F/Q temp0? >NUL 2>&1
+DEL /F/Q temp0? >NUL 2>&1
 
 :: PACKAGES ::
 :Packages
@@ -165,7 +165,7 @@ FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
   ECHO.%%G ^(Registry Key^)>>"%TEMP%\004"
   REG DELETE "%%G" /F >NUL 2>&1
   )
-DEL /A/F/Q temp0? >NUL 2>&1
+DEL /F/Q temp0? >NUL 2>&1
 
 :: icacls %%G /grant "%username%":(d,wdac)
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
@@ -234,7 +234,7 @@ IF EXIST temp02 (
     ECHO.%%G ^(Registry Key^) >>"%TEMP%\004"
     REG DELETE "%%G" /F >NUL 2>&1
     ) )
-DEL /A/F/Q temp0? >NUL 2>&1
+DEL /F/Q temp0? >NUL 2>&1
 
 REG QUERY "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules"|GREP -Es "    \{[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}\}" >temp00
 IF ERRORLEVEL 1 ( GOTO :FirewallOrphans )
@@ -247,7 +247,7 @@ IF EXIST temp02 (
 
 :FirewallOrphans
 
-DEL /A/F/Q temp0? >NUL 2>&1
+DEL /F/Q temp0? >NUL 2>&1
 :EdgeAutoLaunch
 REG QUERY "%URun%" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP%\privwindozelogr.txt"
 IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
@@ -576,7 +576,7 @@ DIR /B/A:-D "%LOCALA%\Blizzard Entertainment\Telemetry" 2>NUL|GREP -Es ".*">temp
 IF ERRORLEVEL 1 ( GOTO :Firefox )
 @FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
   ECHO."%LOCALA%\Blizzard Entertainment\Telemetry\%%G" ^(File^)>>"%TEMP%\001"
-  DEL /A/F/Q "%LOCALA%\Blizzard Entertainment\Telemetry\%%G" >NUL 2>&1
+  DEL /F/Q "%LOCALA%\Blizzard Entertainment\Telemetry\%%G" >NUL 2>&1
   )
 :Firefox
 IF NOT EXIST "%APPDATA%\Mozilla\Firefox\Profiles" GOTO :Rootkits
@@ -622,7 +622,7 @@ FOR %%G in (
 ) DO @(
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
-    DEL /A/F/Q %%G >NUL 2>&1
+    DEL /F/Q %%G >NUL 2>&1
     )
 )
 
@@ -644,7 +644,7 @@ FOR %%G in (
 "%WINDIR%\ServiceProfiles\NetworkService\AppData\Local\Temp\*"
 "%WINDIR%\SystemTemp\*"
 "%WINDIR%\Temp\*"
-) DO @DEL /A/F/Q "%%G" >NUL 2>&1
+) DO @DEL /F/Q "%%G" >NUL 2>&1
 
 FOR %%G in (
 "%ALLUSERSPROFILE%\Intel Telemetry"
@@ -710,7 +710,7 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v2.9.8 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v2.9.9 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^("%COMPUTERNAME%"^) ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
@@ -789,11 +789,11 @@ RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
 FOR %%G in (
 temp0?
-) DO @DEL /A/F/Q "%CD%\%%G" >NUL 2>&1
+) DO @DEL /F/Q "%CD%\%%G" >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 ECHO(Scan completed. A log can be found on your Desktop.
-DEL /A/F/Q "%TEMP%\*" >NUL 2>&1
+DEL /F/Q "%TEMP%\*" >NUL 2>&1
 TIMEOUT /t 05>NUL && RD /S/Q %systemdrive%\PrivWindoze
 :eof
