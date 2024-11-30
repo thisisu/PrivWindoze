@@ -28,13 +28,8 @@ svc_stop_disable.dat
 Urunkey.cfg
 ) DO ( COPY /Y "%CD%\%%G" %systemdrive%\PrivWindoze >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-SET "QUICKLAUNCHALL=%APPDATA%\Microsoft\Internet Explorer\Quick Launch"
-SET "PROGRAMS1ALL=%ALLUSERSPROFILE%\Start Menu\Programs"
-SET "PROGRAMS2ALL=%USERPROFILE%\Start Menu\Programs"
-IF EXIST "%WINDIR%\Sysnative\cmd.exe" ( SET "SYS32=%WINDIR%\Sysnative" ) else ( SET "SYS32=%WINDIR%\System32" )
-REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+IF EXIST %WINDIR%\Sysnative\cmd.exe (SET "SYS32=%WINDIR%\Sysnative") else (SET "SYS32=%WINDIR%\System32")
 IF EXIST %WINDIR%\syswow64 (SET ARCH=x64) else (SET ARCH=x86)
-
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 SET "ALLUSERSPROFILE=%SYSTEMDRIVE%\ProgramData"
 SET "APPDATA=%USERPROFILE%\AppData\Roaming"
@@ -47,10 +42,13 @@ SET "PROGFILES32=%SYSTEMDRIVE%\Program Files"
 SET "PROGFILES64=%SYSTEMDRIVE%\Program Files (x86)"
 SET "PROGRAMSAUP=%SYSTEMDRIVE%\ProgramData\Microsoft\Windows\Start Menu\Programs"
 SET "PROGRAMSCU=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+SET "PROGRAMS1ALL=%ALLUSERSPROFILE%\Start Menu\Programs"
+SET "PROGRAMS2ALL=%USERPROFILE%\Start Menu\Programs"
 SET "PUBDESKTOP=%SYSTEMDRIVE%\Users\Public\Desktop"
 SET "PUBLIC=%SYSTEMDRIVE%\Users\Public"
 SET "QUICKLAUNCHSM=%USERPROFILE%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu"
 SET "QUICKLAUNCHTB=%USERPROFILE%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar"
+SET "QUICKLAUNCH=%USERPROFILE%\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch"
 SET "STARTMENUAUP=%SYSTEMDRIVE%\ProgramData\Microsoft\windows\Start Menu"
 SET "STARTMENUCU=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu"
 SET "STARTUP=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
@@ -614,8 +612,10 @@ FOR %%G in (
 "%PROGRAMSCU%\Microsoft Corporation\Microsoft Teams.lnk"
 "%PROGRAMSCU%\Microsoft Edge.lnk"
 "%PROGRAMSCU%\OneDrive.lnk"
-"%STARTMENUAUP%\Adobe offers.lnk"
 "%PUBDESKTOP%\Microsoft Edge.lnk"
+"%QUICKLAUNCH%\Microsoft Edge.lnk"
+"%QUICKLAUNCHTB%\Microsoft Edge.lnk"
+"%STARTMENUAUP%\Adobe offers.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
@@ -677,6 +677,7 @@ FOR %%G in (
 "%STASKS%\Microsoft\XblGameSave"
 "%SYS32%\Microsoft-Edge-WebView"
 "%USERPROFILE%\MicrosoftEdgeBackups"
+"%WINDIR%\DiagTrack"
 "%WINDIR%\GameBarPresenceWriter"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\GameDVR"
 "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\Microsoft\Windows\GameExplorer"
@@ -713,7 +714,7 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.0 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.2 ^(11.29.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
