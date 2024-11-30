@@ -657,6 +657,7 @@ FOR %%G in (
 "%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
+"%LOCALA%\Microsoft\GameDVR"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
