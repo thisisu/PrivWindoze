@@ -55,6 +55,7 @@ SET "STARTUP=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
 SET "StartupApprovedRun=HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run"
 SET "STASKS=%SYSTEMDRIVE%\WINDOWS\System32\Tasks"
 SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+SET "URunOnce=HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 SET "WTASKS=%SYSTEMDRIVE%\WINDOWS\Tasks"
 
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
@@ -185,7 +186,7 @@ REG DELETE HKCR\.shtml\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE HKCU\Environment /V OneDrive /F >NUL 2>&1
 REG DELETE HKCU\Environment /V OneDriveConsumer /F >NUL 2>&1
 REG DELETE HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run /V OneDriveSetup /F >NUL 2>&1
-REG DELETE HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDrive /F >NUL 2>&1
+REG DELETE %URunOnce% /V OneDrive /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V HPOneAgentService /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V XboxStat /F >NUL 2>&1
@@ -289,7 +290,9 @@ REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_IrisRecommendations /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_ShowClassicMode /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy /T REG_DWORD /V TailoredExperiencesWithDiagnosticDataEnabled /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot /T REG_DWORD /V AllowCopilotRuntime /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
@@ -301,7 +304,6 @@ REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V 
 REG ADD HKLM\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
-
 
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
@@ -657,7 +659,6 @@ FOR %%G in (
 "%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
-"%LOCALA%\Microsoft\GameDVR"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
@@ -715,7 +716,7 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.3 ^(11.30.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.4 ^(12.01.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
