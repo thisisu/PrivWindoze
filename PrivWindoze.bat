@@ -173,11 +173,6 @@ REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V OneDrive.exe /F >NUL 2>&1
 REG DELETE %StartupApprovedRun% /VA /F >NUL 2>&1
-REG DELETE %URun% /V com.slatedigital.analytics /F >NUL 2>&1
-REG DELETE %URun% /V com.squirrel.Teams.Teams /F >NUL 2>&1
-REG DELETE %URun% /V LenovoVantageToolbar /F >NUL 2>&1
-REG DELETE %URun% /V Microsoft.Lists /F >NUL 2>&1
-REG DELETE %URun% /V OneDrive /F >NUL 2>&1
 REG DELETE HKCR\.htm\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE HKCR\.html\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE HKCR\.mht\OpenWithProgids /V MSEdgeMHT /F >NUL 2>&1
@@ -438,7 +433,7 @@ FOR %%G in (
     )
 )
 
-DIR /B/A:-D "%STASKS%" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Omen(Install|Overlay)|NvTmRep_|Asus)|Telemetry">temp00
+DIR /B/A:-D "%STASKS%" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Omen(Install|Overlay)|NvTmRep_|Asus|SystemOptimizer)|Telemetry">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
   ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
@@ -594,7 +589,7 @@ IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
 IF ERRORLEVEL 1 ( GOTO :Files )
 SED -r "s/^Original Name.\s{4,}//" <"%TEMP%\privwindozelogrk.txt" >"%TEMP%\privwindozelogrk2.txt"
 SORT_ -f -u <"%TEMP%\privwindozelogrk2.txt" >"%TEMP%\privwindozelogrk3.txt"
-GREP -Eis "^(hp(analytics|customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
+GREP -Eis "^(hp(analytics|(omen)?customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 :: NIRCMD BEEP 1400 50
 FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
@@ -672,6 +667,7 @@ FOR %%G in (
 "%PROGFILES32%\HP\HP One Agent"
 "%PROGFILES32%\HP\OmenInstallMonitor"
 "%PROGFILES32%\HPCommRecovery"
+"%PROGFILES32%\HP\SystemOptimizer"
 "%PROGFILES32%\Intel\Telemetry 3.0"
 "%PROGFILES32%\Microsoft OneDrive"
 "%PROGFILES32%\Microsoft\EdgeUpdater"
@@ -716,7 +712,7 @@ FOR %%G in (
 :DoLog
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.4 ^(12.01.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.5 ^(12.01.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
@@ -789,7 +785,7 @@ Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
 Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-SED "s/\x22//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+SED -r "s/(\x22|\x00+)//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
 
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
