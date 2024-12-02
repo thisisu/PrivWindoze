@@ -138,7 +138,7 @@ TIMEOUT /T 2 /NOBREAK >NUL
 TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
 SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
 SORT_ -f -u <temp01 >temp02
-GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|MpDefenderCoreService|MsMpEng|NisSrv|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
+GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|MpDefenderCoreService|MsMpEng|MsSense|NisSrv|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
 @FOR /F "TOKENS=*" %%G IN ( temp03 ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
 DEL /F/Q temp0? >NUL 2>&1
 
@@ -725,7 +725,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.6 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.7 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
