@@ -4,7 +4,7 @@
 @SETLOCAL
 @CD /D "%~dp0"
 SET DEBUG=OFF
-COLOR 0E
+COLOR 71
 TITLE .
 DEL /F/Q "%TEMP%\*" >NUL 2>&1
 IF NOT EXIST %systemdrive%\PrivWindoze MD %systemdrive%\PrivWindoze >NUL 2>&1
@@ -132,7 +132,7 @@ TIMEOUT /T 2 /NOBREAK >NUL
 TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
 SED -r "s/^\x22(.*\.exe)\x22.*/\1/" <temp00 >temp01
 SORT_ -f -u <temp01 >temp02
-GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|msmpeng|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
+GREP -Eivs "^(audiodg|cmd|conhost|csrss|ctfmon|dllhost|dwm|fontdrvhost|iphlpsvc|LsaIso|lsass|MpDefenderCoreService|MsMpEng|NisSrv|OpenConsole|RuntimeBroker|Search(host|Indexer)|services|SecurityHealthService|ShellExperienceHost|sihost|smartscreen|smss|spoolsv|StartMenuExperienceHost|svchost|task(kill|hostw)|TextInputHost|WindowsTerminal|wininit|winlogon|WmiPrvSE|WUDFHost)\.exe$" <temp02 >temp03
 @FOR /F "TOKENS=*" %%G IN ( temp03 ) DO @TASKKILL /F /IM "%%G" >NUL 2>&1
 DEL /F/Q temp0? >NUL 2>&1
 
