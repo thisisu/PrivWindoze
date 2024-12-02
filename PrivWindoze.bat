@@ -624,6 +624,8 @@ FOR %%G in (
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
+"%USERPROFILE%\OneDrive\Desktop\Microsoft Edge.lnk"
+"%USERPROFILE%\OneDrive\Desktop\Microsoft Teams.lnk"
 ) DO @(
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
@@ -660,6 +662,7 @@ FOR %%G in (
 "%LOCALA%\GameAnalytics"
 "%LOCALA%\Microsoft\BGAHelperLib"
 "%LOCALA%\Microsoft\Edge"
+"%LOCALA%\Microsoft\EdgeUpdate"
 "%LOCALA%\Microsoft\OneDrive"
 "%LOCALA%\Microsoft\Teams"
 "%LOCALA%\Microsoft\TeamsMeetingAdd-in"
@@ -725,7 +728,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.7 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.8 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
