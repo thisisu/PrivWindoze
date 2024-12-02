@@ -62,8 +62,13 @@ FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\Curren
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion 2^>NUL') DO SET DisplayVersion=%%B
 
 
-Set StartDate=%date%
-set StartTime=%time%
+set h=%TIME:~0,2%
+set m=%TIME:~3,2%
+set s=%TIME:~6,2%
+set mnth=%date:~4,2%
+set day=%date:~7,2%
+set yr=%date:~10,4%
+set StartTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 whoami /user>"%TEMP%\privwindozelogwho.txt"
 GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozelogwho.txt" >"%TEMP%\privwindozelogwho2.txt"
@@ -122,8 +127,9 @@ Urunkey.cfg
 
 :: Create System Restore Point
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Processes
-POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePointType 'MODIFY_SETTINGS'"
-
+ECHO.Creating a System Restore Point. Please Wait
+POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePointType 'MODIFY_SETTINGS'" >NUL 2>&1
+cls
 :: PROCESSES ::
 :Processes
 Echo([^|     ] Scanning Processes
@@ -710,12 +716,19 @@ FOR %%G in (
 )
   
 :DoLog
+set h=%TIME:~0,2%
+set m=%TIME:~3,2%
+set s=%TIME:~6,2%
+set mnth=%date:~4,2%
+set day=%date:~7,2%
+set yr=%date:~10,4%
+set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.5 ^(12.01.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.0.6 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
-Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartDate% at %StartTime%>>"%TEMP%\pwindoze.txt"
+Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
@@ -782,20 +795,27 @@ echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-Echo(Scan was completed on %date% at %time%>>"%TEMP%\pwindoze.txt"
+Echo(Scan was completed on %EndTime%>>"%TEMP%\pwindoze.txt"
 Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-SED -r "s/(\x22|\x00+)//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%USERPROFILE%\Desktop\PrivWindoze.txt"
+SED -r "s/(\x22|\x00+)//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%TEMP%\pwindoze_final.txt"
+
+IF EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\OneDrive\Desktop\PrivWindoze_%EndTime%.txt" >NUL 2>&1
+IF NOT EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\Desktop\PrivWindoze_%EndTime%.txt" >NUL 2>&1
 
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
 FOR %%G in (
 temp0?
 ) DO @DEL /F/Q "%CD%\%%G" >NUL 2>&1
+
+FOR %%G in (
+temp0?
+) DO @DEL /F/Q "%systemdrive%\PrivWindoze\%%G" >NUL 2>&1
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 ECHO(Scan completed. A log can be found on your Desktop.
-DEL /F/Q "%TEMP%\*" >NUL 2>&1
-TIMEOUT /t 05>NUL && RD /S/Q %systemdrive%\PrivWindoze
+DEL /F/S/Q "%TEMP%\*" >NUL 2>&1
+TIMEOUT /t 05>NUL && RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
 :eof
