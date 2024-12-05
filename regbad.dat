@@ -176,6 +176,7 @@ HKLM\Software\Microsoft\Xbox
 HKLM\Software\Policies\Microsoft\Edge
 HKLM\Software\Policies\Microsoft\MicrosoftEdge
 HKLM\Software\Policies\Microsoft\Windows\OneDrive
+HKLM\SYSTEM\CurrentControlSet\Services\EventLog\HP Analytics
 HKU\.DEFAULT\Software\Microsoft\Edge
 HKU\.DEFAULT\Software\Microsoft\OneDrive
 HKU\.DEFAULT\Software\Microsoft\TelemetryClient

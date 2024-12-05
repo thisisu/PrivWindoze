@@ -216,12 +216,13 @@ FOR /F "usebackq delims=" %%G in ( Urunkey.cfg ) DO (
 )
 
 :XboxHuer
-REG QUERY HKCR 2>NUL|GREP -Eis "^HKEY_CLASSES_ROOT\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
-REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
+REG QUERY HKCR 2>NUL|GREP -Eis "\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">"%TEMP%\privwindozelogh.txt"
+REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\windows.protocol" 2>NUL|GREP -Eis "\\(xboxliveapp-[0-9]{4,}|ms-xbl-[a-f0-9]{6,})$">>"%TEMP%\privwindozelogh.txt"
+REG QUERY HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Application 2>NUL|GREP -Eis "\\(Edge|edgeupdate.*|HPAnalytics|HPTouchpointAnalyticsService)$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY HKLM\Software\Microsoft\Tracing 2>NUL|GREP -Es "RAS[A-Z0-9]{5}$">>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogh.txt") DO (
-   ECHO("%%G" ^(Registry Key^)>>"%TEMP%\004"
-   REG DELETE "%%G" /F >NUL 2>&1
+  ECHO."%%G" ^(Registry Key^)>>"%TEMP%\004"
+  REG DELETE "%%G" /F >NUL 2>&1
 )
 
 @FOR /F "TOKENS=*" %%G IN ( reglocs_pkgs.dat ) DO @REG QUERY "%%G" 2>NUL>>temp00
@@ -748,7 +749,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.0.9 ^(12.02.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.0 ^(12.04.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
