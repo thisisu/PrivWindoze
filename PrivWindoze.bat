@@ -862,6 +862,10 @@ RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
 IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
 FOR %%G in (
 temp0?
+appdata0?
+sys32appdata0?
+locala0?
+windir0?
 ) DO @DEL /F/Q "%CD%\%%G" >NUL 2>&1
 
 FOR %%G in (
@@ -871,6 +875,7 @@ sys32appdata0?
 locala0?
 windir0?
 ) DO @DEL /F/Q "%systemdrive%\PrivWindoze\%%G" >NUL 2>&1
+
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
