@@ -495,6 +495,7 @@ Echo([^|^|^|^|^| ] Scanning Services
   IF NOT ERRORLEVEL 1 (
     ECHO.%%G ^(Service Deleted^)>>"%TEMP%\000b"
     SC DELETE "%%G">nul
+    REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%G" /F >NUL 2>&1
     )
 )
 DEL /A/F temp0? >NUL 2>&1
@@ -523,60 +524,90 @@ SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt
   IF NOT ERRORLEVEL 1 (
     ECHO.%%G ^(Service Deleted^)>>"%TEMP%\000b"
     SC DELETE "%%G">nul
+    REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%G" /F >NUL 2>&1
     )
 )
 
 :DiscordFiles
-Echo([^|^|^|^|^|^|] Scanning File System
-DIR /B "%APPDATA%\discord\Code Cache\js" 2>NUL|FINDSTR -ri "^[a-f0-9].*_0$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Discord2 )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "discord=%%G"
-    SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!APPDATA!\discord\Code Cache\js\!discord!" >NUL 2>&1
-    ENDLOCAL
+ECHO.[^|^|^|^|^|^|] Scanning File System
+IF EXIST "%APPDATA%\discord\Code Cache\js" DIR /B/S/A:-D "%APPDATA%\discord\Code Cache\js" 2>NUL>appdata00
+IF EXIST "%APPDATA%\discord\Code Cache\js" (
+GREP -Esi "\\js\\([a-f0-9]{16,}_0|index)$" <appdata00 >appdata01
+SORT_ -f -u <appdata01 >appdata02
+FOR /F "TOKENS=*" %%G IN ( appdata02 ) DO @(
+  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  DEL /F/Q "%%G" >NUL 2>&1
+  )
 )
 :Discord2
-DIR /B "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :InboxApps )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "discord=%%G"
-    SETLOCAL EnableDelayedExpansion
-    DEL /F/Q "!APPDATA!\discord\Cache\Cache_Data\!discord!" >NUL 2>&1
-    ENDLOCAL
+IF EXIST "%APPDATA%\discord\Cache\Cache_Data" DIR /B/S/A:-D "%APPDATA%\discord\Cache\Cache_Data" 2>NUL>appdata00
+IF EXIST "%APPDATA%\discord\Cache\Cache_Data" (
+GREP -Esi "\\Cache_Data\\(f_[a-f0-9]{6,}|data_[0-9]|index)$" <appdata00 >appdata01
+SORT_ -f -u <appdata01 >appdata02
+FOR /F "TOKENS=*" %%G IN ( appdata02 ) DO @(
+  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  DEL /F/Q "%%G" >NUL 2>&1
+  )
 )
 :InboxApps
-DIR /B/A:-D "%WINDIR%\InboxApps" 2>NUL|GREP -Eis "^Microsoft\.(Bing|Copilot|StartExperiencesApp)">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :D3DSCache )
-FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
-    DEL /F/Q "%WINDIR%\InboxApps\%%G" >NUL 2>&1
+IF EXIST "%WINDIR%\InboxApps" DIR /B/S/A:-D "%WINDIR%\InboxApps" 2>NUL>windir00
+IF EXIST "%WINDIR%\InboxApps" (
+GREP -Esi "\\Microsoft\.(Bing|Copilot|StartExperiencesApp)" <windir00 >windir01
+SORT_ -f -u <windir01 >windir02
+FOR /F "TOKENS=*" %%G IN ( windir02 ) DO @(
+  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  DEL /F/Q "%%G" >NUL 2>&1
+  )
 )
 :D3DSCache
-DIR /B/A:D "%LOCALA%\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :D3DSCache2 )
-FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelog.txt") DO (
-    SET "cache=%%G"
-    SETLOCAL EnableDelayedExpansion
-    RD /S/Q "!LOCALA!\D3DSCache\!cache!" >NUL 2>&1
-    ENDLOCAL
+IF EXIST "%LOCALA%\D3DSCache" DIR /B/S/A:D "%LOCALA%\D3DSCache" 2>NUL>locala00
+IF EXIST "%LOCALA%\D3DSCache" (
+GREP -Esi "\\[a-f0-9]{10,}$" <locala00 >locala01
+SORT_ -f -u <locala01 >locala02
+FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
+  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  RD /S/Q "%%G" >NUL 2>&1
+  )
 )
 :D3DSCache2
-DIR /B/A:D "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :D3DSCache3 )
-FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
-    RD /S/Q "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache\%%G" >NUL 2>&1
+IF EXIST "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" DIR /B/S/A:D "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" 2>NUL>sys32appdata00
+IF EXIST "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" (
+GREP -Esi "\\[a-f0-9]{10,}$" <sys32appdata00 >sys32appdata01
+SORT_ -f -u <sys32appdata01 >sys32appdata02
+FOR /F "TOKENS=*" %%G IN ( sys32appdata02 ) DO @(
+  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  RD /S/Q "%%G" >NUL 2>&1
+  )
 )
 :D3DSCache3
-DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" 2>NUL>"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Twtmp )
-FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
-    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\D3DSCache\%%G" >NUL 2>&1
+IF EXIST "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" DIR /B/S/A:D "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" 2>NUL>sys32appdata00
+IF EXIST "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" (
+GREP -Esi "\\[a-f0-9]{10,}$" <sys32appdata00 >sys32appdata01
+SORT_ -f -u <sys32appdata01 >sys32appdata02
+FOR /F "TOKENS=*" %%G IN ( sys32appdata02 ) DO @(
+  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  RD /S/Q "%%G" >NUL 2>&1
+  )
 )
 :Twtmp
-DIR /B/A:D "%SYS32%\config\systemprofile\AppData\Local" 2>NUL|GREP -Es "^tw-[a-f0-9]{2,}-[a-f0-9]{2,}-[a-f0-9]{2,}\.tmp$">"%TEMP%\privwindozelog.txt"
-IF ERRORLEVEL 1 ( GOTO :Localpackages )
-FOR /F %%G in (%TEMP%\privwindozelog.txt) DO (
-    RD /S/Q "%SYS32%\config\systemprofile\AppData\Local\%%G" >NUL 2>&1
+IF EXIST "%SYS32%\config\systemprofile\AppData\Local" DIR /B/S/A:D "%SYS32%\config\systemprofile\AppData\Local" 2>NUL>sys32appdata00
+IF EXIST "%SYS32%\config\systemprofile\AppData\Local" (
+GREP -Esi "\\tw-[a-f0-9]{2,}-[a-f0-9]{2,}-[a-f0-9]{2,}\.tmp$" <sys32appdata00 >sys32appdata01
+SORT_ -f -u <sys32appdata01 >sys32appdata02
+FOR /F "TOKENS=*" %%G IN ( sys32appdata02 ) DO @(
+  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  RD /S/Q "%%G" >NUL 2>&1
+  )
+)
+:JavaCache
+IF EXIST "%LOCALLOW%\Sun\Java\Deployment\cache" DIR /B/S/A:-D "%LOCALLOW%\Sun\Java\Deployment\cache" 2>NUL>locallow00
+IF EXIST "%LOCALLOW%\Sun\Java\Deployment\cache" (
+GREP -Esi "\\cache\\[0-9]\.[0-9]\\[0-9]{2,}\\[a-f0-9]{8,}-[a-f0-9]{8,}$" <locallow00 >locallow01
+SORT_ -f -u <locallow01 >locallow02
+FOR /F "TOKENS=*" %%G IN ( locallow02 ) DO @(
+  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  DEL /F/Q "%%G" >NUL 2>&1
+  )
 )
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
@@ -749,7 +780,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.0 ^(12.04.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.1 ^(12.06.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
@@ -835,6 +866,10 @@ temp0?
 
 FOR %%G in (
 temp0?
+appdata0?
+sys32appdata0?
+locala0?
+windir0?
 ) DO @DEL /F/Q "%systemdrive%\PrivWindoze\%%G" >NUL 2>&1
 ECHO.
 ECHO.
