@@ -94,6 +94,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{018D5
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\{84397963-BE19-41C0-96B5-A99788C74F2A}_is1
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft EdgeWebView
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft OneDrive
+HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe
 HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\Teams
 HKCU\Software\Microsoft\Xbox
 HKCU\Software\Microsoft\XboxLive
@@ -138,6 +139,8 @@ HKLM\Software\Classes\MSEdgeMHT
 HKLM\Software\Classes\MSEdgePDF
 HKLM\Software\Classes\NetworkExplorerPlugins\Microsoft Corporation/Xbox 360
 HKLM\Software\Clients\StartMenuInternet\Microsoft Edge
+HKLM\Software\Microsoft\Active Setup\Installed Components\{401C381F-E0DE-4B85-8BD8-4F3F14FBDA57}
+HKLM\Software\Microsoft\Active Setup\Installed Components\{43F137B0-8F4D-463B-AB83-ADEAD4F15096}
 HKLM\Software\Microsoft\Active Setup\Installed Components\{9459C573-B17A-45AE-9F64-1857B5D58CEE}
 HKLM\Software\Microsoft\Edge
 HKLM\Software\Microsoft\EdgeUpdate
@@ -158,14 +161,24 @@ HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifi
 HKLM\Software\Microsoft\Windows\CurrentVersion\Ext\PreApproved\{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}
 HKLM\Software\Microsoft\Windows\CurrentVersion\MicrosoftEdge
 HKLM\Software\Microsoft\Windows\CurrentVersion\OneDriveSetup.exe
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{09D0DB68-90EA-4015-983E-A0BD777D5A02}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{13E9CBF6-6E32-40D0-874A-018DFEFB0851}_is1
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{1F2B6AF3-C260-8666-5950-E3FEDBC851D6}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{2011C8F1-DF7B-42B5-97B1-9B1D62EBD432}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{39AF0813-FA7B-4860-ADBE-93B9B214B914}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{5F084DD8-AF2C-4004-9C92-820C32E4BD55}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6468C4A5-E47E-405F-B675-A70A70983EA6}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{64BAA990-F1FC-4145-A7B1-E41FBBC9DA47}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6B2B4E31-FF1C-4719-9982-47964782F963}_is1
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{731F6BAA-A986-45A4-8936-7C3AAAAA760B}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{74FE39A0-FB76-47CD-84BA-91E2BBB17EF2}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{A7AB73A3-CB10-4AA5-9D38-6AEFFBDE4C91}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{cb0cd80b-bb32-491f-bcfb-425e08a1c34f}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{D1E8F2D7-7794-4245-B286-87ED86C1893C}
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{DF8C4194-1791-41CC-A455-8EBCCF084366}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\{E5FB98E0-0784-44F0-8CEC-95CD4690C43F}
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\HP_Documentation
+HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\HPWelcome
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Lenovo Now
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge
 HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall\Microsoft Edge Update

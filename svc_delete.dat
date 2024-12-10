@@ -14,8 +14,10 @@ HPOmenCap
 HPOmenCustomCapDriver
 HPSysInfoCap
 HpTouchpointAnalyticsService
+HPWMISVC
 Intel Analytics Service
 LenovoVantageService
+MicrosoftEdgeBetaElevationService
 MicrosoftEdgeElevationService
 OneDrive Updater Service
 SmartAppearanceAISVC
