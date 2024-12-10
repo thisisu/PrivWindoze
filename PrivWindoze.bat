@@ -773,7 +773,7 @@ FOR %%G in (
   )
 )
 
-IF EXIST "%PROGRAMS64%" (
+IF EXIST "%PROGFILES64%" (
 FOR %%G in (
 "%PROGFILES64%\HP\HP Support Framework\Resources\BingPopup"
 "%PROGFILES64%\Lenovo\LenovoNow"
@@ -812,7 +812,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.2 ^(12.10.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.3 ^(12.10.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
