@@ -609,6 +609,16 @@ FOR /F "TOKENS=*" %%G IN ( locallow02 ) DO @(
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
+:SteamCache
+IF EXIST "%LOCALA%\Steam\htmlcache" DIR /B/S/A:-D "%LOCALA%\Steam\htmlcache" 2>NUL>locala00
+IF EXIST "%LOCALA%\Steam\htmlcache" (
+GREP -Esi "\\htmlcache\\(ChromeDWriteFontCache|data_[0-9]|index|Visited Links)$" <locala00 >locala01
+SORT_ -f -u <locala01 >locala02
+FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
+  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  DEL /F/Q "%%G" >NUL 2>&1
+  )
+)
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
 IF ERRORLEVEL 1 ( GOTO :Blizzard )
@@ -812,7 +822,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.3 ^(12.10.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.4 ^(12.12.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
