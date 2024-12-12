@@ -19,7 +19,7 @@ Below is a list of what is currently removed:
     Slate Digital Connect SDACollector
     Tobii Help Center / Experience
 
-PrivWindoze also does some other nuanced things, such as clearing caches and temporary internet files that tend to pile up over time. It does not delete cookies, but it will clear caches belonging to Discord, Steam, Java, DirectX, and Fonts. It also clears some logs from the Event Viewer, and it removes orphaned Windows Registry entries belonging to the Windows Firewall. The revocation list address cache[[8](https://www.gradenegger.eu/en/view-and-clear-the-address-cache-for-blacklists-crl-url-cache/)] is also cleared.
+PrivWindoze also does some other nuanced things, such as clearing caches and temporary internet files that tend to pile up over time. It does not delete cookies, but it will clear caches belonging to Discord, Steam HTML, Java, DirectX, and Fonts. It also clears some logs from the Event Viewer, and it removes orphaned Windows Registry entries belonging to the Windows Firewall. The revocation list address cache[[8](https://www.gradenegger.eu/en/view-and-clear-the-address-cache-for-blacklists-crl-url-cache/)] is also cleared.
 
 Additional Information:
 
