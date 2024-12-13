@@ -313,6 +313,7 @@ REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V Disab
 Echo([^|^|^|^|  ] Scanning Tasks
 FOR %%G in (
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
+"Hewlett-Packard\HP Support Assistant\HP Support Solutions Framework Report"
 "Hewlett-Packard\HP Support Assistant\WarrantyChecker"
 "Hewlett-Packard\HP Support Assistant\WarrantyChecker_DeviceScan"
 "HP\Consent Manager Launcher"
@@ -656,7 +657,7 @@ IF NOT EXIST %SYS32%\pnputil.exe ECHO pnputil.exe is missing! && GOTO :Files
 IF ERRORLEVEL 1 ( GOTO :Files )
 SED -r "s/^Original Name.\s{4,}//" <"%TEMP%\privwindozelogrk.txt" >"%TEMP%\privwindozelogrk2.txt"
 SORT_ -f -u <"%TEMP%\privwindozelogrk2.txt" >"%TEMP%\privwindozelogrk3.txt"
-GREP -Eis "^(hp(analytics|(omen)?customcap)comp\.inf|lenovoyx[x|8]0\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
+GREP -Eis "^(hp(analytics|(omen)?customcap)comp\.inf|lenovoyx[x|8]0\.inf|hpspsnotification\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
 IF ERRORLEVEL 1 ( GOTO :Files )
 :: NIRCMD BEEP 1400 50
 FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
@@ -822,7 +823,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.4 ^(12.12.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.5 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"

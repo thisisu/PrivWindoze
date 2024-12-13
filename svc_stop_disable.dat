@@ -16,6 +16,7 @@ HPDiagsCap
 HPNetworkCap
 HPOmenCap
 HPOmenCustomCapDriver
+HpSpsNotification
 HPSysInfoCap
 HpTouchpointAnalyticsService
 HPWMISVC
