@@ -174,11 +174,12 @@ FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
   )
 DEL /F/Q temp0? >NUL 2>&1
 
-:: icacls %%G /grant "%username%":(d,wdac)
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V OneDrive.exe /F >NUL 2>&1
 REG DELETE %StartupApprovedRun% /VA /F >NUL 2>&1
+REG DELETE %URunOnce% /V OMENCC_InstallationBooster /F >NUL 2>&1
+REG DELETE %URunOnce% /V OneDrive /F >NUL 2>&1
 REG DELETE HKCR\.htm\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE HKCR\.html\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE HKCR\.mht\OpenWithProgids /V MSEdgeMHT /F >NUL 2>&1
@@ -187,15 +188,20 @@ REG DELETE HKCR\.shtml\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
 REG DELETE HKCU\Environment /V OneDrive /F >NUL 2>&1
 REG DELETE HKCU\Environment /V OneDriveConsumer /F >NUL 2>&1
 REG DELETE HKCU\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run /V OneDriveSetup /F >NUL 2>&1
-REG DELETE %URunOnce% /V OneDrive /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V HPOneAgentService /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V TeamsMachineInstaller /F >NUL 2>&1
 REG DELETE HKLM\Software\Microsoft\Windows\CurrentVersion\Run /V XboxStat /F >NUL 2>&1
 REG DELETE HKLM\Software\RegisteredApplications /V "Microsoft Edge" /F >NUL 2>&1
 REG DELETE HKU\S-1-5-19\Environment /V OneDrive /F >NUL 2>&1
+REG DELETE HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\Run /V HPCC_InstallationBooster /F >NUL 2>&1
+REG DELETE HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\Run /V HPSEU_Host_Launcher /F >NUL 2>&1
+REG DELETE HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OMENCC_InstallationBooster /F >NUL 2>&1
 REG DELETE HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDrive /F >NUL 2>&1
 REG DELETE HKU\S-1-5-19\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDriveSetup /F >NUL 2>&1
 REG DELETE HKU\S-1-5-20\Environment /V OneDrive /F >NUL 2>&1
+REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\Run /V HPCC_InstallationBooster /F >NUL 2>&1
+REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\Run /V HPSEU_Host_Launcher /F >NUL 2>&1
+REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OMENCC_InstallationBooster /F >NUL 2>&1
 REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDrive /F >NUL 2>&1
 REG DELETE HKU\S-1-5-20\Software\Microsoft\Windows\CurrentVersion\RunOnce /V OneDriveSetup /F >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~/\
@@ -658,12 +664,34 @@ IF ERRORLEVEL 1 ( GOTO :Files )
 SED -r "s/^Original Name.\s{4,}//" <"%TEMP%\privwindozelogrk.txt" >"%TEMP%\privwindozelogrk2.txt"
 SORT_ -f -u <"%TEMP%\privwindozelogrk2.txt" >"%TEMP%\privwindozelogrk3.txt"
 GREP -Eis "^(hp(analytics|(omen)?customcap)comp\.inf|lenovoyx[x|8]0\.inf|hpspsnotification\.inf)$" <"%TEMP%\privwindozelogrk3.txt" >"%TEMP%\privwindozelogrk4.txt"
-IF ERRORLEVEL 1 ( GOTO :Files )
+IF ERRORLEVEL 1 ( GOTO :Drivers2 )
 :: NIRCMD BEEP 1400 50
 FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
     Echo(%%G ^(Driver^)>>"%TEMP%\000"
     %SYS32%\pnputil.exe /delete-driver %%G /uninstall /force >NUL 2>&1
 )
+
+:Drivers2
+DIR /B/S/A:-D "C:\WINDOWS\System32\DriverStore\FileRepository" 2>NUL|GREP -Eis "\\(hp|lenovoyx)">drivers00
+IF ERRORLEVEL 1 ( GOTO :Files )
+GREP -Esi "\\hpanalyticscomp.inf_.*\\TouchpointAnalyticsClientService\.exe$" <drivers00 >>drivers01
+GREP -Esi "\\hpcustomcapcomp\.inf_.*\\x[64|86]\\(DiagsCap|AppHelperCap|NetworkCap|SysInfoCap)\.exe$" <drivers00 >>drivers01
+GREP -Esi "\\hpcustomcapdriver.inf_.*\\x[64|86]\\hpcustomcapdriver\.sys$" <drivers00 >>drivers01
+GREP -Esi "\\hpspsnotification\.inf_.*\\HpSpsNotification\.sys$" <drivers00 >>drivers01
+GREP -Esi "\\lenovoyx[x|8]0\.inf_.*\\platform_runtime_(ALENOVOYX80|RGB)_service\.exe$" <drivers00 >>drivers01
+SORT_ -f -u <drivers01 >drivers02
+IF ERRORLEVEL 1 ( GOTO :Files )
+DEL /F/Q drivers00 drivers01 >NUL 2>&1
+FOR /F "TOKENS=*" %%G IN ( drivers02 ) DO @(
+  ECHO.%%G ^(Driver^)>>"%TEMP%\000"
+  DEL /F/Q "%%G" >NUL 2>&1
+  IF ERRORLEVEL 1 (
+    ICACLS "%%G" /RESET /Q >NUL 2>&1
+    DEL /F/Q "%%G" >NUL 2>&1
+    )
+)
+
+DEL /F/Q drivers0? >NUL 2>&1
 
 :Files
 FOR %%G in (
@@ -692,6 +720,10 @@ FOR %%G in (
 "%STARTMENUAUP%\Adobe offers.lnk"
 "%SYS32%\drivers\Intel\ICPS\IntelAnalyticsService.exe"
 "%SYS32%\drivers\Lenovo\udc\Service\UDClientService.exe"
+"%SYSTEMDRIVE%\System.sav\util\HPCC\HpccLauncher.exe"
+"%SYSTEMDRIVE%\System.sav\util\HPSEU\HpseuHostLauncher.exe"
+"%SYSTEMDRIVE%\system.sav\util\OMENCC_InstallationBooster.exe"
+"%SYSTEMDRIVE%\system.sav\util\TDC\MCPP\UnitData\Subs\datacollect.exe"
 "%USERPROFILE%\Desktop\Microsoft Edge.lnk"
 "%USERPROFILE%\Desktop\Microsoft Teams.lnk"
 "%USERPROFILE%\Favorites\Bing.url"
@@ -701,9 +733,12 @@ FOR %%G in (
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
     DEL /F/Q %%G >NUL 2>&1
+    IF ERRORLEVEL 1 (
+      ICACLS %%G /RESET /Q >NUL 2>&1
+      DEL /F/Q %%G >NUL 2>&1
+      )
     )
 )
-
 
 FOR %%G in (
 "%APPDATA%\obs-studio\logs\*"
@@ -769,6 +804,10 @@ FOR %%G in (
   IF EXIST %%G (
     ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
     RD /S/Q %%G >NUL 2>&1
+    IF ERRORLEVEL 1 (
+      ICACLS %%G /RESET /Q /T >NUL 2>&1
+      RD /S/Q %%G >NUL 2>&1
+     )
     )
 )
 
@@ -780,6 +819,10 @@ FOR %%G in (
   IF EXIST "%%G" (
     ECHO.%%G ^(File^)>>"%TEMP%\001"
     DEL /F/Q %%G >NUL 2>&1
+    IF ERRORLEVEL 1 (
+          ICACLS %%G /RESET /Q >NUL 2>&1
+          DEL /F/Q %%G >NUL 2>&1
+          )
    )
   )
 )
@@ -801,6 +844,10 @@ FOR %%G in (
   IF EXIST %%G (
     ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
     RD /S/Q %%G >NUL 2>&1
+    IF ERRORLEVEL 1 (
+          ICACLS %%G /RESET /Q /T >NUL 2>&1
+          RD /S/Q %%G >NUL 2>&1
+          )
     )
   )
 )
@@ -823,7 +870,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.5 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.6 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
