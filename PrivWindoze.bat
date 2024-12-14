@@ -733,7 +733,7 @@ FOR %%G in (
   IF EXIST "%%G" (
     ECHO."%%G" ^(File^)>>"%TEMP%\001"
     DEL /F/Q %%G >NUL 2>&1
-    IF ERRORLEVEL 1 (
+    IF EXIST "%%G" (
       ICACLS %%G /RESET /Q >NUL 2>&1
       DEL /F/Q %%G >NUL 2>&1
       )
@@ -804,10 +804,10 @@ FOR %%G in (
   IF EXIST %%G (
     ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
     RD /S/Q %%G >NUL 2>&1
-    IF ERRORLEVEL 1 (
+    IF EXIST %%G (
       ICACLS %%G /RESET /Q /T >NUL 2>&1
       RD /S/Q %%G >NUL 2>&1
-     )
+      )
     )
 )
 
@@ -816,13 +816,13 @@ FOR %%G in (
 "%PROGFILES64%\HP\HP Support Framework\Resources\BingPopup\BingPopup.exe"
 "%PROGFILES64%\HP\HP System Event\HPWMISVC.exe"
 ) DO @(
-  IF EXIST "%%G" (
+  IF EXIST %%G (
     ECHO.%%G ^(File^)>>"%TEMP%\001"
     DEL /F/Q %%G >NUL 2>&1
-    IF ERRORLEVEL 1 (
-          ICACLS %%G /RESET /Q >NUL 2>&1
-          DEL /F/Q %%G >NUL 2>&1
-          )
+    IF EXIST %%G (
+      ICACLS %%G /RESET /Q >NUL 2>&1
+      DEL /F/Q %%G >NUL 2>&1
+      )
    )
   )
 )
@@ -844,10 +844,10 @@ FOR %%G in (
   IF EXIST %%G (
     ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
     RD /S/Q %%G >NUL 2>&1
-    IF ERRORLEVEL 1 (
-          ICACLS %%G /RESET /Q /T >NUL 2>&1
-          RD /S/Q %%G >NUL 2>&1
-          )
+    IF EXIST %%G (
+      ICACLS %%G /RESET /Q /T >NUL 2>&1
+      RD /S/Q %%G >NUL 2>&1
+      )
     )
   )
 )
@@ -870,7 +870,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.7 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.8 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
