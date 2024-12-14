@@ -672,7 +672,7 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 )
 
 :Drivers2
-DIR /B/S/A:-D "C:\WINDOWS\System32\DriverStore\FileRepository" 2>NUL|GREP -Eis "\\(hp|lenovoyx)">drivers00
+DIR /B/S/A:-D "%SYS32%\DriverStore\FileRepository" 2>NUL|GREP -Eis "\\(hp|lenovoyx)">drivers00
 IF ERRORLEVEL 1 ( GOTO :Files )
 GREP -Esi "\\hpanalyticscomp.inf_.*\\TouchpointAnalyticsClientService\.exe$" <drivers00 >>drivers01
 GREP -Esi "\\hpcustomcapcomp\.inf_.*\\x[64|86]\\(DiagsCap|AppHelperCap|NetworkCap|SysInfoCap)\.exe$" <drivers00 >>drivers01
@@ -870,7 +870,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.6 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.7 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
@@ -957,16 +957,11 @@ sys32appdata0?
 locala0?
 windir0?
 quicklaunch0?
-) DO @DEL /F/Q "%CD%\%%G" >NUL 2>&1
-
-FOR %%G in (
-temp0?
-appdata0?
-sys32appdata0?
-locala0?
-windir0?
-quicklaunch0?
-) DO @DEL /F/Q "%systemdrive%\PrivWindoze\%%G" >NUL 2>&1
+drivers0?
+) DO @(
+  DEL /F/Q "%CD%\%%G" >NUL 2>&1
+  DEL /F/Q "%systemdrive%\PrivWindoze\%%G" >NUL 2>&1
+)
 
 ECHO.
 ECHO.
