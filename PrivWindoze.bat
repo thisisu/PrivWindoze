@@ -674,7 +674,7 @@ FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
 :Drivers2
 DIR /B/S/A:-D "%SYS32%\DriverStore\FileRepository" 2>NUL|GREP -Eis "\\(hp|lenovoyx)">drivers00
 IF ERRORLEVEL 1 ( GOTO :Files )
-GREP -Esi "\\hpanalyticscomp.inf_.*\\TouchpointAnalyticsClientService\.exe$" <drivers00 >>drivers01
+GREP -Esi "\\hpanalyticscomp.inf_.*\\TouchpointAnalyticsClientService\.exe$" <drivers00 >drivers01
 GREP -Esi "\\hpcustomcapcomp\.inf_.*\\x[64|86]\\(DiagsCap|AppHelperCap|NetworkCap|SysInfoCap)\.exe$" <drivers00 >>drivers01
 GREP -Esi "\\hpcustomcapdriver.inf_.*\\x[64|86]\\hpcustomcapdriver\.sys$" <drivers00 >>drivers01
 GREP -Esi "\\hpspsnotification\.inf_.*\\HpSpsNotification\.sys$" <drivers00 >>drivers01
