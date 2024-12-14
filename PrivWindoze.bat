@@ -684,7 +684,7 @@ DEL /F/Q drivers00 drivers01 >NUL 2>&1
 FOR /F "TOKENS=*" %%G IN ( drivers02 ) DO @(
   ECHO.%%G ^(Driver^)>>"%TEMP%\000"
   DEL /F/Q "%%G" >NUL 2>&1
-  IF ERRORLEVEL 1 (
+  IF EXIST "%%G" (
     ICACLS "%%G" /RESET /Q >NUL 2>&1
     DEL /F/Q "%%G" >NUL 2>&1
     )
@@ -869,7 +869,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.8 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.1.9 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
