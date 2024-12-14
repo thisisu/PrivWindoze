@@ -177,7 +177,6 @@ DEL /F/Q temp0? >NUL 2>&1
 REM ~~~~~ NON MALWARE ENTRIES ~~~~~~~\/
 REG DELETE "HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /VA /F >NUL 2>&1
 REG DELETE "HKLM\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION" /V OneDrive.exe /F >NUL 2>&1
-REG DELETE %StartupApprovedRun% /VA /F >NUL 2>&1
 REG DELETE %URunOnce% /V OMENCC_InstallationBooster /F >NUL 2>&1
 REG DELETE %URunOnce% /V OneDrive /F >NUL 2>&1
 REG DELETE HKCR\.htm\OpenWithProgids /V MSEdgeHTM /F >NUL 2>&1
