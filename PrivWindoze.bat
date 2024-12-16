@@ -276,9 +276,9 @@ FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
 
 :: POLICIES ::
 :Policies
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
-:: Legacy Context Menu
+REM Legacy Context Menu
 REG ADD HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32 /f /ve >NUL 2>&1
+
 REG ADD %CUCDM% /T REG_DWORD /V ContentDeliveryAllowed /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V FeatureManagementEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V OemPreInstalledAppsEnabled /D 0 /F >NUL 2>&1
@@ -290,8 +290,18 @@ REG ADD %CUCDM% /T REG_DWORD /V SilentInstalledAppsEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V SoftLandingEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V SubscribedContentEnabled /D 0 /F >NUL 2>&1
 REG ADD %CUCDM% /T REG_DWORD /V SystemPaneSuggestionsEnabled /D 0 /F >NUL 2>&1
+
+REG ADD "HKCU\Software\Policies\Microsoft\Windows\Windows Feeds" /T REG_DWORD /V EnableFeeds /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Error Reporting" /T REG_DWORD /V DontSendAdditionalData /D 1 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V AllowSearchToUseLocation /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V ConnectedSearchPrivacy /D 3 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V ConnectedSearchUseWeb /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V DisableWebSearch /D 1 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V PreventRemoteQueries /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V AlwaysShowMenus /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V DisablePreviewDesktop /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowCopilotButton /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowCortanaButton /D 0 /F >NUL 2>&1
@@ -299,20 +309,78 @@ REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_IrisRecommendations /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_ShowClassicMode /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V TaskbarAutoHideInTabletMode /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy /T REG_DWORD /V TailoredExperiencesWithDiagnosticDataEnabled /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot /T REG_DWORD /V AllowCopilotRuntime /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot /T REG_DWORD /V TurnOffWindowsCopilot /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\FileExplorer\AllowOptionToShowNetwork /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\FileExplorer\AllowOptionToShowThisPC /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\FileExplorer\DisableGraphRecentItems /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\FileExplorer\SetAllowedFolderLocations /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\FileExplorer\SetAllowedStorageLocations /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\power\TurnOffHybridSleepOnBattery /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\power\TurnOffHybridSleepPluggedIn /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\power\UnattendedSleepTimeoutOnBattery /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\power\UnattendedSleepTimeoutPluggedIn /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\DisableAdvertisingId /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\DisablePrivacyExperience /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\EnableActivityFeed /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessAccountInfo /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessBackgroundSpatialPerception /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessCalendar /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessCallHistory /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessCamera /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessContacts /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessEmail /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessGazeInput /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessGraphicsCaptureProgrammatic /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessGraphicsCaptureWithoutBorder /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessHumanPresence /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessLocation /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessMessaging /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessMicrophone /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessMotion /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessNotifications /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessPhone /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessRadios /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsAccessTasks /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\LetAppsSyncWithDevices /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\PublishUserActivities /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\privacy\UploadUserActivities /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowCloudSearch /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowCortanaInAAD /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowFindMyFiles /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowIndexingEncryptedStoresOrItems /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowSearchHighlights /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowSearchToUseLocation /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowStoringImagesFromVisionSearch /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowUsingDiacritics /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AllowWindowsIndexer /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\AlwaysUseAutoLangDetection /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\ConfigureSearchOnTaskbarMode /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\DisableBackoff /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\DisableRemovableDriveIndexing /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\DisableSearch /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\DoNotUseWebResults /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\PreventIndexingLowDiskSpaceMB /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\PreventRemoteQueries /T REG_DWORD /V value /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\search\SafeSearchPermissions /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\smartscreen\EnableAppInstallControl /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\smartscreen\EnableSmartScreenInShell /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\smartscreen\PreventOverrideForFilesInShell /T REG_DWORD /V value /D 0 /F >NUL 2>&1
+REG ADD HKLM\Software\Microsoft\PolicyManager\default\speakforme\EnableSpeakForMe /T REG_DWORD /V value /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Microsoft\PolicyManager\default\System\AllowTelemetry /T REG_DWORD /V value /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Microsoft\PolicyManager\default\WindowsAI\TurnOffWindowsCopilot /T REG_DWORD /V value /D 1 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\AdvertisingInfo /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\CloudContent /T REG_DWORD /V DisableWindowsConsumerFeatures /D 1 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V AllowTelemetry /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V MaxTelemetryAllowed /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
+REG ADD HKLM\Software\Policies\Microsoft\Windows\GameDVR /T REG_DWORD /V AllowGameDVR /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
-REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisabledByGroupPolicy /D 1 /F >NUL 2>&1
 
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
@@ -859,6 +927,10 @@ FOR /F "TOKENS=*" %%G IN ( quicklaunch02 ) DO @(
   DEL /F/Q "%%G" >NUL 2>&1
 )
 
+:BitsTransfer
+REM Edge may still show up in this list so we are removing any of these jobs that currently contain an error. We do this because we just removed Edge.
+POWERSHELL -command "Get-BitsTransfer -AllUsers | Where-Object { $_.JobState -CContains 'Error' } | Remove-BitsTransfer" >NUL 2>&1
+
 :DoLog
 set h=%TIME:~0,2%
 set m=%TIME:~3,2%
@@ -869,7 +941,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.1.9 ^(12.13.2024^)>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.2.0>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
