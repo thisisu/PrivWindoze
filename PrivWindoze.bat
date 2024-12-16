@@ -298,7 +298,7 @@ REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V ConnectedSearchUseWeb /D 0 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
 REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V DisableWebSearch /D 1 /F >NUL 2>&1
-REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V PreventRemoteQueries /D 0 /F >NUL 2>&1
+REG ADD "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /T REG_DWORD /V PreventRemoteQueries /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo /T REG_DWORD /V Enabled /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V AlwaysShowMenus /D 1 /F >NUL 2>&1
@@ -941,7 +941,7 @@ set yr=%date:~10,4%
 set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.2.0>>"%TEMP%\pwindoze.txt"
+Echo(PrivWindoze v3.2.1>>"%TEMP%\pwindoze.txt"
 Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
 Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
 Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
