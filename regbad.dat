@@ -55,6 +55,10 @@ HKCR\msnews
 HKCR\msnnews
 HKCR\msnweather
 HKCR\msxbox
+HKCR\NucleusNativeMessaging.NucleusNativeMessaging
+HKCR\NucleusNativeMessaging.NucleusNativeMessaging.1
+HKCR\NucleusToastActivator.NucleusToastActivator
+HKCR\NucleusToastActivator.NucleusToastActivator.1
 HKCR\xbox
 HKCR\xbox-arena
 HKCR\xbox-captures
@@ -86,10 +90,6 @@ HKCU\Software\Classes\zune
 HKCU\Software\Microsoft\Edge
 HKCU\Software\Microsoft\EdgeUpdate
 HKCU\Software\Microsoft\EdgeWebView
-HKCR\NucleusNativeMessaging.NucleusNativeMessaging
-HKCR\NucleusNativeMessaging.NucleusNativeMessaging.1
-HKCR\NucleusToastActivator.NucleusToastActivator
-HKCR\NucleusToastActivator.NucleusToastActivator.1
 HKCU\Software\Microsoft\GameBar
 HKCU\Software\Microsoft\GameBarApi
 HKCU\Software\Microsoft\MicrosoftEdge
