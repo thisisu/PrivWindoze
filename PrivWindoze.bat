@@ -291,14 +291,29 @@ REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo /T REG_DW
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack /T REG_DWORD /V ShowedToastAtLevel /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V AlwaysShowMenus /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V DisablePreviewDesktop /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V EnableSnapAssistFlyout /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowCopilotButton /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowCortanaButton /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowInfoTip /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V ShowSyncProviderNotifications /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_IrisRecommendations /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V Start_ShowClassicMode /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V TaskbarAl /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V TaskbarAutoHideInTabletMode /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V TaskbarDa /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V TaskbarMn /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /T REG_DWORD /V TaskbarSi /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /T REG_DWORD /V HideSCAMeetNow /D 1 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Privacy /T REG_DWORD /V TailoredExperiencesWithDiagnosticDataEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications /T REG_DWORD /V ToastEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V BingSearchEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V CortanaConsent /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V SearchboxTaskbarMode /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V SearchboxTaskbarModeCache /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsAADCloudSearchEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsDeviceSearchHistoryEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsDynamicSearchBoxEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V SafeSearchMode /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement /T REG_DWORD /V ScoobeSystemSettingEnabled /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\WindowsCopilot /T REG_DWORD /V AllowCopilotRuntime /D 0 /F >NUL 2>&1
 REG ADD HKCU\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
@@ -369,16 +384,7 @@ REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V 
 REG ADD HKLM\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\GameDVR /T REG_DWORD /V AllowGameDVR /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V BingSearchEnabled /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V CortanaConsent /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V SearchboxTaskbarMode /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V SearchboxTaskbarModeCache /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsAADCloudSearchEnabled /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsDeviceSearchHistoryEnabled /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsDynamicSearchBoxEnabled /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V SafeSearchMode /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications /T REG_DWORD /V ToastEnabled /D 0 /F >NUL 2>&1
-REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /T REG_DWORD /V HideSCAMeetNow /D 1 /F >NUL 2>&1
+
 
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
