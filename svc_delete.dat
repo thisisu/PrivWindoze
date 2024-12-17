@@ -8,10 +8,14 @@ HP-One-Agent-Service
 HP Comm Recover
 HPAppHelperCap
 HPCustomCapDriver
+GameInput Service
 HPDiagsCap
 HPNetworkCap
 HPOmenCap
 HPOmenCustomCapDriver
+GamingServices
+GamingServicesNet
+IEEtwCollectorService
 HpSpsNotification
 HPSysInfoCap
 HpTouchpointAnalyticsService
