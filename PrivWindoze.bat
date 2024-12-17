@@ -2,6 +2,7 @@
 :: Created by Furtivex
 @ECHO OFF
 @SETLOCAL
+@PROMPT #
 @CD /D "%~dp0"
 SET DEBUG=OFF
 COLOR 71
@@ -13,6 +14,7 @@ FOR %%G in (
 grep.exe
 libiconv2.dll
 libintl3.dll
+nircmd.exe
 pcre3.dll
 regex2.dll
 sed.exe
@@ -57,59 +59,37 @@ SET "STASKS=%SYSTEMDRIVE%\WINDOWS\System32\Tasks"
 SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
 SET "URunOnce=HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 SET "WTASKS=%SYSTEMDRIVE%\WINDOWS\Tasks"
-
-FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
-FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion 2^>NUL') DO SET DisplayVersion=%%B
-
-
-set h=%TIME:~0,2%
-set m=%TIME:~3,2%
-set s=%TIME:~6,2%
-set mnth=%date:~4,2%
-set day=%date:~7,2%
-set yr=%date:~10,4%
-set StartTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
-
-whoami /user>"%TEMP%\privwindozelogwho.txt"
-GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <"%TEMP%\privwindozelogwho.txt" >"%TEMP%\privwindozelogwho2.txt"
-IF ERRORLEVEL 1 ( GOTO :AdminChk )
-SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <"%TEMP%\privwindozelogwho2.txt" >"%TEMP%\privwindozelogwho3.txt"
-FOR /F %%G in (%TEMP%\privwindozelogwho3.txt) DO SET SID=%%G
-
-IF EXIST "%APPDATA%\Mozilla\Firefox\Profiles" @(
-  DIR /B/A:D "%APPDATA%\Mozilla\Firefox\Profiles" 2>NUL|GREP -Esi "\.default-release$">"%TEMP%\privwindozeff.txt"
-  FOR /F %%G in (%TEMP%\privwindozeff.txt) DO SET FFPROFILE=%%G
-  )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-ECHO.========================================================
-ECHO.*                                                      *
-ECHO.*                      PrivWindoze                     *
-ECHO.*                 https://furtivex.net                 *
-ECHO.*                                                      *
-ECHO.*        PLEASE SAVE ALL WORK BEFORE CONTINUING        *
-ECHO.*                                                      *
-ECHO.========================================================
-ECHO.
-ECHO.
-PAUSE
-ECHO.PrivWindoze Scan Started
+FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\Software\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
+ECHO.%OS%>temp00
+GREP -Eis "^Windows [7|8|XP]" <temp00 >"%TEMP%\%random%"
+IF NOT ERRORLEVEL 1 GOTO :Abort
+
+FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\Software\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion 2^>NUL') DO SET DisplayVersion=%%B
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+@SET "Disclaimer=PrivWindoze (Private Windows) is a tool to disable~ntelemetry and bloatware by uninstalling offending (intrusive)~nprograms, and updating policies to better protect this computer from privacy invasion~n~nWarning! This tool deletes Microsoft Edge.~nPlease have an alternate internet browser installed~nprior to continuing~n~nOfficial Download Links:~n~nhttps://furtivex.net/PrivWindoze.exe~nhttps://furtivex.net/PrivWindozeLite.exe~n~nPlease save your work before proceeding. The tool~nwill close all non-essential windows during its operation.~n~nThis software is free to and is under the MIT license.~n~nThis software is provided 'as is', without warranty of any kind.~nAll implied warranties are expressly disclaimed.~n~nIf you do not agree to the above terms, please click No to exit." "DISCLAIMER OF WARRANTY ON SOFTWARE."
+ECHO.>"%TEMP%\ClickedNo"
+NIRCMD QBOXCOMTOP "%DISCLAIMER%" "" FILLDELETE "%TEMP%\ClickedNo"
+TIMEOUT /T 1 /NOBREAK >NUL
+IF EXIST "%TEMP%\ClickedNo" GOTO :Abort
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+whoami /user>temp00
+GREP -Es "S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4}$" <temp00 >temp01
+IF ERRORLEVEL 1 ( GOTO :AdminChk )
+SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <temp01 >temp02
+FOR /F %%G in (temp02) DO SET SID=%%G
+DEL /F/Q temp0? >NUL 2>&1
+REM ~~~~~~~~~~~~~~~~~~~~~~~~>
+ECHO.Preparing to scan...
 :AdminChk
 net session >NUL 2>&1
-IF %ERRORLEVEL% EQU 0 ( SET USERSTATUS=Administrator) else (
- Echo(*** PrivWindoze runs best with administrator privileges ***
- echo.
- Echo(If you wish to run with administrator privileges, please close this window and run as an administrator.
- echo.
- Echo(If you wish to run without administrator privileges, please hit any key to continue.
- echo.
- SET USERSTATUS=Limited
- pause
-)
+IF %ERRORLEVEL% NEQ 0 GOTO :Abort
 
 FOR %%G in (
 grep.exe
 libiconv2.dll
 libintl3.dll
+nircmd.exe
 pcre3.dll
 regex2.dll
 sed.exe
@@ -124,6 +104,14 @@ svc_delete.dat
 svc_stop_disable.dat
 Urunkey.cfg
 ) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :eof )
+
+set h=%TIME:~0,2%
+set m=%TIME:~3,2%
+set s=%TIME:~6,2%
+set mnth=%date:~4,2%
+set day=%date:~7,2%
+set yr=%date:~10,4%
+set StartTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 :: Create System Restore Point
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Processes
@@ -935,22 +923,17 @@ POWERSHELL -command "Get-BitsTransfer -AllUsers | Where-Object { $_.JobState -CC
 set h=%TIME:~0,2%
 set m=%TIME:~3,2%
 set s=%TIME:~6,2%
-set mnth=%date:~4,2%
-set day=%date:~7,2%
-set yr=%date:~10,4%
-set EndTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
+set EndTime=%h%.%m%.%s%
 
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(PrivWindoze v3.2.1>>"%TEMP%\pwindoze.txt"
-Echo(https://furtivex.net>>"%TEMP%\pwindoze.txt"
-Echo(Operating System: %OS% %ARCH% %DisplayVersion%>>"%TEMP%\pwindoze.txt"
-Echo(Ran by "%username%" ^(%USERSTATUS%^) on %StartTime%>>"%TEMP%\pwindoze.txt"
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+Echo(# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
+Echo(# PrivWindoze v3.2.3>>"%TEMP%\pwindoze.txt"
+Echo(# https://furtivex.net>>"%TEMP%\pwindoze.txt"
+ECHO.# OS + ^< WGA ^> %OS% %ARCH% %DisplayVersion% ^< %LicenseStatus% ^>>>"%TEMP%\pwindoze.txt"
+ECHO.# User + ^< Date ^> "%username%" ^< %StartTime% - %EndTime% ^>>>"%TEMP%\pwindoze.txt"
+Echo(#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
-echo.>>"%TEMP%\pwindoze.txt"
-echo.>>"%TEMP%\pwindoze.txt"
-ECHO(Drivers:>>"%TEMP%\pwindoze.txt"
+ECHO(# Drivers:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000" (
   SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
@@ -958,7 +941,7 @@ IF EXIST "%TEMP%\000" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Services:>>"%TEMP%\pwindoze.txt"
+ECHO(# Services:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000b" (
   SORT_ -f -u <"%TEMP%\000b" >"%TEMP%\000brdy"
@@ -966,7 +949,7 @@ IF EXIST "%TEMP%\000b" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Files:>>"%TEMP%\pwindoze.txt"
+ECHO(# Files:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
   IF EXIST "%TEMP%\001" (
   SORT_ -f -u <"%TEMP%\001" >"%TEMP%\001_rdy"
@@ -974,7 +957,7 @@ echo.>>"%TEMP%\pwindoze.txt"
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Folders:>>"%TEMP%\pwindoze.txt"
+ECHO(# Folders:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\001b" (
   SORT_ -f -u <"%TEMP%\001b" >"%temp%\001brdy"
@@ -982,7 +965,7 @@ IF EXIST "%TEMP%\001b" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Tasks:>>"%TEMP%\pwindoze.txt"
+ECHO(# Tasks:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\002" (
   SORT_ -f -u <"%TEMP%\002" >"%TEMP%\002rdy"
@@ -990,7 +973,7 @@ IF EXIST "%TEMP%\002" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Packages:>>"%TEMP%\pwindoze.txt"
+ECHO(# Packages:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\003" (
   SORT_ -f -u <"%TEMP%\003" >"%temp%\003rdy"
@@ -998,7 +981,7 @@ IF EXIST "%TEMP%\003" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(Registry:>>"%TEMP%\pwindoze.txt"
+ECHO(# Registry:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\004" (
   SORT_ -f -u <"%TEMP%\004" >"%temp%\004rdy"
@@ -1006,21 +989,15 @@ IF EXIST "%TEMP%\004" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-echo.>>"%TEMP%\pwindoze.txt"
-echo.>>"%TEMP%\pwindoze.txt"
-echo.>>"%TEMP%\pwindoze.txt"
-echo.>>"%TEMP%\pwindoze.txt"
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
-Echo(Scan was completed on %EndTime%>>"%TEMP%\pwindoze.txt"
-Echo(End of PrivWindoze log>>"%TEMP%\pwindoze.txt"
-Echo(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
+ECHO.# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #>>"%TEMP%\pwindoze.txt"
 SED -r "s/(\x22|\x00+)//g; s/Sysnative/system32/; s/HKEY_LOCAL_MACHINE/HKLM/; s/HKEY_CURRENT_USER/HKCU/; s/HKEY_CLASSES_ROOT/HKCR/; s/HKEY_USERS/HKU/" <"%TEMP%\pwindoze.txt" >"%TEMP%\pwindoze_final.txt"
 
-IF EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\OneDrive\Desktop\PrivWindoze_%EndTime%.txt" >NUL 2>&1
-IF NOT EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\Desktop\PrivWindoze_%EndTime%.txt" >NUL 2>&1
+IF EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\OneDrive\Desktop\PrivWindoze_%StartTime%.txt" >NUL 2>&1
+IF NOT EXIST "%USERPROFILE%\OneDrive\Desktop" @COPY /Y "%TEMP%\pwindoze_final.txt" "%USERPROFILE%\Desktop\PrivWindoze_%StartTime%.txt" >NUL 2>&1
 
+:Abort
 RD /S/Q %systemdrive%\PrivWindoze\dependencies >NUL 2>&1
-IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe >NUL 2>&1
+IF %DEBUG%==OFF @DEL %windir%\grep.exe %windir%\libiconv2.dll %windir%\libintl3.dll %windir%\pcre3.dll %windir%\regex2.dll %windir%\sed.exe %windir%\sort_.exe %windir%\nircmd.exe >NUL 2>&1
 FOR %%G in (
 temp0?
 appdata0?
@@ -1037,7 +1014,7 @@ drivers0?
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
-ECHO(Scan completed. A log can be found on your Desktop.
+ECHO(Scan completed. PrivWindoze_%StartTime%.txt can be found on your desktop.
 DEL /F/S/Q "%TEMP%\*" >NUL 2>&1
-TIMEOUT /t 05>NUL && RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
+TIMEOUT /t 03>NUL && RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
 :eof
