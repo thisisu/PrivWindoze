@@ -369,6 +369,16 @@ REG ADD HKLM\Software\Policies\Microsoft\Windows\DataCollection /T REG_DWORD /V 
 REG ADD HKLM\Software\Policies\Microsoft\Windows\EdgeUI /T REG_DWORD /V DisableMFUTracking /D 1 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\GameDVR /T REG_DWORD /V AllowGameDVR /D 0 /F >NUL 2>&1
 REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V DisableAIDataAnalysis /D 1 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V BingSearchEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V CortanaConsent /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V SearchboxTaskbarMode /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Search /T REG_DWORD /V SearchboxTaskbarModeCache /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsAADCloudSearchEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsDeviceSearchHistoryEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V IsDynamicSearchBoxEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings /T REG_DWORD /V SafeSearchMode /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications /T REG_DWORD /V ToastEnabled /D 0 /F >NUL 2>&1
+REG ADD HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer /T REG_DWORD /V HideSCAMeetNow /D 1 /F >NUL 2>&1
 
 :: TASKS ::
 Echo([^|^|^|^|  ] Scanning Tasks
@@ -681,6 +691,16 @@ FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
+:INetCache
+IF EXIST "%LOCALA%\Microsoft\Windows\INetCache\IE" DIR /B/S/A:D "%LOCALA%\Microsoft\Windows\INetCache\IE" 2>NUL>locala00
+IF EXIST "%LOCALA%\Microsoft\Windows\INetCache\IE" (
+GREP -Es "\\[A-Z0-9]{8}$" <locala00 >locala01
+SORT_ -f -u <locala01 >locala02
+FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
+  ECHO.%%G ^(Folder^)>>"%TEMP%\001"
+  RD /S/Q "%%G" >NUL 2>&1
+  )
+)
 :Localpackages
 DIR /B/A:D "%LOCALA%\Packages" 2>NUL>"%TEMP%\privwindozelogp.txt"
 IF ERRORLEVEL 1 ( GOTO :Blizzard )
@@ -926,7 +946,7 @@ set s=%TIME:~6,2%
 set EndTime=%h%.%m%.%s%
 
 Echo(# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(# PrivWindoze v3.2.3>>"%TEMP%\pwindoze.txt"
+Echo(# PrivWindoze v3.2.4>>"%TEMP%\pwindoze.txt"
 Echo(# https://furtivex.net>>"%TEMP%\pwindoze.txt"
 ECHO.# OS + ^< WGA ^> %OS% %ARCH% %DisplayVersion% ^< %LicenseStatus% ^>>>"%TEMP%\pwindoze.txt"
 ECHO.# User + ^< Date ^> "%username%" ^< %StartTime% - %EndTime% ^>>>"%TEMP%\pwindoze.txt"
