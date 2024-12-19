@@ -703,7 +703,7 @@ IF EXIST "%LOCALA%\Microsoft\Windows\INetCache\IE" (
 GREP -Es "\\[A-Z0-9]{8}$" <locala00 >locala01
 SORT_ -f -u <locala01 >locala02
 FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
-  ECHO.%%G ^(Folder^)>>"%TEMP%\001"
+  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
   RD /S/Q "%%G" >NUL 2>&1
   )
 )
@@ -952,7 +952,7 @@ set s=%TIME:~6,2%
 set EndTime=%h%.%m%.%s%
 
 Echo(# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(# PrivWindoze v3.2.4>>"%TEMP%\pwindoze.txt"
+Echo(# PrivWindoze v3.2.5>>"%TEMP%\pwindoze.txt"
 Echo(# https://furtivex.net>>"%TEMP%\pwindoze.txt"
 ECHO.# OS + ^< WGA ^> %OS% %ARCH% %DisplayVersion% ^< %LicenseStatus% ^>>>"%TEMP%\pwindoze.txt"
 ECHO.# User + ^< Date ^> "%username%" ^< %StartTime% - %EndTime% ^>>>"%TEMP%\pwindoze.txt"
