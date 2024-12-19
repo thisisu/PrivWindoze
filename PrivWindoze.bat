@@ -23,11 +23,12 @@ sort_.exe
 
 FOR %%G in (
 NULL
-regbad.dat
-reglocs_pkgs.dat
-svc_delete.dat
-svc_stop_disable.dat
+regbad.cfg
+reglocs_pkgs.cfg
+svc_delete.cfg
+svc_stop_disable.cfg
 Urunkey.cfg
+I4ng.bat
 ) DO ( COPY /Y "%CD%\%%G" %systemdrive%\PrivWindoze >NUL 2>&1 )
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
 IF EXIST %WINDIR%\Sysnative\cmd.exe (SET "SYS32=%WINDIR%\Sysnative") else (SET "SYS32=%WINDIR%\System32")
@@ -60,14 +61,13 @@ SET "URun=HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
 SET "URunOnce=HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce"
 SET "WTASKS=%SYSTEMDRIVE%\WINDOWS\Tasks"
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\Software\Microsoft\Windows NT\CurrentVersion" /v ProductName 2^>NUL') DO SET OS=%%B
-ECHO.%OS%>temp00
-GREP -Eis "^Windows [7|8|XP]" <temp00 >"%TEMP%\%random%"
-IF NOT ERRORLEVEL 1 GOTO :Abort
-
+POWERSHELL -command "(Get-CimInstance -ClassName CIM_OperatingSystem).Caption">temp00
+FOR /F "TOKENS=*" %%G IN ( temp00 ) DO SET OS=%%G
+GREP -Esi "^Microsoft Windows [11|10]" <temp00 >"%TEMP%\%random%"
+IF ERRORLEVEL 1 GOTO :Abort
 FOR /F "tokens=2*" %%A IN ('REG QUERY "HKLM\Software\Microsoft\Windows NT\CurrentVersion" /v DisplayVersion 2^>NUL') DO SET DisplayVersion=%%B
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-@SET "Disclaimer=PrivWindoze (Private Windows) is a tool to disable~ntelemetry and bloatware by uninstalling offending (intrusive)~nprograms, and updating policies to better protect this computer from privacy invasion~n~nWarning! This tool deletes Microsoft Edge.~nPlease have an alternate internet browser installed~nprior to continuing~n~nOfficial Download Links:~n~nhttps://furtivex.net/PrivWindoze.exe~nhttps://furtivex.net/PrivWindozeLite.exe~n~nPlease save your work before proceeding. The tool~nwill close all non-essential windows during its operation.~n~nThis software is free to and is under the MIT license.~n~nThis software is provided 'as is', without warranty of any kind.~nAll implied warranties are expressly disclaimed.~n~nIf you do not agree to the above terms, please click No to exit." "DISCLAIMER OF WARRANTY ON SOFTWARE."
+@CALL I4ng.bat
 ECHO.>"%TEMP%\ClickedNo"
 NIRCMD QBOXCOMTOP "%DISCLAIMER%" "" FILLDELETE "%TEMP%\ClickedNo"
 TIMEOUT /T 1 /NOBREAK >NUL
@@ -80,7 +80,6 @@ SED -r "s/^.*(S-1-5-21-[0-9]{10}-[0-9]{10}-[0-9]{10}-[0-9]{3,4})$/\1/" <temp01 >
 FOR /F %%G in (temp02) DO SET SID=%%G
 DEL /F/Q temp0? >NUL 2>&1
 REM ~~~~~~~~~~~~~~~~~~~~~~~~>
-ECHO.Preparing to scan...
 :AdminChk
 net session >NUL 2>&1
 IF %ERRORLEVEL% NEQ 0 GOTO :Abort
@@ -98,11 +97,12 @@ sort_.exe
 
 FOR %%G in (
 NULL
-regbad.dat
-reglocs_pkgs.dat
-svc_delete.dat
-svc_stop_disable.dat
+regbad.cfg
+reglocs_pkgs.cfg
+svc_delete.cfg
+svc_stop_disable.cfg
 Urunkey.cfg
+I4ng.bat
 ) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :eof )
 
 set h=%TIME:~0,2%
@@ -115,12 +115,12 @@ set StartTime=%mnth%.%day%.%yr%_%h%.%m%.%s%
 
 :: Create System Restore Point
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Processes
-ECHO.Creating a System Restore Point. Please Wait
 POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePointType 'MODIFY_SETTINGS'" >NUL 2>&1
 cls
+ECHO.%Scan_ThereWillBeLog%
 :: PROCESSES ::
 :Processes
-Echo([^|     ] Scanning Processes
+Echo([^|     ]
 TASKKILL /F /IM explorer.exe >NUL 2>&1
 TIMEOUT /T 2 /NOBREAK >NUL
 TASKLIST /FO CSV /NH 2>NUL|GREP -Es "\.exe" >temp00
@@ -132,7 +132,7 @@ DEL /F/Q temp0? >NUL 2>&1
 
 :: PACKAGES ::
 :Packages
-Echo([^|^|    ] Scanning Packages
+Echo([^|^|    ]
 IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe is missing! && GOTO :Recall
 POWERSHELL -command "Get-AppxPackage -AllUsers | Format-List -Property PackageFullName">"%TEMP%\privwindozeloga.txt"
 SED -r "s/^PackageFullName : //" <"%TEMP%\privwindozeloga.txt" >"%TEMP%\privwindozeloga2.txt"
@@ -142,7 +142,7 @@ GREP -Eis "^(acerincorporated\.|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellI
 GREP -Evs "^(Microsoft\.XboxGameCallableUI|Microsoft\.MicrosoftEdgeDevToolsClient)" <"%TEMP%\privwindozeloga2_found.txt" >"%TEMP%\privwindozeloga2_found2.txt"
 SORT_ -f -u <"%TEMP%\privwindozeloga2_found2.txt" >"%TEMP%\privwindozeloga2_del.txt"
 FOR /F %%G in (%TEMP%\privwindozeloga2_del.txt) DO (
-    Echo(%%G ^(Package^)>>"%TEMP%\003"
+    Echo(%%G>>"%TEMP%\003"
     POWERSHELL -command "Remove-AppxPackage -AllUsers -Package %%G" >NUL 2>&1
 )
 
@@ -150,14 +150,13 @@ FOR /F %%G in (%TEMP%\privwindozeloga2_del.txt) DO (
 REM 24H2 Update
 IF NOT EXIST %SYS32%\Dism.exe ECHO Dism.exe is missing! && GOTO :Registry
 %SYS32%\Dism.exe /Online /Disable-Feature /Featurename:Recall>NUL
-REM DISM /Online /Cleanup-Image /CheckHealth (other useful command)
 
 :: REGISTRY ::
 :Registry
-Echo([^|^|^|   ] Scanning Registry
-@FOR /F "TOKENS=*" %%G IN ( regbad.dat ) DO @REG QUERY "%%G" 2>NUL|GREP -Es "^HKEY_">>temp00
+Echo([^|^|^|   ]
+@FOR /F "TOKENS=*" %%G IN ( regbad.cfg ) DO @REG QUERY "%%G" 2>NUL|GREP -Es "^HKEY_">>temp00
 FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
-  ECHO.%%G ^(Registry Key^)>>"%TEMP%\004"
+  ECHO.%%G>>"%TEMP%\004"
   REG DELETE "%%G" /F >NUL 2>&1
   )
 DEL /F/Q temp0? >NUL 2>&1
@@ -203,7 +202,7 @@ SED -r "s/^.*===>\s(\x22.*)$/\1/" <"%TEMP%\_crunboth" >"%TEMP%\_crunonlypath"
 FOR /F "usebackq delims=" %%G in ( Urunkey.cfg ) DO (
     REG QUERY %URUN% /V "%%G" >NUL 2>&1
     IF NOT ERRORLEVEL 1 (
-                           ECHO(%URUN%\\"%%G" ^(Registry Value^)>>"%TEMP%\004"
+                           ECHO(%URUN%\\"%%G">>"%TEMP%\004"
                            REG DELETE %URUN% /V "%%G" /F >NUL 2>&1
                           )
 )
@@ -214,11 +213,11 @@ REG QUERY "HKLM\Software\Classes\Local Settings\Software\Microsoft\Windows\Curre
 REG QUERY HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Application 2>NUL|GREP -Eis "\\(Edge|edgeupdate.*|HPAnalytics|HPTouchpointAnalyticsService)$">>"%TEMP%\privwindozelogh.txt"
 REG QUERY HKLM\Software\Microsoft\Tracing 2>NUL|GREP -Es "RAS[A-Z0-9]{5}$">>"%TEMP%\privwindozelogh.txt"
 FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogh.txt") DO (
-  ECHO."%%G" ^(Registry Key^)>>"%TEMP%\004"
+  ECHO."%%G">>"%TEMP%\004"
   REG DELETE "%%G" /F >NUL 2>&1
 )
 
-@FOR /F "TOKENS=*" %%G IN ( reglocs_pkgs.dat ) DO @REG QUERY "%%G" 2>NUL>>temp00
+@FOR /F "TOKENS=*" %%G IN ( reglocs_pkgs.cfg ) DO @REG QUERY "%%G" 2>NUL>>temp00
 REG QUERY "HKLM\SYSTEM\Setup\Upgrade\Appx\DownlevelGather\AppxAllUserStore\%SID%" 2>NUL>>temp00
 REG QUERY "HKLM\Software\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\%SID%" 2>NUL>>temp00
 GREP -Eis "Microsoft\.(549981C3F5F10|Advertising|Bing|Client\.WebExperience|Copilot|DiagnosticDataViewer|Edge|Gaming|Microsoft3DViewer|MicrosoftEdge|MicrosoftOfficeHub|MixedReality|OneConnect|ScreenSketch|Services\.Store\.Engagement|Teams|Todos|WidgetsPlatformRuntime|WindowsAlarms|WindowsFeedbackHub|Windows\.Ai\.Copilot|Xbox|YourPhone|Zune)" <temp00 >temp01
@@ -227,7 +226,7 @@ GREP -Eis "acerincorporated|9426MICRO-STAR|AD2F1837|B9ECED6F|Clipchamp|DellInc|E
 SORT_ -f -u <temp01 >temp02
 IF EXIST temp02 (
   FOR /F "TOKENS=*" %%G IN ( temp02 ) DO @(
-    ECHO.%%G ^(Registry Key^) >>"%TEMP%\004"
+    ECHO.%%G >>"%TEMP%\004"
     REG DELETE "%%G" /F >NUL 2>&1
     ) )
 DEL /F/Q temp0? >NUL 2>&1
@@ -249,7 +248,7 @@ REG QUERY "%URun%" 2>NUL|GREP -Eis "MicrosoftEdgeAutoLaunch_[A-F0-9]{32}">"%TEMP
 IF ERRORLEVEL 1 ( GOTO :SubscribedContent )
 SED -r "s/^\s{4}(MicrosoftEdgeAutoLaunch_[A-F0-9]{32})\s+REG_SZ\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
-    ECHO(%URun%\\%%G ^(Registry Value^)>>"%TEMP%\004"
+    ECHO(%URun%\\%%G>>"%TEMP%\004"
     REG DELETE "%URun%" /V "%%G" /F >NUL 2>&1
 )
 
@@ -258,7 +257,7 @@ REG QUERY %CUCDM% 2>NUL|GREP -Eis "SubscribedContent-[0-9]{5,}Enabled">"%TEMP%\p
 IF ERRORLEVEL 1 ( GOTO :Policies )
 SED -r "s/^\s{4}(SubscribedContent-[0-9]{5,}Enabled)\s+REG_DWORD\s+.*/\1/" <"%TEMP%\privwindozelogr.txt" >"%TEMP%\privwindozelogr2.txt"
 FOR /F %%G in (%TEMP%\privwindozelogr2.txt) DO (
-    ECHO(%CUCDM%\\%%G ^(Registry Value^)>>"%TEMP%\004"
+    ECHO(%CUCDM%\\%%G>>"%TEMP%\004"
     REG DELETE %CUCDM% /V "%%G" /F >NUL 2>&1
 )
 
@@ -387,7 +386,7 @@ REG ADD HKLM\Software\Policies\Microsoft\Windows\WindowsAI /T REG_DWORD /V Disab
 
 
 :: TASKS ::
-Echo([^|^|^|^|  ] Scanning Tasks
+Echo([^|^|^|^|  ]
 FOR %%G in (
 "Hewlett-Packard\HP Support Assistant\HP Support Assistant Update Notice"
 "Hewlett-Packard\HP Support Assistant\HP Support Solutions Framework Report"
@@ -515,7 +514,7 @@ FOR %%G in (
 "UEIPInvitation"
 ) DO @(
   IF EXIST "%STASKS%\%%G" (
-    ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
+    ECHO..\"%%G">>"%TEMP%\002"
     SCHTASKS /DELETE /TN %%G /F >NUL 2>&1
     )
 )
@@ -523,7 +522,7 @@ FOR %%G in (
 DIR /B/A:-D "%STASKS%" 2>NUL|GREP -Eis "^(MicrosoftEdgeUpdateTask|OneDrive|Omen(Install|Overlay)|NvTmRep_|Asus|SystemOptimizer)|Telemetry">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\"%%G" ^(Task^)>>"%TEMP%\002"
+  ECHO..\"%%G">>"%TEMP%\002"
   SCHTASKS /DELETE /TN "%%G" /F >NUL 2>&1
   )
 )
@@ -531,7 +530,7 @@ SORT_ -f -u <temp00 >temp01
 DIR /B/A:-D "%STASKS%\Lenovo\ImController\TimeBasedEvents" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G" ^(Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\ImController\TimeBasedEvents\"%%G">>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\ImController\TimeBasedEvents\%%G" /F >NUL 2>&1
   )
 )
@@ -539,7 +538,7 @@ SORT_ -f -u <temp00 >temp01
 DIR /B/A:-D "%STASKS%\Lenovo\UDC\MessagingPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\UDC\MessagingPlugin\"%%G">>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\UDC\MessagingPlugin\%%G" /F >NUL 2>&1
   )
 )
@@ -547,31 +546,31 @@ SORT_ -f -u <temp00 >temp01
 DIR /B/A:-D "%STASKS%\Lenovo\UDC\SystemNotificationPlugin" 2>NUL|GREP -Eis "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$">temp00
 SORT_ -f -u <temp00 >temp01
 @FOR /F "TOKENS=*" %%G IN ( temp01 ) DO @(
-  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G" ^(Task^)>>"%TEMP%\002"
+  ECHO..\Lenovo\UDC\SystemNotificationPlugin\"%%G">>"%TEMP%\002"
   SCHTASKS /DELETE /TN "Lenovo\UDC\SystemNotificationPlugin\%%G" /F >NUL 2>&1
   )
 )
 
 :Services
-Echo([^|^|^|^|^| ] Scanning Services
-@FOR /F "TOKENS=*" %%G IN ( svc_stop_disable.dat ) DO @(
+Echo([^|^|^|^|^| ]
+@FOR /F "TOKENS=*" %%G IN ( svc_stop_disable.cfg ) DO @(
   SC CONFIG "%%G" start= disabled|GREP -Es "ChangeServiceConfig SUCCESS">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service Disabled^)>>"%TEMP%\000b"
+    ECHO.%%G ^(%Log_SVCDisabled%^)>>"%TEMP%\000b"
     )
 )
 
-@FOR /F "TOKENS=*" %%G IN ( svc_stop_disable.dat ) DO @(
+@FOR /F "TOKENS=*" %%G IN ( svc_stop_disable.cfg ) DO @(
   SC STOP "%%G"|GREP -Es "STOP_PENDING|ControlService FAILED 1062">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service Stopped^)>>"%TEMP%\000b"
+    ECHO.%%G ^(%Log_SVCStopped%^)>>"%TEMP%\000b"
     )
 )
 
-@FOR /F "TOKENS=*" %%G IN ( svc_delete.dat ) DO @(
+@FOR /F "TOKENS=*" %%G IN ( svc_delete.cfg ) DO @(
   SC QUERY "%%G"|GREP -Es "WAIT_HINT">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service Deleted^)>>"%TEMP%\000b"
+    ECHO.%%G ^(%Log_SVCDeleted%^)>>"%TEMP%\000b"
     SC DELETE "%%G">nul
     REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%G" /F >NUL 2>&1
     )
@@ -586,34 +585,34 @@ SORT_ -f -u <"%TEMP%\privwindozesvc2_found.txt" >"%TEMP%\privwindozesvc2_del.txt
 @FOR /F "TOKENS=*" %%G IN ( %TEMP%\privwindozesvc2_del.txt ) DO @(
   SC CONFIG "%%G" start= disabled|GREP -Es "ChangeServiceConfig SUCCESS">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service Disabled^)>>"%TEMP%\000b"
+    ECHO.%%G ^(%Log_SVCDisabled%^)>>"%TEMP%\000b"
     )
 )
 
 @FOR /F "TOKENS=*" %%G IN ( %TEMP%\privwindozesvc2_del.txt ) DO @(
   SC STOP "%%G"|GREP -Es "STOP_PENDING|ControlService FAILED 1062">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service Stopped^)>>"%TEMP%\000b"
+    ECHO.%%G ^(%Log_SVCStopped%^)>>"%TEMP%\000b"
     )
 )
 
 @FOR /F "TOKENS=*" %%G IN ( %TEMP%\privwindozesvc2_del.txt ) DO @(
   SC QUERY "%%G"|GREP -Es "WAIT_HINT">temp00
   IF NOT ERRORLEVEL 1 (
-    ECHO.%%G ^(Service Deleted^)>>"%TEMP%\000b"
+    ECHO.%%G ^(%Log_SVCDeleted%^)>>"%TEMP%\000b"
     SC DELETE "%%G">nul
     REG DELETE "HKLM\SYSTEM\CurrentControlSet\services\%%G" /F >NUL 2>&1
     )
 )
 
 :DiscordFiles
-ECHO.[^|^|^|^|^|^|] Scanning File System
+ECHO.[^|^|^|^|^|^|]
 IF EXIST "%APPDATA%\discord\Code Cache\js" DIR /B/S/A:-D "%APPDATA%\discord\Code Cache\js" 2>NUL>appdata00
 IF EXIST "%APPDATA%\discord\Code Cache\js" (
 GREP -Esi "\\js\\([a-f0-9]{16,}_0|index)$" <appdata00 >appdata01
 SORT_ -f -u <appdata01 >appdata02
 FOR /F "TOKENS=*" %%G IN ( appdata02 ) DO @(
-  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  ECHO.%%G>>"%TEMP%\001"
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
@@ -623,7 +622,7 @@ IF EXIST "%APPDATA%\discord\Cache\Cache_Data" (
 GREP -Esi "\\Cache_Data\\(f_[a-f0-9]{6,}|data_[0-9]|index)$" <appdata00 >appdata01
 SORT_ -f -u <appdata01 >appdata02
 FOR /F "TOKENS=*" %%G IN ( appdata02 ) DO @(
-  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  ECHO.%%G>>"%TEMP%\001"
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
@@ -633,7 +632,7 @@ IF EXIST "%WINDIR%\InboxApps" (
 GREP -Esi "\\Microsoft\.(Bing|Copilot|StartExperiencesApp)" <windir00 >windir01
 SORT_ -f -u <windir01 >windir02
 FOR /F "TOKENS=*" %%G IN ( windir02 ) DO @(
-  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  ECHO.%%G>>"%TEMP%\001"
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
@@ -643,7 +642,7 @@ IF EXIST "%LOCALA%\D3DSCache" (
 GREP -Esi "\\[a-f0-9]{10,}$" <locala00 >locala01
 SORT_ -f -u <locala01 >locala02
 FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
-  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  ECHO.%%G>>"%TEMP%\001b"
   RD /S/Q "%%G" >NUL 2>&1
   )
 )
@@ -653,7 +652,7 @@ IF EXIST "%WINDIR%\ServiceProfiles\LocalService\AppData\Local\D3DSCache" (
 GREP -Esi "\\[a-f0-9]{10,}$" <sys32appdata00 >sys32appdata01
 SORT_ -f -u <sys32appdata01 >sys32appdata02
 FOR /F "TOKENS=*" %%G IN ( sys32appdata02 ) DO @(
-  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  ECHO.%%G>>"%TEMP%\001b"
   RD /S/Q "%%G" >NUL 2>&1
   )
 )
@@ -663,7 +662,7 @@ IF EXIST "%SYS32%\config\systemprofile\AppData\Local\D3DSCache" (
 GREP -Esi "\\[a-f0-9]{10,}$" <sys32appdata00 >sys32appdata01
 SORT_ -f -u <sys32appdata01 >sys32appdata02
 FOR /F "TOKENS=*" %%G IN ( sys32appdata02 ) DO @(
-  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  ECHO.%%G>>"%TEMP%\001b"
   RD /S/Q "%%G" >NUL 2>&1
   )
 )
@@ -673,7 +672,7 @@ IF EXIST "%SYS32%\config\systemprofile\AppData\Local" (
 GREP -Esi "\\tw-[a-f0-9]{2,}-[a-f0-9]{2,}-[a-f0-9]{2,}\.tmp$" <sys32appdata00 >sys32appdata01
 SORT_ -f -u <sys32appdata01 >sys32appdata02
 FOR /F "TOKENS=*" %%G IN ( sys32appdata02 ) DO @(
-  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  ECHO.%%G>>"%TEMP%\001b"
   RD /S/Q "%%G" >NUL 2>&1
   )
 )
@@ -683,7 +682,7 @@ IF EXIST "%LOCALLOW%\Sun\Java\Deployment\cache" (
 GREP -Esi "\\cache\\[0-9]\.[0-9]\\[0-9]{2,}\\[a-f0-9]{8,}-[a-f0-9]{8,}$" <locallow00 >locallow01
 SORT_ -f -u <locallow01 >locallow02
 FOR /F "TOKENS=*" %%G IN ( locallow02 ) DO @(
-  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  ECHO.%%G>>"%TEMP%\001"
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
@@ -693,7 +692,7 @@ IF EXIST "%LOCALA%\Steam\htmlcache" (
 GREP -Esi "\\htmlcache\\(ChromeDWriteFontCache|data_[0-9]|index|Visited Links)$" <locala00 >locala01
 SORT_ -f -u <locala01 >locala02
 FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
-  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  ECHO.%%G>>"%TEMP%\001"
   DEL /F/Q "%%G" >NUL 2>&1
   )
 )
@@ -703,7 +702,7 @@ IF EXIST "%LOCALA%\Microsoft\Windows\INetCache\IE" (
 GREP -Es "\\[A-Z0-9]{8}$" <locala00 >locala01
 SORT_ -f -u <locala01 >locala02
 FOR /F "TOKENS=*" %%G IN ( locala02 ) DO @(
-  ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+  ECHO.%%G>>"%TEMP%\001b"
   RD /S/Q "%%G" >NUL 2>&1
   )
 )
@@ -718,7 +717,7 @@ FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogp_del.txt") DO (
     SET "packages=%%G"
     SETLOCAL EnableDelayedExpansion
     IF EXIST "!LOCALA!\Packages\!packages!" (
-                                              ECHO("!LOCALA!\Packages\!packages!" ^(Folder^)>>"%TEMP%\001b"
+                                              ECHO("!LOCALA!\Packages\!packages!">>"%TEMP%\001b"
                                               RD /S/Q "!LOCALA!\Packages\!packages!" >NUL 2>&1
                                               )
     ENDLOCAL
@@ -727,7 +726,7 @@ FOR /F "usebackq delims=" %%G in ("%TEMP%\privwindozelogp_del.txt") DO (
 DIR /B/A:-D "%LOCALA%\Blizzard Entertainment\Telemetry" 2>NUL|GREP -Es ".*">temp00
 IF ERRORLEVEL 1 ( GOTO :Firefox )
 @FOR /F "TOKENS=*" %%G IN ( temp00 ) DO @(
-  ECHO."%LOCALA%\Blizzard Entertainment\Telemetry\%%G" ^(File^)>>"%TEMP%\001"
+  ECHO."%LOCALA%\Blizzard Entertainment\Telemetry\%%G">>"%TEMP%\001"
   DEL /F/Q "%LOCALA%\Blizzard Entertainment\Telemetry\%%G" >NUL 2>&1
   )
 :Firefox
@@ -748,7 +747,7 @@ GREP -Eis "^(hp(analytics|(omen)?customcap)comp\.inf|lenovoyx[x|8]0\.inf|hpspsno
 IF ERRORLEVEL 1 ( GOTO :Drivers2 )
 :: NIRCMD BEEP 1400 50
 FOR /F %%G in (%TEMP%\privwindozelogrk4.txt) DO (
-    Echo(%%G ^(Driver^)>>"%TEMP%\000"
+    Echo(%%G>>"%TEMP%\000"
     %SYS32%\pnputil.exe /delete-driver %%G /uninstall /force >NUL 2>&1
 )
 
@@ -764,7 +763,7 @@ SORT_ -f -u <drivers01 >drivers02
 IF ERRORLEVEL 1 ( GOTO :Files )
 DEL /F/Q drivers00 drivers01 >NUL 2>&1
 FOR /F "TOKENS=*" %%G IN ( drivers02 ) DO @(
-  ECHO.%%G ^(Driver^)>>"%TEMP%\000"
+  ECHO.%%G>>"%TEMP%\000"
   DEL /F/Q "%%G" >NUL 2>&1
   IF EXIST "%%G" (
     ICACLS "%%G" /RESET /Q >NUL 2>&1
@@ -812,7 +811,7 @@ FOR %%G in (
 "%USERPROFILE%\OneDrive\Desktop\Microsoft Teams.lnk"
 ) DO @(
   IF EXIST "%%G" (
-    ECHO."%%G" ^(File^)>>"%TEMP%\001"
+    ECHO."%%G">>"%TEMP%\001"
     DEL /F/Q %%G >NUL 2>&1
     IF EXIST "%%G" (
       ICACLS %%G /RESET /Q >NUL 2>&1
@@ -883,7 +882,7 @@ FOR %%G in (
 "%WINDIR%\ServiceProfiles\NetworkService\OneDrive"
 ) DO @(
   IF EXIST %%G (
-    ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+    ECHO.%%G>>"%TEMP%\001b"
     RD /S/Q %%G >NUL 2>&1
     IF EXIST %%G (
       ICACLS %%G /RESET /Q /T >NUL 2>&1
@@ -898,7 +897,7 @@ FOR %%G in (
 "%PROGFILES64%\HP\HP System Event\HPWMISVC.exe"
 ) DO @(
   IF EXIST %%G (
-    ECHO.%%G ^(File^)>>"%TEMP%\001"
+    ECHO.%%G>>"%TEMP%\001"
     DEL /F/Q %%G >NUL 2>&1
     IF EXIST %%G (
       ICACLS %%G /RESET /Q >NUL 2>&1
@@ -923,7 +922,7 @@ FOR %%G in (
 "%PROGFILES64%\Teams Installer"
 ) DO @(
   IF EXIST %%G (
-    ECHO.%%G ^(Folder^)>>"%TEMP%\001b"
+    ECHO.%%G>>"%TEMP%\001b"
     RD /S/Q %%G >NUL 2>&1
     IF EXIST %%G (
       ICACLS %%G /RESET /Q /T >NUL 2>&1
@@ -937,7 +936,7 @@ DIR /B/S/A:-D "%QUICKLAUNCH%" 2>NUL>quicklaunch00
 GREP -Esi "\\(Microsoft Edge|OneDrive)\.lnk$" <quicklaunch00 >quicklaunch01
 SORT_ -f -u <quicklaunch01 >quicklaunch02
 FOR /F "TOKENS=*" %%G IN ( quicklaunch02 ) DO @(
-  ECHO.%%G ^(File^)>>"%TEMP%\001"
+  ECHO.%%G>>"%TEMP%\001"
   DEL /F/Q "%%G" >NUL 2>&1
 )
 
@@ -952,14 +951,14 @@ set s=%TIME:~6,2%
 set EndTime=%h%.%m%.%s%
 
 Echo(# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>"%TEMP%\pwindoze.txt"
-Echo(# PrivWindoze v3.2.5>>"%TEMP%\pwindoze.txt"
+Echo(# PrivWindoze ^(%Log_PrivateWindows%^) v4.0.0>>"%TEMP%\pwindoze.txt"
 Echo(# https://furtivex.net>>"%TEMP%\pwindoze.txt"
-ECHO.# OS + ^< WGA ^> %OS% %ARCH% %DisplayVersion% ^< %LicenseStatus% ^>>>"%TEMP%\pwindoze.txt"
-ECHO.# User + ^< Date ^> "%username%" ^< %StartTime% - %EndTime% ^>>>"%TEMP%\pwindoze.txt"
+ECHO.# %Log_OS% + ^< WGA ^> %OS% %ARCH% %DisplayVersion% ^< %LicenseStatus% ^>>>"%TEMP%\pwindoze.txt"
+ECHO.# %Log_Username% + ^< %Log_Date% ^> "%username%" ^< %StartTime% - %EndTime% ^>>>"%TEMP%\pwindoze.txt"
 Echo(# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
-ECHO(# Drivers:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Drivers%:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000" (
   SORT_ -f -u <"%TEMP%\000" >"%TEMP%\000rdy"
@@ -967,7 +966,7 @@ IF EXIST "%TEMP%\000" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(# Services:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Services%:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\000b" (
   SORT_ -f -u <"%TEMP%\000b" >"%TEMP%\000brdy"
@@ -975,7 +974,7 @@ IF EXIST "%TEMP%\000b" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(# Files:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Files%:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
   IF EXIST "%TEMP%\001" (
   SORT_ -f -u <"%TEMP%\001" >"%TEMP%\001_rdy"
@@ -983,7 +982,7 @@ echo.>>"%TEMP%\pwindoze.txt"
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(# Folders:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Folders%>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\001b" (
   SORT_ -f -u <"%TEMP%\001b" >"%temp%\001brdy"
@@ -991,7 +990,7 @@ IF EXIST "%TEMP%\001b" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(# Tasks:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Tasks%:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\002" (
   SORT_ -f -u <"%TEMP%\002" >"%TEMP%\002rdy"
@@ -999,7 +998,7 @@ IF EXIST "%TEMP%\002" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(# Packages:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Packages%:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\003" (
   SORT_ -f -u <"%TEMP%\003" >"%temp%\003rdy"
@@ -1007,7 +1006,7 @@ IF EXIST "%TEMP%\003" (
   echo.>>"%TEMP%\pwindoze.txt"
 )
 
-ECHO(# Registry:>>"%TEMP%\pwindoze.txt"
+ECHO(# %Log_Registry%:>>"%TEMP%\pwindoze.txt"
 echo.>>"%TEMP%\pwindoze.txt"
 IF EXIST "%TEMP%\004" (
   SORT_ -f -u <"%TEMP%\004" >"%temp%\004rdy"
@@ -1030,6 +1029,7 @@ appdata0?
 sys32appdata0?
 locala0?
 windir0?
+lang0?
 quicklaunch0?
 drivers0?
 ) DO @(
@@ -1040,7 +1040,6 @@ drivers0?
 ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
-ECHO(Scan completed. PrivWindoze_%StartTime%.txt can be found on your desktop.
 DEL /F/S/Q "%TEMP%\*" >NUL 2>&1
 TIMEOUT /t 03>NUL && RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
 :eof
