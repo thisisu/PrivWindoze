@@ -118,6 +118,14 @@ IF NOT EXIST %SYS32%\WindowsPowerShell\v1.0\powershell.exe ECHO Powershell.exe i
 POWERSHELL -command "Checkpoint-Computer -Description 'PrivWindoze' -RestorePointType 'MODIFY_SETTINGS'" >NUL 2>&1
 cls
 ECHO.%Scan_ThereWillBeLog%
+ECHO.
+ECHO.
+:License
+IF EXIST %SYS32%\slmgr.vbs @(
+  cscript /nologo %SYS32%\slmgr.vbs /dli|GREP -Es "^License Status">info00
+  SED -r "s/^License Status: //" <info00 >info01
+  FOR /F %%G in (info01) DO SET LicenseStatus=%%G
+)
 :: PROCESSES ::
 :Processes
 Echo([^|     ]
@@ -1029,6 +1037,7 @@ appdata0?
 sys32appdata0?
 locala0?
 windir0?
+info0?
 lang0?
 quicklaunch0?
 drivers0?
