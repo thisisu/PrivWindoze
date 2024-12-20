@@ -93,7 +93,7 @@ pcre3.dll
 regex2.dll
 sed.exe
 sort_.exe
-) DO ( IF NOT EXIST %WINDIR%\%%G GOTO :eof )
+) DO ( IF NOT EXIST %WINDIR%\%%G GOTO :Abort )
 
 FOR %%G in (
 NULL
@@ -103,7 +103,7 @@ svc_delete.cfg
 svc_stop_disable.cfg
 Urunkey.cfg
 I4ng.bat
-) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :eof )
+) DO ( IF NOT EXIST %systemdrive%\PrivWindoze\%%G GOTO :Abort )
 
 set h=%TIME:~0,2%
 set m=%TIME:~3,2%
@@ -1052,5 +1052,5 @@ ECHO.
 ECHO.
 START /D "%userprofile%" /I %WINDIR%\explorer.exe
 DEL /F/S/Q "%TEMP%\*" >NUL 2>&1
-TIMEOUT /t 03>NUL && RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
+RD /S/Q %systemdrive%\PrivWindoze >NUL 2>&1
 :eof
