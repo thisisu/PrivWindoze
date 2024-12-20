@@ -186,7 +186,7 @@ GOTO :eof
 @SET "Log_Drivers=司机"
 @SET "Log_Files=文件"
 @SET "Log_Folders=包"
-@SET "Log_Packages=Packages"
+@SET "Log_Packages=包"
 @SET "Log_Tasks=任务"
 @SET "Log_Registry=注册表"
 @SET "Log_Miscellaneous=杂项"
