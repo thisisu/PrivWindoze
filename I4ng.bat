@@ -69,7 +69,7 @@ GOTO :eof
 @SET "Log_Services=Dienste"
 @SET "Log_Files=Dateien"
 @SET "Log_Drivers=Treiber"
-@SET "Log_Folders=Faltprospekte"
+@SET "Log_Folders=Ordner"
 @SET "Log_Packages=Pakete"
 @SET "Log_Tasks=Aufgaben"
 @SET "Log_Registry=Registrierung"
